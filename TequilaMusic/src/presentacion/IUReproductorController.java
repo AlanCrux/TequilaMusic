@@ -64,9 +64,9 @@ public class IUReproductorController implements Initializable {
     private JFXButton btnExplorar;
 
     private boolean play = true; 
-    private static final String ICON_CANCIONES = "src/recursos/iconos/icon_canciones.png";
-    private static final String ICON_ARTISTAS = "src/recursos/iconos/icon_artistas.png";
-    private static final String ICON_ALBUMES = "src/recursos/iconos/icon_albumes.png";
+    private static final String ICON_CANCIONES = "src/recursos/iconos/maracas.png";
+    private static final String ICON_ARTISTAS = "src/recursos/iconos/mexicano.png";
+    private static final String ICON_ALBUMES = "src/recursos/iconos/guitarra.png";
     private static final String ICON_PAUSE = "/recursos/iconos/icon_pausa.png";
     private static final String ICON_PLAY = "/recursos/iconos/icon_play.png";
     private static final String ICON_PLAYLIST = "src/recursos/iconos/icon_playlist.png";
@@ -146,9 +146,9 @@ public class IUReproductorController implements Initializable {
             lbArtistas.setGraphic(new ImageView(new Image(new FileInputStream(ICON_ARTISTAS))));
             lbAlbumes.setGraphic(new ImageView(new Image(new FileInputStream(ICON_ALBUMES))));
 
-            lbCanciones.setFont(new Font("Avenir Book", 15));
-            lbArtistas.setFont(new Font("Avenir Book", 15));
-            lbAlbumes.setFont(new Font("Avenir Book", 15));
+            lbCanciones.setFont(new Font("Avenir Book", 14));
+            lbArtistas.setFont(new Font("Avenir Book", 14));
+            lbAlbumes.setFont(new Font("Avenir Book", 14));
 
             listOpciones.getItems().add(lbCanciones);
             listOpciones.getItems().add(lbArtistas);
@@ -167,9 +167,9 @@ public class IUReproductorController implements Initializable {
             lbArtistas.setGraphic(new ImageView(new Image(new FileInputStream(ICON_PLAYLIST))));
             lbAlbumes.setGraphic(new ImageView(new Image(new FileInputStream(ICON_PLAYLIST))));
 
-            lbCanciones.setFont(new Font("Avenir Book", 15));
-            lbArtistas.setFont(new Font("Avenir Book", 15));
-            lbAlbumes.setFont(new Font("Avenir Book", 15));
+            lbCanciones.setFont(new Font("Avenir Book", 14));
+            lbArtistas.setFont(new Font("Avenir Book", 14));
+            lbAlbumes.setFont(new Font("Avenir Book", 14));
 
             lstPlaylists.getItems().add(lbCanciones);
             lstPlaylists.getItems().add(lbArtistas);

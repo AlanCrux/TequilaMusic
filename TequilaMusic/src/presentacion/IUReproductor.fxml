@@ -39,6 +39,15 @@
                </image>
             </ImageView>
             <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" onMouseDragged="#onActionVolume" prefHeight="18.0" prefWidth="151.0" style="-fx-color: #1ABC9C;" AnchorPane.leftAnchor="45.0" />
+            <HBox alignment="CENTER" layoutX="209.0" layoutY="-1.0" prefHeight="50.0" prefWidth="382.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="209.0">
+               <children>
+                  <ImageView fitHeight="50.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../recursos/iconos/TequilaMusic2.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
          </children></AnchorPane>
       <SplitPane fx:id="splitPane" dividerPositions="0.25" layoutY="117.0" prefHeight="383.0" prefWidth="800.0" style="-fx-background-color: #d4d4d5;" stylesheets="@../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0">
          <items>
