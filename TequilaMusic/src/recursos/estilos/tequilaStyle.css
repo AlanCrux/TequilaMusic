@@ -1,10 +1,22 @@
 /**
     @author Alan Yoset Garcia Cruz
- */
+*/
 
 .split-pane:horizontal > .split-pane-divider {
-   -fx-background-color: transparent;
+    -fx-background-color: transparent;
 }
 .split-pane:vertical > .split-pane-divider {
-   -fx-background-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.list-view {
+    -fx-background-color: #d4d4d5;
+}
+
+.list-view .list-cell {
+    -fx-background-color: #d4d4d5;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #85C1E9;
 }

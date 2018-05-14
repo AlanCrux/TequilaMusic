@@ -1,16 +1,31 @@
 package presentacion;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -21,8 +36,6 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private TextField tfBuscar;
-    @FXML
-    private ImageView btnPlay11111;
     @FXML
     private Slider sliderVolumen;
     @FXML
@@ -39,45 +52,147 @@ public class IUReproductorController implements Initializable {
     private ImageView btnSiguiente;
     @FXML
     private ImageView btnRepetir;
+    @FXML
+    private JFXListView<Label> listOpciones;
+    @FXML
+    private JFXListView<Label> lstPlaylists;
+    @FXML
+    private JFXButton btnBiblioteca;
+    @FXML
+    private JFXButton btnRadio;
+    @FXML
+    private JFXButton btnExplorar;
+
+    private boolean play = true; 
+    private static final String ICON_CANCIONES = "src/recursos/iconos/icon_canciones.png";
+    private static final String ICON_ARTISTAS = "src/recursos/iconos/icon_artistas.png";
+    private static final String ICON_ALBUMES = "src/recursos/iconos/icon_albumes.png";
+    private static final String ICON_PAUSE = "/recursos/iconos/icon_pausa.png";
+    private static final String ICON_PLAY = "/recursos/iconos/icon_play.png";
+    private static final String ICON_PLAYLIST = "src/recursos/iconos/icon_playlist.png";
 
     /**
-     * Initializes the controller class.
+     * Inicializa los componentes de la ventana IUReproductor.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-
-    @FXML
-    private void onActionBuscar(KeyEvent event) {
+        agregarOpcionesBiblioteca();
+        agregarPlaylists();
+        btnBiblioteca.requestFocus();
     }
 
     @FXML
-    private void onActionVolume(MouseEvent event) {
+    void onActionBack(MouseEvent event) {
+
     }
 
     @FXML
-    private void onActionTimeline(MouseEvent event) {
+    void onActionBiblioteca(ActionEvent event) {
+
     }
 
     @FXML
-    private void onActionRandom(MouseEvent event) {
+    void onActionBuscar(KeyEvent event) {
+
     }
 
     @FXML
-    private void onActionBack(MouseEvent event) {
+    void onActionNext(MouseEvent event) {
+
     }
 
     @FXML
-    private void onActionPlay(MouseEvent event) {
+    void onActionPlay(MouseEvent event) {
+        if (play) {
+            btnPlay.setImage(new Image(ICON_PAUSE));
+            play = false; 
+        }else{
+            btnPlay.setImage(new Image(ICON_PLAY));
+            play = true;
+        }  
     }
 
     @FXML
-    private void onActionNext(MouseEvent event) {
+    void onActionRadio(ActionEvent event) {
+
     }
 
     @FXML
-    private void onActionRepeat(MouseEvent event) {
+    void onActionRandom(MouseEvent event) {
+
+    }
+
+    @FXML
+    void onActionRepeat(MouseEvent event) {
+
+    }
+
+    @FXML
+    void onActionTimeline(MouseEvent event) {
+
+    }
+
+    @FXML
+    void onActionVolume(MouseEvent event) {
+
+    }
+
+    private void agregarOpcionesBiblioteca() {
+        Label lbCanciones = new Label("Canciones");
+        Label lbArtistas = new Label("Artistas");
+        Label lbAlbumes = new Label("Álbumes");
+        try {
+            lbCanciones.setGraphic(new ImageView(new Image(new FileInputStream(ICON_CANCIONES))));
+            lbArtistas.setGraphic(new ImageView(new Image(new FileInputStream(ICON_ARTISTAS))));
+            lbAlbumes.setGraphic(new ImageView(new Image(new FileInputStream(ICON_ALBUMES))));
+
+            lbCanciones.setFont(new Font("Avenir Book", 15));
+            lbArtistas.setFont(new Font("Avenir Book", 15));
+            lbAlbumes.setFont(new Font("Avenir Book", 15));
+
+            listOpciones.getItems().add(lbCanciones);
+            listOpciones.getItems().add(lbArtistas);
+            listOpciones.getItems().add(lbAlbumes);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
+    private void agregarPlaylists() {
+        Label lbCanciones = new Label("Carne asada");
+        Label lbArtistas = new Label("Estudiar");
+        Label lbAlbumes = new Label("Baño de burbujas");
+        try {
+            lbCanciones.setGraphic(new ImageView(new Image(new FileInputStream(ICON_PLAYLIST))));
+            lbArtistas.setGraphic(new ImageView(new Image(new FileInputStream(ICON_PLAYLIST))));
+            lbAlbumes.setGraphic(new ImageView(new Image(new FileInputStream(ICON_PLAYLIST))));
+
+            lbCanciones.setFont(new Font("Avenir Book", 15));
+            lbArtistas.setFont(new Font("Avenir Book", 15));
+            lbAlbumes.setFont(new Font("Avenir Book", 15));
+
+            lstPlaylists.getItems().add(lbCanciones);
+            lstPlaylists.getItems().add(lbArtistas);
+            lstPlaylists.getItems().add(lbAlbumes);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Muestra la ventana.
+     *
+     * @param loader el loader con la ruta de la ventana que se quiere cargar.
+     */
+    public static void mostrarVentana(FXMLLoader loader) {
+        try {
+            Stage stagePrincipal = new Stage();
+            Parent root = (Parent) loader.load();
+            Scene scene = new Scene(root);
+            stagePrincipal.setScene(scene);
+            stagePrincipal.show();
+        } catch (IOException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
