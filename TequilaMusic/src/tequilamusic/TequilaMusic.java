@@ -3,7 +3,7 @@ package tequilamusic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import presentacion.IUReproductorController;
+import presentacion.controladores.IUReproductorController;
 
 /**
  *

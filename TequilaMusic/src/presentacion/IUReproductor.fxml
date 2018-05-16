@@ -2,10 +2,10 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXNodesList?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -19,7 +19,7 @@
    <children>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #d7d7d7;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane layoutX="406.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="8.0">
+            <AnchorPane layoutX="555.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="8.0">
                <children>
                   <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="9.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="149.0" AnchorPane.topAnchor="4.0">
                      <image>
@@ -38,7 +38,7 @@
                   <Image url="@../recursos/iconos/icon_volumen.png" />
                </image>
             </ImageView>
-            <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" onMouseDragged="#onActionVolume" prefHeight="18.0" prefWidth="151.0" style="-fx-color: #1ABC9C;" AnchorPane.leftAnchor="45.0" />
+            <JFXSlider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" AnchorPane.leftAnchor="45.0" />
             <HBox alignment="CENTER" layoutX="209.0" layoutY="-1.0" prefHeight="50.0" prefWidth="382.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="209.0">
                <children>
                   <ImageView fitHeight="50.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
@@ -53,18 +53,7 @@
          <items>
             <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
                <children>
-                  <Label text="Biblioteca">
-                     <font>
-                        <Font name="Avenir Book" size="16.0" />
-                     </font>
-                  </Label>
-                  <JFXListView fx:id="listOpciones" prefHeight="138.0" prefWidth="196.0" style="-fx-background-color: #d4d4d5;" VBox.vgrow="NEVER" />
-                  <Label text="Playlists" VBox.vgrow="ALWAYS">
-                     <font>
-                        <Font name="Avenir Book" size="16.0" />
-                     </font>
-                  </Label>
-                  <JFXListView fx:id="lstPlaylists" prefHeight="177.0" prefWidth="196.0" VBox.vgrow="ALWAYS" />
+                  <JFXListView fx:id="listOpciones" prefHeight="138.0" prefWidth="196.0" style="-fx-background-color: #d4d4d5;" VBox.vgrow="ALWAYS" />
                   <Separator prefWidth="200.0" />
                   <JFXButton prefHeight="35.0" prefWidth="202.0" text="Nueva lista" textAlignment="CENTER">
                      <font>
@@ -73,7 +62,7 @@
                      <graphic>
                         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../recursos/iconos/icons8-más-30.png" />
+                              <Image url="@../recursos/iconos/mas.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -88,7 +77,7 @@
       </SplitPane>
       <AnchorPane layoutY="354.0" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: #D5D8DC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <Slider layoutX="175.0" layoutY="61.0" onMouseDragged="#onActionTimeline" prefHeight="16.0" prefWidth="250.0" style="-fx-color: #1ABC9C; -fx-control-inner-background: #1ABC9C; -fx-thumb-color: blue;" value="100.0" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0" />
+            <JFXSlider layoutX="250.0" layoutY="63.0" prefHeight="18.0" prefWidth="300.0" value="90.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="250.0" />
             <HBox alignment="CENTER" layoutX="200.0" layoutY="8.0" prefHeight="40.0" prefWidth="200.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <ImageView fx:id="btnAleatorio" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionRandom" pickOnBounds="true" preserveRatio="true">
@@ -119,7 +108,7 @@
                </children>
             </HBox>
          </children></AnchorPane>
-      <HBox alignment="CENTER" layoutY="49.0" prefHeight="35.0" prefWidth="395.0" spacing="10.0" style="-fx-background-color: #d7d7d7;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+      <HBox alignment="CENTER" layoutY="49.0" prefHeight="35.0" prefWidth="395.0" spacing="10.0" style="-fx-background-color: #ECF0F1;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
          <children>
             <JFXButton fx:id="btnBiblioteca" alignment="CENTER" onAction="#onActionBiblioteca" prefHeight="23.0" prefWidth="94.0" style="-fx-background-color: #2f7aff; -fx-background-radius: 30; -fx-border-radius: 30;" text="Bibiloteca" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -147,5 +136,39 @@
             </JFXButton>
          </children>
       </HBox>
+      <JFXNodesList fx:id="nodeListAjustes" alignment="CENTER_LEFT" layoutX="720.0" layoutY="48.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="3.0" prefWidth="180.0" AnchorPane.rightAnchor="10.0" />
+      <JFXButton fx:id="btnUsuario" layoutX="14.0" layoutY="-103.0" maxHeight="32.0" minHeight="32.0" nodeOrientation="LEFT_TO_RIGHT" opacity="0.65" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #B2BABB; -fx-border-radius: 30; -fx-background-radius: 30;" text="Mi cuenta">
+         <font>
+            <Font name="Avenir Book" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/usuario.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnAjustes" contentDisplay="RIGHT" layoutX="14.0" layoutY="-47.0" maxHeight="32.0" minHeight="32.0" nodeOrientation="RIGHT_TO_LEFT" opacity="0.6" prefHeight="32.0" prefWidth="150.0" style="-fx-background-color: #B2BABB; -fx-background-radius: 30; -fx-border-radius: 30;" text="Ajustes">
+         <font>
+            <Font name="Avenir Book" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/ajustes%20(2).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="btnConfigurar" layoutX="225.0" layoutY="-77.0" prefHeight="40.0" prefWidth="50.0" text=" ">
+         <graphic>
+            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/iconos/ajustes.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
    </children>
 </AnchorPane>

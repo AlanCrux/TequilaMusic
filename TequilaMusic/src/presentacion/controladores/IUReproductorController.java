@@ -1,11 +1,14 @@
-package presentacion;
+package presentacion.controladores;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXNodesList;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,8 +16,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
@@ -24,6 +29,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -55,15 +61,21 @@ public class IUReproductorController implements Initializable {
     @FXML
     private JFXListView<Label> listOpciones;
     @FXML
-    private JFXListView<Label> lstPlaylists;
-    @FXML
     private JFXButton btnBiblioteca;
     @FXML
     private JFXButton btnRadio;
     @FXML
     private JFXButton btnExplorar;
+    @FXML
+    private JFXNodesList nodeListAjustes;
+    @FXML
+    private JFXButton btnAjustes;
+    @FXML
+    private JFXButton btnUsuario;
+    @FXML
+    private JFXButton btnConfigurar;
 
-    private boolean play = true; 
+    private boolean play = true;
     private static final String ICON_CANCIONES = "src/recursos/iconos/maracas.png";
     private static final String ICON_ARTISTAS = "src/recursos/iconos/mexicano.png";
     private static final String ICON_ALBUMES = "src/recursos/iconos/guitarra.png";
@@ -78,7 +90,24 @@ public class IUReproductorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         agregarOpcionesBiblioteca();
         agregarPlaylists();
-        btnBiblioteca.requestFocus();
+        
+        List<JFXButton> botones = new ArrayList<>();
+        botones.add(btnConfigurar);
+        botones.add(btnUsuario);
+        botones.add(btnAjustes);
+        llenarNodeList(nodeListAjustes, botones);
+        
+        
+    }
+
+    /**
+     * Método que agrega botones a un NodeList.
+     */
+    private void llenarNodeList(JFXNodesList nodeList, List<JFXButton> elements) {
+        for (int i = 0; i < elements.size(); i++) {
+            nodeList.addAnimatedNode((JFXButton) elements.get(i));
+        }
+        nodeList.setSpacing(6);
     }
 
     @FXML
@@ -105,11 +134,11 @@ public class IUReproductorController implements Initializable {
     void onActionPlay(MouseEvent event) {
         if (play) {
             btnPlay.setImage(new Image(ICON_PAUSE));
-            play = false; 
-        }else{
+            play = false;
+        } else {
             btnPlay.setImage(new Image(ICON_PLAY));
             play = true;
-        }  
+        }
     }
 
     @FXML
@@ -138,6 +167,7 @@ public class IUReproductorController implements Initializable {
     }
 
     private void agregarOpcionesBiblioteca() {
+        Label lbBiblioteca = new Label("Biblioteca");
         Label lbCanciones = new Label("Canciones");
         Label lbArtistas = new Label("Artistas");
         Label lbAlbumes = new Label("Álbumes");
@@ -146,10 +176,12 @@ public class IUReproductorController implements Initializable {
             lbArtistas.setGraphic(new ImageView(new Image(new FileInputStream(ICON_ARTISTAS))));
             lbAlbumes.setGraphic(new ImageView(new Image(new FileInputStream(ICON_ALBUMES))));
 
+            lbBiblioteca.setFont(new Font("Avenir Book", 16));
             lbCanciones.setFont(new Font("Avenir Book", 14));
             lbArtistas.setFont(new Font("Avenir Book", 14));
             lbAlbumes.setFont(new Font("Avenir Book", 14));
 
+            listOpciones.getItems().add(lbBiblioteca);
             listOpciones.getItems().add(lbCanciones);
             listOpciones.getItems().add(lbArtistas);
             listOpciones.getItems().add(lbAlbumes);
@@ -157,8 +189,16 @@ public class IUReproductorController implements Initializable {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    /**
+     * Nota: En el futuro debe recibir una lista cargada con las playlist
+     */
     private void agregarPlaylists() {
+        Label lbPlaylist = new Label("Playlist");
+        lbPlaylist.setFont(new Font("Avenir Book", 16));
+        listOpciones.getItems().add(lbPlaylist);
+
+        //AQUI SE DEBERÍAN AGREGAR LAS PLAYLIST DEL USUARIO
         Label lbCanciones = new Label("Carne asada");
         Label lbArtistas = new Label("Estudiar");
         Label lbAlbumes = new Label("Baño de burbujas");
@@ -171,9 +211,9 @@ public class IUReproductorController implements Initializable {
             lbArtistas.setFont(new Font("Avenir Book", 14));
             lbAlbumes.setFont(new Font("Avenir Book", 14));
 
-            lstPlaylists.getItems().add(lbCanciones);
-            lstPlaylists.getItems().add(lbArtistas);
-            lstPlaylists.getItems().add(lbAlbumes);
+            listOpciones.getItems().add(lbCanciones);
+            listOpciones.getItems().add(lbArtistas);
+            listOpciones.getItems().add(lbAlbumes);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
         }
