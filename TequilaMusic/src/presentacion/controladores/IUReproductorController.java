@@ -74,6 +74,14 @@ public class IUReproductorController implements Initializable {
     private JFXButton btnUsuario;
     @FXML
     private JFXButton btnConfigurar;
+    @FXML
+    private ImageView imgDisco;
+    @FXML
+    private Label lbNombreCancion;
+    @FXML
+    private Label lbArtistas;
+    @FXML
+    private ImageView imgDetallesDisco;
 
     private boolean play = true;
     private static final String ICON_CANCIONES = "src/recursos/iconos/maracas.png";
@@ -90,14 +98,13 @@ public class IUReproductorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         agregarOpcionesBiblioteca();
         agregarPlaylists();
-        
+
         List<JFXButton> botones = new ArrayList<>();
         botones.add(btnConfigurar);
         botones.add(btnUsuario);
         botones.add(btnAjustes);
         llenarNodeList(nodeListAjustes, botones);
-        
-        
+
     }
 
     /**
@@ -111,7 +118,17 @@ public class IUReproductorController implements Initializable {
     }
 
     @FXML
-    void onActionBack(MouseEvent event) {
+    private void mostrarDetallesDisco(MouseEvent event) {
+        imgDetallesDisco.setOpacity(0.8);
+    }
+
+    @FXML
+    private void ocultarDetallesDisco(MouseEvent event) {
+        imgDetallesDisco.setOpacity(0);
+    }
+
+    @FXML
+    private void onActionBack(MouseEvent event) {
 
     }
 
@@ -230,6 +247,7 @@ public class IUReproductorController implements Initializable {
             Parent root = (Parent) loader.load();
             Scene scene = new Scene(root);
             stagePrincipal.setScene(scene);
+            stagePrincipal.setMaximized(true);
             stagePrincipal.show();
         } catch (IOException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
