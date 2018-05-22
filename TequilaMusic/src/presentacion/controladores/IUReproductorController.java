@@ -104,7 +104,6 @@ public class IUReproductorController implements Initializable {
         botones.add(btnUsuario);
         botones.add(btnAjustes);
         llenarNodeList(nodeListAjustes, botones);
-
     }
 
     /**

@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../recursos/fondos/fondo_v1.jpg" />
+            <Image url="@../recursos/fondos/TequilaPhoto2.jpg" />
          </image>
       </ImageView>
       <ImageView disable="true" fitHeight="77.0" fitWidth="281.0" layoutX="260.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
