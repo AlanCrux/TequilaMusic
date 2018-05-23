@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../recursos/fondos/TequilaPhoto2.jpg" />
+            <Image url="@../recursos/fondos/TequilaPhoto1.jpg" />
          </image>
       </ImageView>
       <ImageView disable="true" fitHeight="77.0" fitWidth="281.0" layoutX="260.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
@@ -28,7 +28,7 @@
             <Font name="Avenir Book" size="16.0" />
          </font>
       </TextField>
-      <JFXRadioButton layoutX="275.0" layoutY="235.0" selected="true" text="Músico" textFill="WHITE">
+      <JFXRadioButton layoutX="275.0" layoutY="235.0" selected="true" text="Músico" textFill="#1abc9c">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
@@ -36,7 +36,7 @@
             <ToggleGroup fx:id="tipo" />
          </toggleGroup>
       </JFXRadioButton>
-      <JFXRadioButton layoutX="375.0" layoutY="235.0" text="Cliente" textFill="WHITE" toggleGroup="$tipo">
+      <JFXRadioButton layoutX="375.0" layoutY="235.0" text="Cliente" textFill="#1abc9c" toggleGroup="$tipo">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
