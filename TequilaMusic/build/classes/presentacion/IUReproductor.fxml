@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -54,9 +56,9 @@
                </image>
             </ImageView>
          </children></AnchorPane>
-      <SplitPane fx:id="splitPane" dividerPositions="0.25" layoutY="117.0" prefHeight="383.0" prefWidth="800.0" style="-fx-background-color: #d4d4d5;" stylesheets="@../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0">
+      <SplitPane fx:id="splitPane" dividerPositions="0.25" layoutY="117.0" prefHeight="383.0" prefWidth="800.0" style="-fx-background-color: #ECF0F1;" stylesheets="@../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="85.0">
          <items>
-            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" SplitPane.resizableWithParent="false">
+            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #d4d4d5;" SplitPane.resizableWithParent="false">
                <children>
                   <JFXListView fx:id="listOpciones" prefHeight="138.0" prefWidth="196.0" style="-fx-background-color: #d4d4d5;" VBox.vgrow="ALWAYS" />
                   <Separator prefWidth="200.0" />
@@ -77,7 +79,17 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </VBox>
-            <AnchorPane fx:id="paneContenido" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;" />
+            <AnchorPane fx:id="paneContenido" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #d4d4d5;">
+               <children>
+                  <TableView fx:id="tbCanciones" layoutX="46.0" layoutY="7.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../recursos/estilos/tableView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn fx:id="tbcTitulo" prefWidth="167.0" text="TÍTULO" />
+                      <TableColumn fx:id="tbcArtista" prefWidth="161.0" text="ARTISTA" />
+                        <TableColumn fx:id="tbcAlbum" prefWidth="161.0" text="ÁLBUM" />
+                        <TableColumn fx:id="tbcDuracion" prefWidth="104.0" text="DURACIÓN" />
+                    </columns>
+                  </TableView>
+               </children></AnchorPane>
          </items>
       </SplitPane>
       <AnchorPane layoutY="354.0" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: #D5D8DC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

@@ -12,26 +12,30 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import logica.mappers.MapperCancion;
+import logica.psl.CancionSl;
 
 /**
  * FXML Controller class
@@ -82,6 +86,16 @@ public class IUReproductorController implements Initializable {
   private Label lbArtistas;
   @FXML
   private ImageView imgDetallesDisco;
+  @FXML
+  private TableView<CancionSl> tbCanciones;
+  @FXML
+  private TableColumn<CancionSl, String> tbcTitulo;
+  @FXML
+  private TableColumn<CancionSl, String> tbcArtista;
+  @FXML
+  private TableColumn<CancionSl, String> tbcAlbum;
+  @FXML
+  private TableColumn<CancionSl, String> tbcDuracion;
 
   private boolean play = true;
   private static final String ICON_CANCIONES = "src/recursos/iconos/maracas.png";
@@ -103,6 +117,11 @@ public class IUReproductorController implements Initializable {
     botones.add(btnConfigurar);
     botones.add(btnUsuario);
     botones.add(btnAjustes);
+    
+    tbcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+    tbcArtista.setCellValueFactory(new PropertyValueFactory<>("artista"));
+    tbcAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
+    tbcDuracion.setCellValueFactory(new PropertyValueFactory<>("duracion"));
   }
 
   @FXML
@@ -126,8 +145,17 @@ public class IUReproductorController implements Initializable {
   }
 
   @FXML
-  void onActionBuscar(KeyEvent event) {
+  private void onActionBuscar(KeyEvent event) {
+    if (event.getCode() == KeyCode.ENTER) {
+      tbCanciones.setItems(FXCollections.observableList(obtenerCanciones(tfBuscar.getText())));
+    }
+  }
 
+  private List<CancionSl> obtenerCanciones(String criterio) {
+    List<CancionSl> resultados = new ArrayList<>();
+    MapperCancion mapperCancion = new MapperCancion();
+    resultados = mapperCancion.obtenerCanciones();
+    return resultados;
   }
 
   @FXML
@@ -229,13 +257,13 @@ public class IUReproductorController implements Initializable {
    *
    * @param loader el loader con la ruta de la ventana que se quiere cargar.
    */
-  public static void mostrarVentana(FXMLLoader loader) {
+  public void mostrarVentana(FXMLLoader loader) {
     try {
       Stage stagePrincipal = new Stage();
       Parent root = (Parent) loader.load();
       Scene scene = new Scene(root);
       stagePrincipal.setScene(scene);
-      stagePrincipal.setMaximized(true);
+      //stagePrincipal.setMaximized(true);
       stagePrincipal.show();
     } catch (IOException ex) {
       Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);

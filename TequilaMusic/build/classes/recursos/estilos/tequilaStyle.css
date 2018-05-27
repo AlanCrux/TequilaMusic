@@ -2,11 +2,17 @@
     @author Alan Yoset Garcia Cruz
 */
 
+.split-pane-divider {
+  -fx-padding: 0; 
+  -fx-border-color: transparent;
+}
+
 .split-pane:horizontal > .split-pane-divider {
     -fx-background-color: transparent;
 }
 .split-pane:vertical > .split-pane-divider {
     -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
 .list-view {
@@ -63,4 +69,6 @@
     -fx-background-radius: 2em;
 
 }
+
+
 

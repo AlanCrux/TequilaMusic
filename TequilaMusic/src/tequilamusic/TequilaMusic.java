@@ -11,19 +11,19 @@ import presentacion.controladores.IUReproductorController;
  */
 public class TequilaMusic extends Application {
 
-    @Override
-    public void start(Stage primaryStage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/IUReproductor.fxml"));
-        IUReproductorController controller = new IUReproductorController();
-        loader.setController(controller);
-        controller.mostrarVentana(loader);
-    }
+  @Override
+  public void start(Stage primaryStage) {
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/IUReproductor.fxml"));
+    IUReproductorController controller = new IUReproductorController();
+    loader.setController(controller);
+    controller.mostrarVentana(loader);
+  }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        launch(args);
-    }
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String[] args) {
+    launch(args);
+  }
 
 }
