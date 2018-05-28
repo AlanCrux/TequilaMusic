@@ -13,7 +13,7 @@ public class TequilaMusic extends Application {
 
   @Override
   public void start(Stage primaryStage) {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/IUReproductor.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"));
     IUReproductorController controller = new IUReproductorController();
     loader.setController(controller);
     controller.mostrarVentana(loader);

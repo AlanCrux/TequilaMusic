@@ -79,7 +79,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </VBox>
-            <AnchorPane fx:id="paneContenido" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #d4d4d5;">
+            <AnchorPane fx:id="paneContenido" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;">
                <children>
                   <TableView fx:id="tbCanciones" layoutX="46.0" layoutY="7.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../recursos/estilos/tableView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>

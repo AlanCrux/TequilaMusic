@@ -4,7 +4,8 @@
     -fx-background-insets: 0;
     -fx-padding: 0;
     -fx-table-rippler-color : rgba(255, 0, 0, 0.9);
-    -fx-font: 13px "Avenir book";
+    -fx-font: 14px "Avenir book";
+    -fx-background-color:  #ECF0F1;
 }
 
 
@@ -28,8 +29,8 @@
 }
 
 .table-view .column-header{
-    -fx-border-width : 0 1 0 1;
-    -fx-border-color: #F3F3F3;
+    -fx-border-width : 1 0 0 0 ;
+    -fx-border-color: lightgray;
 }
 
 .table-view .column-header .label {
@@ -41,13 +42,11 @@
     -fx-background-color : #949494;
 }
 
-.table-view .column-header:last-visible {
-    -fx-border-width: 0 2 0 1;
-}
+
 
 .table-view .column-header-background{
     -fx-border-width : 0 0.0 1 0;
-    -fx-border-color:#F3F3F3;
+    -fx-border-color: lightgray;
 }
 
 .table-view .table-cell{
@@ -65,7 +64,7 @@
 }
 
 .table-view:focused {
-    -fx-background-color: -fx-table-color,-fx-box-border,-fx-control-inner-background;
+    -fx-background-color: -fx-table-color,-fx-box-border,#ECF0F1;
     -fx-background-insets: -1.4, 0, 1;
     -fx-background-radius: 1.4, 0, 0;
     /*....*/

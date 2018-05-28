@@ -6,10 +6,15 @@ import com.jfoenix.controls.JFXNodesList;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -34,6 +39,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import logica.concurrencia.HiloServidor;
 import logica.mappers.MapperCancion;
 import logica.psl.CancionSl;
 
@@ -105,6 +111,9 @@ public class IUReproductorController implements Initializable {
   private static final String ICON_PLAY = "/recursos/iconos/icon_play.png";
   private static final String ICON_PLAYLIST = "src/recursos/iconos/icon_playlist.png";
 
+  private static final int PUERTO = 4481;
+  private Socket socket;
+  
   /**
    * Inicializa los componentes de la ventana IUReproductor.
    */
@@ -117,11 +126,12 @@ public class IUReproductorController implements Initializable {
     botones.add(btnConfigurar);
     botones.add(btnUsuario);
     botones.add(btnAjustes);
-    
+
     tbcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
     tbcArtista.setCellValueFactory(new PropertyValueFactory<>("artista"));
     tbcAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
     tbcDuracion.setCellValueFactory(new PropertyValueFactory<>("duracion"));
+    conectar();
   }
 
   @FXML
@@ -263,10 +273,27 @@ public class IUReproductorController implements Initializable {
       Parent root = (Parent) loader.load();
       Scene scene = new Scene(root);
       stagePrincipal.setScene(scene);
-      //stagePrincipal.setMaximized(true);
       stagePrincipal.show();
     } catch (IOException ex) {
       Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
     }
+  }
+
+  private void conectar() {
+    try {
+      socket = new Socket("192.168.43.214", PUERTO);
+      System.out.println("Conectando ... ");
+      HiloServidor servidor = new HiloServidor(socket, this);
+      servidor.start();
+    } catch (UnknownHostException uhEx) {
+      System.out.println("\n¡ID de host no encontrado!\n");
+      System.exit(1);
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+  }
+
+  public void obtenerRespuesta(String respuesta) {
+    tfBuscar.setText(respuesta);
   }
 }
