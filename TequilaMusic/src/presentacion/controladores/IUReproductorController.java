@@ -39,8 +39,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import logica.concurrencia.HiloServidor;
-import logica.mappers.MapperCancion;
 import logica.psl.CancionSl;
 
 /**
@@ -131,7 +129,7 @@ public class IUReproductorController implements Initializable {
     tbcArtista.setCellValueFactory(new PropertyValueFactory<>("artista"));
     tbcAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
     tbcDuracion.setCellValueFactory(new PropertyValueFactory<>("duracion"));
-    conectar();
+   
   }
 
   @FXML
@@ -163,8 +161,7 @@ public class IUReproductorController implements Initializable {
 
   private List<CancionSl> obtenerCanciones(String criterio) {
     List<CancionSl> resultados = new ArrayList<>();
-    MapperCancion mapperCancion = new MapperCancion();
-    resultados = mapperCancion.obtenerCanciones();
+
     return resultados;
   }
 
@@ -279,19 +276,6 @@ public class IUReproductorController implements Initializable {
     }
   }
 
-  private void conectar() {
-    try {
-      socket = new Socket("192.168.43.214", PUERTO);
-      System.out.println("Conectando ... ");
-      HiloServidor servidor = new HiloServidor(socket, this);
-      servidor.start();
-    } catch (UnknownHostException uhEx) {
-      System.out.println("\n¡ID de host no encontrado!\n");
-      System.exit(1);
-    } catch (IOException ex) {
-      ex.printStackTrace();
-    }
-  }
 
   public void obtenerRespuesta(String respuesta) {
     tfBuscar.setText(respuesta);
