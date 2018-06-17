@@ -11,16 +11,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../recursos/fondos/TequilaPhoto1.jpg" />
+            <Image url="@../../recursos/fondos/TequilaPhoto1.jpg" />
          </image>
       </ImageView>
       <ImageView disable="true" fitHeight="77.0" fitWidth="281.0" layoutX="260.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../recursos/iconos/TequilaMusic_V1.1.png" />
+            <Image url="@../../recursos/iconos/TequilaMusic_V1.1.png" />
          </image>
       </ImageView>
       <TextField fx:id="tfUsuario" layoutX="275.0" layoutY="185.0" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Correo electrónico">
@@ -28,7 +28,7 @@
             <Font name="Avenir Book" size="16.0" />
          </font>
       </TextField>
-      <JFXRadioButton layoutX="275.0" layoutY="235.0" selected="true" text="Músico" textFill="#1abc9c">
+      <JFXRadioButton fx:id="rdbtnMusico" layoutX="275.0" layoutY="235.0" selected="true" text="Músico" textFill="#1abc9c">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
@@ -36,12 +36,12 @@
             <ToggleGroup fx:id="tipo" />
          </toggleGroup>
       </JFXRadioButton>
-      <JFXRadioButton layoutX="375.0" layoutY="235.0" text="Cliente" textFill="#1abc9c" toggleGroup="$tipo">
+      <JFXRadioButton fx:id="rdbtnCliente" layoutX="375.0" layoutY="235.0" text="Cliente" textFill="#1abc9c" toggleGroup="$tipo">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
       </JFXRadioButton>
-      <TextField fx:id="tfUsuario1" layoutX="275.0" layoutY="285.0" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Nombre">
+      <TextField fx:id="tfNombre" layoutX="275.0" layoutY="285.0" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Nombre">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
@@ -51,17 +51,17 @@
             <Font name="Avenir Book" size="16.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="tfClave1" layoutX="275.0" layoutY="385.0" opacity="0.8" prefHeight="36.0" prefWidth="250.0" promptText="Confirmar contraseña">
+      <PasswordField fx:id="tfClaveConfirmar" layoutX="275.0" layoutY="385.0" opacity="0.8" prefHeight="36.0" prefWidth="250.0" promptText="Confirmar contraseña">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
       </PasswordField>
-      <JFXButton fx:id="btnIniciarSesion1" layoutX="275.0" layoutY="435.0" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: #1ABC9C;" text="UNIRTE A TEQUILA MUSIC" textFill="WHITE">
+      <JFXButton fx:id="btnCrearCuenta" layoutX="275.0" layoutY="435.0" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: #1ABC9C;" text="UNIRTE A TEQUILA MUSIC" textFill="WHITE">
          <font>
             <Font name="Avenir Black" size="14.0" />
          </font>
       </JFXButton>
-      <Hyperlink fx:id="hpCrearCuenta" alignment="CENTER" layoutX="275.0" layoutY="475.0" prefHeight="32.0" prefWidth="250.0" text="¿Ya tienes cuenta? Inicia sesión" textFill="WHITE" underline="true">
+      <Hyperlink fx:id="hpIniciarSesion" alignment="CENTER" layoutX="275.0" layoutY="475.0" onAction="#cargarIniciarSesion" prefHeight="32.0" prefWidth="250.0" text="¿Ya tienes cuenta? Inicia sesión" textFill="WHITE" underline="true">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
