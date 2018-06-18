@@ -67,7 +67,7 @@
                   <Insets left="10.0" right="10.0" />
                </padding>
             </JFXButton>
-            <JFXButton fx:id="btnExplorar" alignment="CENTER" onAction="#onActionRadio" prefHeight="22.0" prefWidth="90.0" style="-fx-background-color: #1ABC9C; -fx-background-radius: 30; -fx-border-radius: 30;" text="Explorar" textAlignment="CENTER" textFill="WHITE">
+            <JFXButton fx:id="btnExplorar" alignment="CENTER" onAction="#onActionExplorar" prefHeight="22.0" prefWidth="90.0" style="-fx-background-color: #1ABC9C; -fx-background-radius: 30; -fx-border-radius: 30;" text="Explorar" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="14.0" />
                </font>
@@ -77,6 +77,6 @@
             </JFXButton>
          </children>
       </HBox>
-      <AnchorPane layoutY="84.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.0" />
+      <AnchorPane fx:id="contentPane" layoutY="84.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.0" />
    </children>
 </AnchorPane>

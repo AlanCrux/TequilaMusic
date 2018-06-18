@@ -11,6 +11,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import servicios.servicios;
+import utilerias.Utilerias;
 
 /**
  * FXML Controller class
@@ -38,22 +40,57 @@ public class ModCrearCuentaController implements Initializable {
     @FXML
     private Hyperlink hpIniciarSesion;
 
-    private IUInicioController parent; 
-    
+    private IUInicioController parent;
+    private servicios.Client servidor;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void cargarIniciarSesion(ActionEvent event) {
         parent.cargarIniciarSesion();
     }
-    
+
+    @FXML
+    public void onActionRegistrarse(ActionEvent event) {
+        if (validarCampos()) {
+            
+        }
+    }
+
     public void setParent(IUInicioController parent) {
         this.parent = parent;
+    }
+
+    public void setServidor(servicios.Client servidor) {
+        this.servidor = servidor;
+    }
+
+    public boolean validarCampos() {
+        if (tfUsuario.getText().trim().isEmpty()) {
+            Utilerias.doingTransition(tfUsuario);
+            return false;
+        }
+
+        if (tfNombre.getText().trim().isEmpty()) {
+            Utilerias.doingTransition(tfNombre);
+            return false;
+        }
+
+        if (tfClave.getText().trim().isEmpty()) {
+            Utilerias.doingTransition(tfClave);
+            return false;
+        }
+
+        if (tfClaveConfirmar.getText().trim().isEmpty()) {
+            Utilerias.doingTransition(tfClaveConfirmar);
+            return false;
+        }
+        return true;
     }
 }

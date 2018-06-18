@@ -6,23 +6,11 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="600.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../recursos/fondos/TequilaPhoto1.jpg" />
-         </image>
-      </ImageView>
-      <ImageView disable="true" fitHeight="77.0" fitWidth="281.0" layoutX="260.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../recursos/iconos/TequilaMusic_V1.1.png" />
-         </image>
-      </ImageView>
       <TextField fx:id="tfUsuario" layoutX="275.0" layoutY="185.0" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Correo electrónico">
          <font>
             <Font name="Avenir Book" size="16.0" />
@@ -56,7 +44,7 @@
             <Font name="Avenir Book" size="16.0" />
          </font>
       </PasswordField>
-      <JFXButton fx:id="btnCrearCuenta" layoutX="275.0" layoutY="435.0" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: #1ABC9C;" text="UNIRTE A TEQUILA MUSIC" textFill="WHITE">
+      <JFXButton fx:id="btnCrearCuenta" layoutX="275.0" layoutY="435.0" onAction="#onActionRegistrarse" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: #1ABC9C;" text="UNIRTE A TEQUILA MUSIC" textFill="WHITE">
          <font>
             <Font name="Avenir Black" size="14.0" />
          </font>

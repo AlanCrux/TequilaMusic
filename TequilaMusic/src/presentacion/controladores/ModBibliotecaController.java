@@ -5,12 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,7 +32,7 @@ public class ModBibliotecaController implements Initializable {
     @FXML
     private SplitPane splitPane;
     @FXML
-    private JFXListView<?> listOpciones;
+    private JFXListView<Label> listOpciones;
     @FXML
     private AnchorPane contentPrincipal;
     @FXML
@@ -49,6 +53,16 @@ public class ModBibliotecaController implements Initializable {
     private Label lbArtistas;
     @FXML
     private ImageView imgDetallesDisco;
+    @FXML
+    private TableView<?> tbCanciones;
+    @FXML
+    private TableColumn<?, String> tbcTitulo;
+    @FXML
+    private TableColumn<?, String> tbcArtista;
+    @FXML
+    private TableColumn<?, String> tbcAlbum;
+    @FXML
+    private TableColumn<?, String> tbcDuracion;
 
     private boolean play = true;
     private static final String ICON_CANCIONES = "src/recursos/iconos/maracas.png";
@@ -57,6 +71,8 @@ public class ModBibliotecaController implements Initializable {
     private static final String ICON_PAUSE = "/recursos/iconos/icon_pausa.png";
     private static final String ICON_PLAY = "/recursos/iconos/icon_play.png";
     private static final String ICON_PLAYLIST = "src/recursos/iconos/icon_playlist.png";
+    
+    private IUReproductorController parent; 
 
     /**
      * Initializes the controller class.
@@ -98,13 +114,15 @@ public class ModBibliotecaController implements Initializable {
     @FXML
     private void onActionRepeat(MouseEvent event) {
     }
-
+    
     @FXML
-    private void ocultarDetallesDisco(MouseEvent event) {
+    private void mostrarDetallesDisco(MouseEvent event) {
+        imgDetallesDisco.setOpacity(0.8);
     }
 
     @FXML
-    private void mostrarDetallesDisco(MouseEvent event) {
+    private void ocultarDetallesDisco(MouseEvent event) {
+        imgDetallesDisco.setOpacity(0);
     }
 
     private void agregarOpcionesBiblioteca() {
@@ -159,5 +177,12 @@ public class ModBibliotecaController implements Initializable {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void setParent(IUReproductorController parent) {
+        this.parent = parent;
+    }
+   
+    
+    
 
 }
