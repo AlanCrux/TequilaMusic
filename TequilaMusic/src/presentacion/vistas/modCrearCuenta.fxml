@@ -11,45 +11,45 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextField fx:id="tfUsuario" layoutX="275.0" layoutY="185.0" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Correo electrónico">
+      <TextField fx:id="tfUsuario" layoutX="275.0" layoutY="185.0" onKeyPressed="#quitarColor" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Correo electrónico" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="275.0">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
       </TextField>
-      <JFXRadioButton fx:id="rdbtnMusico" layoutX="275.0" layoutY="235.0" selected="true" text="Músico" textFill="#1abc9c">
+      <JFXRadioButton fx:id="rdbtnMusico" layoutX="301.0" layoutY="235.0" selected="true" text="Músico" textFill="WHITE">
          <font>
-            <Font name="Avenir Book" size="16.0" />
+            <Font name="Avenir Heavy" size="16.0" />
          </font>
          <toggleGroup>
             <ToggleGroup fx:id="tipo" />
          </toggleGroup>
       </JFXRadioButton>
-      <JFXRadioButton fx:id="rdbtnCliente" layoutX="375.0" layoutY="235.0" text="Cliente" textFill="#1abc9c" toggleGroup="$tipo">
+      <JFXRadioButton fx:id="rdbtnCliente" layoutX="409.0" layoutY="235.0" text="Cliente" textFill="WHITE" toggleGroup="$tipo">
          <font>
-            <Font name="Avenir Book" size="16.0" />
+            <Font name="Avenir Heavy" size="16.0" />
          </font>
       </JFXRadioButton>
-      <TextField fx:id="tfNombre" layoutX="275.0" layoutY="285.0" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Nombre">
+      <TextField fx:id="tfNombre" layoutX="275.0" layoutY="285.0" onKeyPressed="#quitarColor" opacity="0.8" prefHeight="35.0" prefWidth="250.0" promptText="Nombre" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="275.0">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
       </TextField>
-      <PasswordField fx:id="tfClave" layoutX="275.0" layoutY="335.0" opacity="0.8" prefHeight="36.0" prefWidth="250.0" promptText="Contraseña">
+      <PasswordField fx:id="tfClave" layoutX="275.0" layoutY="335.0" onKeyPressed="#quitarColor" opacity="0.8" prefHeight="36.0" prefWidth="250.0" promptText="Contraseña" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="275.0">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
       </PasswordField>
-      <PasswordField fx:id="tfClaveConfirmar" layoutX="275.0" layoutY="385.0" opacity="0.8" prefHeight="36.0" prefWidth="250.0" promptText="Confirmar contraseña">
+      <PasswordField fx:id="tfClaveConfirmar" layoutX="275.0" layoutY="385.0" onKeyPressed="#quitarColor" opacity="0.8" prefHeight="36.0" prefWidth="250.0" promptText="Confirmar contraseña" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="275.0">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>
       </PasswordField>
-      <JFXButton fx:id="btnCrearCuenta" layoutX="275.0" layoutY="435.0" onAction="#onActionRegistrarse" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: #1ABC9C;" text="UNIRTE A TEQUILA MUSIC" textFill="WHITE">
+      <JFXButton fx:id="btnCrearCuenta" layoutX="275.0" layoutY="435.0" onMouseClicked="#onActionRegistrarse" prefHeight="35.0" prefWidth="250.0" style="-fx-background-radius: 30; -fx-border-radius: 30; -fx-background-color: #1ABC9C;" text="UNIRTE A TEQUILA MUSIC" textFill="WHITE" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="275.0">
          <font>
             <Font name="Avenir Black" size="14.0" />
          </font>
       </JFXButton>
-      <Hyperlink fx:id="hpIniciarSesion" alignment="CENTER" layoutX="275.0" layoutY="475.0" onAction="#cargarIniciarSesion" prefHeight="32.0" prefWidth="250.0" text="¿Ya tienes cuenta? Inicia sesión" textFill="WHITE" underline="true">
+      <Hyperlink fx:id="hpIniciarSesion" alignment="CENTER" layoutX="275.0" layoutY="475.0" onAction="#cargarIniciarSesion" prefHeight="32.0" prefWidth="250.0" text="¿Ya tienes cuenta? Inicia sesión" textFill="WHITE" underline="true" AnchorPane.leftAnchor="275.0" AnchorPane.rightAnchor="275.0">
          <font>
             <Font name="Avenir Book" size="16.0" />
          </font>

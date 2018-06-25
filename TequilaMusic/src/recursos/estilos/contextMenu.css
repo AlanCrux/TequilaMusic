@@ -1,0 +1,14 @@
+.context-menu {
+    -fx-background-color: #ECF0F1;
+    -fx-text-fill: black;
+}
+
+.menu-item .label {
+    -fx-text-fill: black;
+    -fx-font-family:"Avenir book";
+    -fx-font-size: 16px;;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: white;
+}

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -24,5 +25,24 @@
             <Image url="@../../recursos/iconos/TequilaMusicBlack.png" />
          </image>
       </ImageView>
+      <AnchorPane fx:id="contentError" prefHeight="600.0" prefWidth="800.0" visible="false">
+         <children>
+            <ImageView fitHeight="600.0" fitWidth="800.0" opacity="0.9" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../recursos/fondos/TequilaError6.jpg" />
+               </image>
+            </ImageView>
+            <JFXButton layoutX="416.0" layoutY="482.0" onAction="#onActionReintentar" opacity="0.8" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #17A589;" text="Reintentar" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Book" size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton layoutX="284.0" layoutY="482.0" onAction="#onActionSalir" opacity="0.82" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #7F8C8D;" text="Salir" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Book" size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

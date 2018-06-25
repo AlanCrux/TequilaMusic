@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="20.0" prefWidth="100.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="A" fitHeight="20.0" fitWidth="20.0" layoutX="10.0" layoutY="10.0" onMouseDragged="#efectoMouseSobre" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../recursos/iconos/jalapeno%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="B" fitHeight="20.0" fitWidth="20.0" layoutX="25.0" layoutY="2.0" onMouseDragged="#efectoMouseSobre" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../recursos/iconos/jalapeno%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="C" fitHeight="20.0" fitWidth="20.0" layoutX="210.0" layoutY="10.0" onMouseDragged="#efectoMouseSobre" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../recursos/iconos/jalapeno%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="D" fitHeight="20.0" fitWidth="20.0" layoutX="310.0" layoutY="10.0" onMouseDragged="#efectoMouseSobre" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../recursos/iconos/jalapeno%20(1).png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="E" fitHeight="20.0" fitWidth="20.0" layoutX="410.0" layoutY="10.0" onMouseDragged="#efectoMouseSobre" opacity="0.5" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../../recursos/iconos/jalapeno%20(1).png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

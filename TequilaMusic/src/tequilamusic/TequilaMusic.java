@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import presentacion.controladores.IUInicioController;
-import presentacion.controladores.IUReproductorController;
+import utilerias.Utilerias;
 
 /**
  *
@@ -17,7 +17,7 @@ public class TequilaMusic extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUInicio.fxml"));
         IUInicioController controller = new IUInicioController();
         loader.setController(controller);
-        controller.mostrarVentana(loader);
+        Utilerias.mostrarVentana(loader);
     }
 
     /**

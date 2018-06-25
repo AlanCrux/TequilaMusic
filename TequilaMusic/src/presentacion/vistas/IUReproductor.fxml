@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
@@ -19,34 +26,45 @@
                   <Image url="@../../recursos/iconos/icon_volumen.png" />
                </image>
             </ImageView>
-            <JFXSlider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" AnchorPane.leftAnchor="45.0" />
-            <AnchorPane layoutX="555.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="8.0">
+            <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" stylesheets="@../../recursos/estilos/tequilaStyle.css" />
+            <AnchorPane layoutX="563.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="8.0">
                <children>
                   <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="9.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="149.0" AnchorPane.topAnchor="4.0">
                      <image>
                         <Image url="@../../recursos/iconos/icon_lupa.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="tfBuscar" layoutX="30.0" onKeyReleased="#onActionBuscar" prefHeight="30.0" prefWidth="135.0" promptText="Buscar" stylesheets="@../../recursos/estilos/tfBusqueda.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
+                  <TextField fx:id="tfBuscar" layoutX="30.0" onKeyPressed="#onBuscar" prefHeight="30.0" prefWidth="135.0" promptText="Buscar" stylesheets="@../../recursos/estilos/tfBusqueda.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="Avenir Book" size="15.0" />
                      </font>
+                     <cursor>
+                        <Cursor fx:constant="TEXT" />
+                     </cursor>
                   </TextField>
                </children>
             </AnchorPane>
-            <HBox alignment="CENTER" layoutX="209.0" layoutY="-1.0" prefHeight="50.0" prefWidth="382.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="209.0">
+            <HBox alignment="BOTTOM_CENTER" layoutX="209.0" layoutY="-1.0" prefHeight="50.0" prefWidth="382.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="209.0">
                <children>
-                  <ImageView fitHeight="50.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="49.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../recursos/iconos/TequilaMusic2.png" />
                      </image>
                   </ImageView>
                </children>
             </HBox>
-            <ImageView fitHeight="25.0" fitWidth="25.0" layoutX="761.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="13.0">
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="752.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="10.0">
                <image>
-                  <Image url="@../../recursos/iconos/lime.png" />
+                  <Image url="@../../recursos/iconos/avatar1.png" />
                </image>
+            </ImageView>
+            <ImageView fx:id="imgPerfil" fitHeight="22.0" fitWidth="22.0" layoutX="767.0" layoutY="19.0" onMouseEntered="#mostrarFlechaPerfil" onMouseExited="#ocultarFlechaPerfil" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="11.0">
+               <image>
+                  <Image url="@../../recursos/iconos/icons8-chevron-abajo-en-círculo-filled-50.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
          </children></AnchorPane>
       <HBox alignment="CENTER" layoutY="49.0" prefHeight="35.0" prefWidth="395.0" spacing="10.0" style="-fx-background-color: #ECF0F1;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
@@ -58,6 +76,9 @@
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </JFXButton>
             <JFXButton fx:id="btnRadio" alignment="CENTER" onAction="#onActionRadio" prefHeight="22.0" prefWidth="90.0" style="-fx-background-color: #2f7aff; -fx-background-radius: 30; -fx-border-radius: 30;" text="Radio" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -66,17 +87,134 @@
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </JFXButton>
-            <JFXButton fx:id="btnExplorar" alignment="CENTER" onAction="#onActionExplorar" prefHeight="22.0" prefWidth="90.0" style="-fx-background-color: #1ABC9C; -fx-background-radius: 30; -fx-border-radius: 30;" text="Explorar" textAlignment="CENTER" textFill="WHITE">
+            <JFXButton fx:id="btnExplorar" alignment="CENTER" onAction="#onActionExplorar" prefHeight="22.0" prefWidth="90.0" style="-fx-background-color: #2f7aff; -fx-background-radius: 30; -fx-border-radius: 30;" text="Explorar" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Avenir Book" size="14.0" />
                </font>
                <padding>
                   <Insets left="10.0" right="10.0" />
                </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </JFXButton>
          </children>
       </HBox>
-      <AnchorPane fx:id="contentPane" layoutY="84.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.0" />
+      <AnchorPane id="AnchorPane" layoutX="10.0" layoutY="10.0" prefHeight="516.0" prefWidth="850.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.0">
+         <children>
+            <SplitPane fx:id="splitPane" dividerPositions="0.25" layoutX="10.0" layoutY="10.0" prefHeight="383.0" prefWidth="800.0" style="-fx-background-color: #ECF0F1;" stylesheets="@../../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <items>
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #d4d4d5;" SplitPane.resizableWithParent="false">
+                     <children>
+                        <JFXListView fx:id="listOpciones" style="-fx-background-color: #d4d4d5;" />
+                        <Label text="Playlist">
+                           <font>
+                              <Font name="Avenir Book" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXListView fx:id="listPlaylist" />
+                        <Separator prefWidth="200.0" />
+                        <JFXButton onAction="#onNuevaLista" prefHeight="35.0" prefWidth="202.0" text="Nueva lista" textAlignment="CENTER">
+                           <font>
+                              <Font name="Avenir Book" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../recursos/iconos/mas.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </JFXButton>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+                  <AnchorPane fx:id="contentPrincipal" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;" />
+               </items>
+            </SplitPane>
+            <AnchorPane layoutX="10.0" layoutY="364.0" prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: #D5D8DC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+               <children>
+                  <HBox alignment="CENTER" layoutX="200.0" layoutY="8.0" prefHeight="40.0" prefWidth="798.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                     <children>
+                        <ImageView fx:id="btnAleatorio" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionRandom" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../recursos/iconos/icon_random.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="btnAnterior" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionBack" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../recursos/iconos/icon_back.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="btnPlay" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onActionPlay" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../recursos/iconos/icon_play.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="btnSiguiente" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionNext" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../recursos/iconos/icon_adelantar.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fx:id="btnRepetir" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionRepeat" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../recursos/iconos/icon_repeat.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </HBox>
+                  <JFXProgressBar fx:id="pbCancion" layoutX="614.0" layoutY="69.0" prefHeight="5.0" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" />
+                  <ImageView fx:id="imgDisco" fitHeight="50.0" fitWidth="50.0" layoutX="15.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="15.0" />
+                  <Label fx:id="lbNombreCancion" layoutX="75.0" layoutY="25.0" underline="true" AnchorPane.topAnchor="15.0">
+                     <font>
+                        <Font name="Avenir Book" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbArtistas" layoutX="75.0" layoutY="50.0" AnchorPane.topAnchor="40.0">
+                     <font>
+                        <Font name="Avenir Book" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="contentPane" layoutY="84.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.0">
+         <children>
+            <ImageView fx:id="imgFondo" fitHeight="516.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../recursos/fondos/TequilaInicioF3.jpg" />
+               </image>
+            </ImageView>
+            <JFXButton alignment="CENTER" layoutX="164.0" layoutY="315.0" onAction="#onActionRadio" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #1ABC9C; -fx-background-radius: 10; -fx-border-radius: 10;" text="Iniciar" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Heavy" size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton alignment="CENTER" layoutX="36.0" layoutY="315.0" onAction="#onActionRadio" prefHeight="35.0" prefWidth="120.0" style="-fx-background-color: #D4D4D4; -fx-background-radius: 10; -fx-border-radius: 10;" text="Acerca de" textAlignment="CENTER">
+               <font>
+                  <Font name="Avenir Heavy" size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+         </children></AnchorPane>
+      <AnchorPane fx:id="contentError" opacity="0.6" prefHeight="600.0" prefWidth="815.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

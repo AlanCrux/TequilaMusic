@@ -69,6 +69,17 @@
     -fx-background-radius: 2em;
 
 }
+.slider {
+    -thumb-color: #16A085 ;
+}
+
+.slider .thumb {
+    -fx-background-color: -thumb-color ;
+}
+
+.text-area .content{
+  -fx-background-color: transparent;
+}
 
 
 

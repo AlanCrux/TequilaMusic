@@ -3,8 +3,6 @@ package presentacion.controladores;
 import com.jfoenix.controls.JFXButton;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +10,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.apache.thrift.TException;
-import servicios.Consumidor;
+import servicios.Usuario;
 import servicios.servicios.Client;
 import utilerias.Utilerias;
 
@@ -44,7 +45,17 @@ public class ModIniciarSesionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+        tfUsuario.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                iniciarSesion();
+            }
+        });
+
+        tfClave.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                iniciarSesion();
+            }
+        });
     }
 
     @FXML
@@ -53,22 +64,36 @@ public class ModIniciarSesionController implements Initializable {
     }
 
     @FXML
-    private void onActionIniciarSesion(ActionEvent event) {
-        if (validarCampos()) {
-            Consumidor consumidor = new Consumidor();
-            try {
-                consumidor = servidor.obtenerConsumidor(tfUsuario.getText());
-            } catch (TException ex) {
-                Logger.getLogger(ModIniciarSesionController.class.getName()).log(Level.SEVERE, null, ex);
+    private void onActionIniciarSesion(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            if (!(event.getClickCount() >= 2)) {
+                iniciarSesion();
             }
-            if (consumidor.getCorreo() != null) {
-                if (tfClave.getText().equals(consumidor.getClave())) {
-                    abrirReproductor(consumidor);
+        }
+    }
+
+    public void iniciarSesion() {
+        if (validarCampos()) {
+            Usuario usuario = new Usuario();
+            try {
+                usuario = servidor.obtenerUsuario(tfUsuario.getText());
+                if (usuario.getCorreo() != null) {
+                    if (tfClave.getText().equals(usuario.getClave())) {
+                        if (usuario.getTipo().equals("consumidor")) {
+                            abrirReproductor(usuario, servidor);
+                        }else{
+                            abrirMenuArtista(usuario, servidor);
+                        }
+                        
+                    } else {
+                        Utilerias.doingTransition(tfClave);
+                    }
                 } else {
-                    Utilerias.doingTransition(tfClave);
+                    //AQUI DEBE HABER ALGO MEJOR QUE LE INDIQUE QUE NO EXISTE
+                    Utilerias.doingTransition(tfUsuario);
                 }
-            } else {
-                Utilerias.doingTransition(tfUsuario);
+            } catch (TException ex) {
+                Utilerias.mostrarErrorConexion(parent.getContentError());
             }
         }
     }
@@ -81,12 +106,24 @@ public class ModIniciarSesionController implements Initializable {
         this.servidor = servidor;
     }
 
-    public void abrirReproductor(Consumidor consumidor) {
+    public void abrirReproductor(Usuario usuario, Client servidor) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"));
         IUReproductorController controller = new IUReproductorController();
         loader.setController(controller);
-        controller.setConsumidor(consumidor);
-        controller.mostrarVentana(loader);
+        controller.setUsuario(usuario);
+        controller.setServidor(servidor);
+        Utilerias.mostrarVentanaMax(loader);
+        Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
+        stage.close();
+    }
+    
+    public void abrirMenuArtista(Usuario usuario, Client servidor) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUArtista.fxml"));
+        IUArtistaController controller = new IUArtistaController();
+        loader.setController(controller);
+        controller.setUsuario(usuario);
+        controller.setServidor(servidor);
+        Utilerias.mostrarVentana(loader);
         Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
         stage.close();
     }
@@ -103,5 +140,4 @@ public class ModIniciarSesionController implements Initializable {
         }
         return true;
     }
-
 }

@@ -4,14 +4,23 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import org.apache.thrift.TException;
+import servicios.Usuario;
 import servicios.servicios;
+import servicios.servicios.Client;
 import utilerias.Utilerias;
 
 /**
@@ -41,14 +50,14 @@ public class ModCrearCuentaController implements Initializable {
     private Hyperlink hpIniciarSesion;
 
     private IUInicioController parent;
-    private servicios.Client servidor;
+    private Client servidor;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+
     }
 
     @FXML
@@ -57,9 +66,30 @@ public class ModCrearCuentaController implements Initializable {
     }
 
     @FXML
-    public void onActionRegistrarse(ActionEvent event) {
+    public void onActionRegistrarse(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            if (!(event.getClickCount() >= 2)) {
+                crearCuenta();
+            }
+        }
+    }
+
+    public void crearCuenta() {
         if (validarCampos()) {
-            
+            Usuario usuario = obtenerDatosUsuario();
+            try {
+                if (servidor.insertarUsuario(usuario)) {
+                    if (usuario.getTipo().equals("consumidor")) {
+                        abrirReproductor(usuario, servidor);
+                    } else{
+                        abrirMenuArtista(usuario, servidor);
+                    }
+                } else {
+                    System.out.println("YA EXISTE OTRO");
+                }
+            } catch (TException ex) {
+                Logger.getLogger(ModCrearCuentaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -91,6 +121,55 @@ public class ModCrearCuentaController implements Initializable {
             Utilerias.doingTransition(tfClaveConfirmar);
             return false;
         }
+
+        if (!tfClave.getText().equals(tfClaveConfirmar.getText())) {
+            tfClaveConfirmar.setStyle("-fx-border-color: #FF0000");
+            Utilerias.doingTransition(tfClaveConfirmar);
+            return false;
+        }
         return true;
+    }
+
+    @FXML
+    public void quitarColor() {
+        tfNombre.setStyle("-fx-border-color: #FFFFFF");
+        tfClave.setStyle("-fx-border-color: #FFFFFF");
+        tfClaveConfirmar.setStyle("-fx-border-color: #FFFFFF");
+        tfUsuario.setStyle("-fx-border-color: #FFFFFF");
+    }
+
+    public Usuario obtenerDatosUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setClave(tfClave.getText());
+        usuario.setCorreo(tfUsuario.getText());
+        usuario.setNombre(tfNombre.getText());
+        if (rdbtnCliente.isSelected()) {
+            usuario.setTipo("consumidor");
+        } else {
+            usuario.setTipo("artista");
+        }
+        return usuario;
+    }
+
+    public void abrirReproductor(Usuario usuario, Client servidor) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"));
+        IUReproductorController controller = new IUReproductorController();
+        loader.setController(controller);
+        controller.setUsuario(usuario);
+        controller.setServidor(servidor);
+        Utilerias.mostrarVentana(loader);
+        Stage stage = (Stage) btnCrearCuenta.getScene().getWindow();
+        stage.close();
+    }
+
+    public void abrirMenuArtista(Usuario usuario, Client servidor) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUArtista.fxml"));
+        IUArtistaController controller = new IUArtistaController();
+        loader.setController(controller);
+        controller.setUsuario(usuario);
+        controller.setServidor(servidor);
+        Utilerias.mostrarVentana(loader);
+        Stage stage = (Stage) btnCrearCuenta.getScene().getWindow();
+        stage.close();
     }
 }

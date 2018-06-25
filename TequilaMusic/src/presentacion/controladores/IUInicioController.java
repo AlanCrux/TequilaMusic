@@ -13,18 +13,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.TSocket;
-import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import servicios.servicios.Client;
 import utilerias.Utilerias;
@@ -44,24 +39,34 @@ public class IUInicioController implements Initializable {
     private ImageView imgIcono;
     @FXML
     private Hyperlink hpDatosFondo;
-    
-    private Client servidor; 
-    private static String HOST = "192.168.1.101";
-    
-    private static final int TIEMPO_CAMBIO = 15;
-    private int TIEMPO_CRONOMETRO = 15;
-    private int numFondoActual = 0; 
+    @FXML
+    private AnchorPane contentError;
+
+    private Client servidor;
+    private static final String HOST = "192.168.0.7";
+    private static final int PUERTO = 9090;
+    private static final int TIEMPO_CAMBIO = 12;
+    private int TIEMPO_CRONOMETRO = 12;
+    private int numFondoActual = 1;
     private Timeline cronometro;
 
-    private static final String BASE_FONDO = "file:///C:/Users/alanc/Documents/GitHub/TequilaMusic/TequilaMusic/src/recursos/fondos/TequilaPhoto";
+    private static final String BASE_FONDO = "/recursos/fondos/TequilaPhoto";
     private static final String ICONO_NEGRO = "/recursos/iconos/TequilaMusicBlack.png";
     private static final String ICONO_BLANCO = "/recursos/iconos/TequilaMusicWhite.png";
+
     /**
      * Initializes the controller class.
+     *
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        servidor = conectar();
+        try {
+            servidor = Utilerias.conectar(HOST, PUERTO);
+        } catch (TTransportException ex) {
+            Utilerias.mostrarErrorConexion(contentError);
+        }
         cargarIniciarSesion();
         iniciarCronometro();
     }
@@ -74,7 +79,7 @@ public class IUInicioController implements Initializable {
         loader.setController(controller);
 
         try {
-            Utilerias.fadeTransition(contentPane);
+            Utilerias.fadeTransition(contentPane, 500);
             contentPane.getChildren().setAll((AnchorPane) loader.load());
         } catch (IOException ex) {
             Logger.getLogger(IUInicioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,7 +94,7 @@ public class IUInicioController implements Initializable {
         loader.setController(controller);
 
         try {
-            Utilerias.fadeTransition(contentPane);
+            Utilerias.fadeTransition(contentPane, 500);
             contentPane.getChildren().setAll((AnchorPane) loader.load());
         } catch (IOException ex) {
             Logger.getLogger(IUInicioController.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,37 +102,6 @@ public class IUInicioController implements Initializable {
 
     }
 
-    /**
-     * Muestra la ventana.
-     *
-     * @param loader el loader con la ruta de la ventana que se quiere cargar.
-     */
-    public void mostrarVentana(FXMLLoader loader) {
-        try {
-            Stage stagePrincipal = new Stage();
-            Parent root = (Parent) loader.load();
-            Scene scene = new Scene(root);
-            stagePrincipal.setScene(scene);
-            stagePrincipal.show();
-        } catch (IOException ex) {
-            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public Client conectar() {
-        Client servidor = null;
-        try {
-            TTransport transport;
-            transport = new TSocket(HOST, 9090);
-            transport.open();
-            TProtocol protocol = new TBinaryProtocol(transport);
-            servidor = new Client(protocol);
-        } catch (TTransportException ex) {
-            Logger.getLogger(IUInicioController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return servidor;
-    }
-    
     public void iniciarCronometro() {
         cronometro = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
@@ -142,11 +116,11 @@ public class IUInicioController implements Initializable {
         cronometro.setCycleCount(Timeline.INDEFINITE);
         cronometro.play();
     }
-    
+
     public void cambiarFondo() {
-        int numImagen = ThreadLocalRandom.current().nextInt(1, 7);
-        while (numImagen == numFondoActual) {            
-            numImagen = ThreadLocalRandom.current().nextInt(1, 7);
+        int numImagen = ThreadLocalRandom.current().nextInt(1, 8);
+        while (numImagen == numFondoActual) {
+            numImagen = ThreadLocalRandom.current().nextInt(1, 8);
         }
         numFondoActual = numImagen;
         String datosFondo = "";
@@ -164,7 +138,7 @@ public class IUInicioController implements Initializable {
                 break;
             case 3:
                 datosFondo = "Laura Giselle Vázquez Casas\nFacultad de Estadística e Informática";
-                style = "-fx-text-fill: white;";
+                style = "-fx-text-fill: black;";
                 imgIcono.setImage(new Image(ICONO_BLANCO));
                 break;
             case 4:
@@ -184,14 +158,37 @@ public class IUInicioController implements Initializable {
                 break;
             case 7:
                 datosFondo = "Hernan Uriel Falconi Falconi\nC. Popocatépetl, Xalapa";
-                style = "-fx-text-fill: white;";
-                imgIcono.setImage(new Image(ICONO_NEGRO));
+                style = "-fx-text-fill: black;";
+                imgIcono.setImage(new Image(ICONO_BLANCO));
                 break;
         }
         String ruta = BASE_FONDO + numImagen + ".jpg";
-        Utilerias.fadeTransitionFast(imgFondo);
         imgFondo.setImage(new Image(ruta));
         hpDatosFondo.setText(datosFondo);
         hpDatosFondo.setStyle(style);
+    }
+
+    @FXML
+    void onActionReintentar(ActionEvent event) {
+        Utilerias.ocultarErrorConexion(contentError, contentPane);
+        try {
+            servidor = Utilerias.conectar(HOST, PUERTO);
+        } catch (TTransportException ex) {
+            Utilerias.mostrarErrorConexion(contentError);
+        }
+    }
+
+    @FXML
+    void onActionSalir(ActionEvent event) {
+        Stage stage = (Stage) contentPane.getScene().getWindow();
+        stage.close();
+    }
+
+    public AnchorPane getContentPane() {
+        return contentPane;
+    }
+
+    public AnchorPane getContentError() {
+        return contentError;
     }
 }
