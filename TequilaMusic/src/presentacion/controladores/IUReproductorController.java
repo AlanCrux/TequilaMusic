@@ -32,6 +32,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import servicios.CancionSL;
 import servicios.Contenido;
 import servicios.Playlist;
@@ -132,22 +135,27 @@ public class IUReproductorController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        agregarOpcionesBiblioteca();
-        cargarPlaylist(servidor, usuario);
-
-        listOpciones.setOnMouseClicked(event -> {
-            listPlaylist.getSelectionModel().clearSelection();
-            cambiarContenido(listOpciones.getSelectionModel().getSelectedItem().getText());
-        });
-
-        listPlaylist.setOnMouseClicked(event -> {
-            listOpciones.getSelectionModel().clearSelection();
-            Playlist seleccionada = listPlaylist.getSelectionModel().getSelectedItem().getPlaylist();
-            activarModuloPlaylist(seleccionada);
-        });
-        
-        cargarModuloBusqueda();
-        cargarModuloPlaylist();
+        try {
+            servidor = Utilerias.conectar("localhost", 9090);
+            agregarOpcionesBiblioteca();
+            cargarPlaylist(servidor, usuario);
+            
+            listOpciones.setOnMouseClicked(event -> {
+                listPlaylist.getSelectionModel().clearSelection();
+                cambiarContenido(listOpciones.getSelectionModel().getSelectedItem().getText());
+            });
+            
+            listPlaylist.setOnMouseClicked(event -> {
+                listOpciones.getSelectionModel().clearSelection();
+                Playlist seleccionada = listPlaylist.getSelectionModel().getSelectedItem().getPlaylist();
+                activarModuloPlaylist(seleccionada);
+            });
+            
+            cargarModuloBusqueda();
+            cargarModuloPlaylist();
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -183,7 +191,15 @@ public class IUReproductorController implements Initializable {
         //Control del modulo de contenido de playlist
         loaderModPlaylist = new FXMLLoader(getClass().getResource("/presentacion/vistas/modPlaylist.fxml"));
         controllerPlaylist = new ModPlaylistController();
-        controllerPlaylist.setServidor(servidor);
+        Utilerias.closeServer(servidor);
+        Client server = null;
+        try {
+            server = Utilerias.conectar("localhost", 9090);
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        controllerPlaylist.setServidor(server);
+        
         loaderModPlaylist.setController(controllerPlaylist);
         try {
             anchorModPlaylist = loaderModPlaylist.load();
@@ -225,7 +241,7 @@ public class IUReproductorController implements Initializable {
     public List<CancionSL> obtenerCanciones(int idPlaylist, ModPlaylistController controller) {
         List<CancionSL> resultados = new ArrayList<>();
         try {
-            servidor = Utilerias.conectar("192.168.0.7", 9090);
+            //servidor = Utilerias.conectar("192.168.0.7", 9090);
             resultados = servidor.obtenerCancionesPlaylist(idPlaylist);
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
@@ -251,8 +267,9 @@ public class IUReproductorController implements Initializable {
         List<CancionSL> resultados = new ArrayList<>();
         
         try {
-            servidor = Utilerias.conectar("192.168.0.7", 9090);
-            resultados = servidor.obtenerCancionesFiltradas(criterio);
+            //servidor = Utilerias.conectar("192.168.0.7", 9090);
+            Client servicio = Utilerias.conectar("localhost", 9090);
+            resultados = servicio.obtenerCancionesFiltradas(criterio);
         } catch (TException ex) {
             Logger.getLogger(ModBuscarCancionesController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -297,7 +314,8 @@ public class IUReproductorController implements Initializable {
      */
     private void cargarPlaylist(Client servidor, Usuario usuario) {
         try {
-            playlist = servidor.obtenerPlaylists(usuario.getCorreo());
+            Client servicio = Utilerias.conectar("localhost", 9090);
+            playlist = servicio.obtenerPlaylists(usuario.getCorreo());
         } catch (TException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -322,10 +340,12 @@ public class IUReproductorController implements Initializable {
         lista.setDescripcion(descripcion);
         lista.setImagen(Utilerias.imageToByteArray(imagen));
         try {
-            servidor.insertarPlaylist(lista);
+            Client servicio; 
+            servicio = Utilerias.conectar("localhost", 9090);
+            servicio.insertarPlaylist(lista);
             listOpciones.getItems().clear();
             agregarOpcionesBiblioteca();
-            cargarPlaylist(servidor, usuario);
+            cargarPlaylist(servicio, usuario);
         } catch (TException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -449,10 +469,6 @@ public class IUReproductorController implements Initializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    public void setServidor(Client servidor) {
-        this.servidor = servidor;
     }
 
     void reproducir(CancionSL seleccionada) {

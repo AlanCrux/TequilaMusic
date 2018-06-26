@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,7 +42,7 @@ public class IUInicioController implements Initializable {
     private AnchorPane contentError;
 
     private Client servidor;
-    private static final String HOST = "192.168.0.7";
+    private static final String HOST = "localhost";
     private static final int PUERTO = 9090;
     private static final int TIEMPO_CAMBIO = 12;
     private int TIEMPO_CRONOMETRO = 12;

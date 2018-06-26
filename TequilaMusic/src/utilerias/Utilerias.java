@@ -257,4 +257,10 @@ public class Utilerias {
         Image img = new Image(new ByteArrayInputStream(byteImage));
         return img;
     }
+    
+    public static void closeServer(servicios.Client servidor){
+        TProtocol protocol = servidor.getInputProtocol();
+        TTransport transport = protocol.getTransport();
+        transport.close();
+    }
 }

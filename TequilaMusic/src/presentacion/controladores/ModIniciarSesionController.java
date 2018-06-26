@@ -111,7 +111,7 @@ public class ModIniciarSesionController implements Initializable {
         IUReproductorController controller = new IUReproductorController();
         loader.setController(controller);
         controller.setUsuario(usuario);
-        controller.setServidor(servidor);
+        Utilerias.closeServer(servidor);
         Utilerias.mostrarVentanaMax(loader);
         Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
         stage.close();

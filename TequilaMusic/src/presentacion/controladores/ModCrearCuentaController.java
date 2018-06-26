@@ -156,7 +156,7 @@ public class ModCrearCuentaController implements Initializable {
         IUReproductorController controller = new IUReproductorController();
         loader.setController(controller);
         controller.setUsuario(usuario);
-        controller.setServidor(servidor);
+        
         Utilerias.mostrarVentana(loader);
         Stage stage = (Stage) btnCrearCuenta.getScene().getWindow();
         stage.close();
