@@ -51,13 +51,16 @@ public class ModCrearCuentaController implements Initializable {
 
     private IUInicioController parent;
     private Client servidor;
+    private ResourceBundle rb;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        this.rb = rb; 
     }
 
     @FXML
@@ -152,7 +155,7 @@ public class ModCrearCuentaController implements Initializable {
     }
 
     public void abrirReproductor(Usuario usuario, Client servidor) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"),rb);
         IUReproductorController controller = new IUReproductorController();
         loader.setController(controller);
         controller.setUsuario(usuario);
@@ -163,7 +166,7 @@ public class ModCrearCuentaController implements Initializable {
     }
 
     public void abrirMenuArtista(Usuario usuario, Client servidor) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUArtista.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUArtista.fxml"),rb);
         IUArtistaController controller = new IUArtistaController();
         loader.setController(controller);
         controller.setUsuario(usuario);

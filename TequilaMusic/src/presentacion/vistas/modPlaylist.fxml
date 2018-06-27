@@ -18,9 +18,9 @@
    <children>
       <SplitPane dividerPositions="0.3449074074074074" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" stylesheets="@../../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="151.0" prefWidth="607.0" SplitPane.resizableWithParent="false">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="151.0" prefWidth="607.0" style="-fx-background-color: #ECF0F1;" SplitPane.resizableWithParent="false">
                <children>
-                  <ImageView fx:id="imgPortada" disable="true" fitHeight="111.0" fitWidth="118.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#onCambiarImagen" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="22.0" AnchorPane.topAnchor="22.0">
+                  <ImageView fx:id="imgPortada" disable="true" fitHeight="110.0" fitWidth="110.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#onCambiarImagen" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="22.0">
                      <image>
                         <Image url="@../../recursos/iconos/iconPlay.png" />
                      </image>
@@ -28,17 +28,17 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ImageView>
-                  <TextField fx:id="tfNombre" editable="false" layoutX="135.0" layoutY="21.0" opacity="0.8" prefHeight="44.0" prefWidth="286.0" style="-fx-background-color: transparent;" text="Alan">
+                  <TextField fx:id="tfNombre" editable="false" layoutX="135.0" layoutY="21.0" opacity="0.8" prefHeight="44.0" prefWidth="286.0" style="-fx-background-color: transparent;" text="Alan" AnchorPane.leftAnchor="135.0">
                      <font>
                         <Font name="Avenir Heavy" size="20.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="tfResumen" editable="false" layoutX="135.0" layoutY="50.0" opacity="0.8" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: transparent;" text="1 canción ~ 4 Minutos">
+                  <TextField fx:id="tfResumen" editable="false" layoutX="135.0" layoutY="50.0" opacity="0.8" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: transparent;" text="1 canción ~ 4 Minutos" AnchorPane.leftAnchor="135.0">
                      <font>
                         <Font name="Avenir Book" size="16.0" />
                      </font>
                   </TextField>
-                  <TextArea fx:id="taDescripcion" editable="false" layoutX="137.0" layoutY="78.0" opacity="0.8" prefHeight="50.0" prefWidth="286.0" style="-fx-background-color: transparent;" text="Música de todas las temporadas">
+                  <TextArea fx:id="taDescripcion" editable="false" layoutX="137.0" layoutY="78.0" opacity="0.8" prefHeight="50.0" prefWidth="286.0" style="-fx-background-color: transparent;" text="Música de todas las temporadas" AnchorPane.leftAnchor="135.0">
                      <font>
                         <Font name="Avenir Book" size="16.0" />
                      </font>
@@ -72,15 +72,17 @@
                   </JFXButton>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" style="-fx-background-color: #ECF0F1;">
                <children>
-                  <TableView fx:id="tbCanciones" prefHeight="434.0" prefWidth="635.0" stylesheets="@../../recursos/estilos/tableView.css" AnchorPane.bottomAnchor="-0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TableView fx:id="tbCanciones" prefHeight="434.0" prefWidth="555.0" stylesheets="@../../recursos/estilos/tableView.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn fx:id="tbcEliminar" prefWidth="45.0" />
-                        <TableColumn fx:id="tbcTitulo" prefWidth="259.0" text="TÍTULO" />
-                        <TableColumn fx:id="tbcAlbum" prefWidth="131.0" text="ÁLBUM" />
-                        <TableColumn fx:id="tbcArtista" prefWidth="86.0" text="ARTISTA" />
+                        <TableColumn fx:id="tbcTitulo" prefWidth="204.0" text="TÍTULO" />
+                        <TableColumn fx:id="tbcAlbum" prefWidth="186.0" text="ÁLBUM" />
+                        <TableColumn fx:id="tbcArtista" prefWidth="217.0" text="ARTISTA" />
                      </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </AnchorPane>

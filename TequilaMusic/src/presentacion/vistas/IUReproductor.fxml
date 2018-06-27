@@ -58,7 +58,7 @@
                   <Image url="@../../recursos/iconos/avatar1.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imgPerfil" fitHeight="22.0" fitWidth="22.0" layoutX="767.0" layoutY="19.0" onMouseEntered="#mostrarFlechaPerfil" onMouseExited="#ocultarFlechaPerfil" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="11.0">
+            <ImageView fx:id="imgPerfil" fitHeight="22.0" fitWidth="22.0" layoutX="767.0" layoutY="19.0" onMouseClicked="#onAjustes" onMouseEntered="#mostrarFlechaPerfil" onMouseExited="#ocultarFlechaPerfil" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="11.0">
                <image>
                   <Image url="@../../recursos/iconos/icons8-chevron-abajo-en-círculo-filled-50.png" />
                </image>
@@ -110,22 +110,27 @@
                <items>
                   <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #d4d4d5;" SplitPane.resizableWithParent="false">
                      <children>
-                        <JFXListView fx:id="listOpciones" style="-fx-background-color: #d4d4d5;" />
+                        <Label text="Biblioteca">
+                           <font>
+                              <Font name="Avenir Book" size="16.0" />
+                           </font>
+                        </Label>
+                        <JFXListView fx:id="listOpciones" onMouseClicked="#onBiblioteca" style="-fx-background-color: #d4d4d5;" />
                         <Label text="Playlist">
                            <font>
                               <Font name="Avenir Book" size="16.0" />
                            </font>
                         </Label>
-                        <JFXListView fx:id="listPlaylist" />
-                        <Separator prefWidth="200.0" />
-                        <JFXButton onAction="#onNuevaLista" prefHeight="35.0" prefWidth="202.0" text="Nueva lista" textAlignment="CENTER">
+                        <JFXListView fx:id="listPlaylist" onMouseClicked="#onPlayslist" VBox.vgrow="ALWAYS" />
+                        <Separator prefWidth="200.0" style="-fx-background-color: #ECF0F1;" />
+                        <JFXButton alignment="BOTTOM_LEFT" buttonType="RAISED" onAction="#onNuevaLista" prefHeight="35.0" prefWidth="202.0" text=" Nueva lista" textAlignment="CENTER">
                            <font>
                               <Font name="Avenir Book" size="15.0" />
                            </font>
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../recursos/iconos/mas.png" />
+                                    <Image url="@../../recursos/iconos/plusplay.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -215,6 +220,6 @@
                </cursor>
             </JFXButton>
          </children></AnchorPane>
-      <AnchorPane fx:id="contentError" opacity="0.6" prefHeight="600.0" prefWidth="815.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane fx:id="contentError" onMouseClicked="#onContentError" opacity="0.6" prefHeight="600.0" prefWidth="815.0" style="-fx-background-color: black;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
 </AnchorPane>

@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +15,6 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import org.apache.thrift.TException;
 import servicios.CancionSL;
 import servicios.Playlist;
 
@@ -59,7 +56,7 @@ public class ModBuscarCancionesController implements Initializable {
         tbCanciones.setOnMouseClicked(event -> {
             CancionSL seleccionada = tbCanciones.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2) {
-                parent.reproducir(seleccionada);
+                //parent.reproducir(seleccionada);
             }
         });
         addContextMenu();
@@ -86,13 +83,13 @@ public class ModBuscarCancionesController implements Initializable {
         Menu menuPlaylist = new Menu("Añadir a playlist");
         MenuItem nueva = new MenuItem("Nueva playlist");
         nueva.setOnAction(event -> {
-            parent.onNuevaLista(event);
+            //parent.onNuevaLista(event);
         });
         menuPlaylist.getItems().add(nueva);
         SeparatorMenuItem separator = new SeparatorMenuItem();
         menuPlaylist.getItems().add(separator);
 
-        List<Playlist> playlist = parent.getPlaylist();
+        List<Playlist> playlist = /*parent.getPlaylist();*/ new ArrayList<>();
         for (int i = 0; i < playlist.size(); i++) {
             MenuItem nuevo = new MenuItem(playlist.get(i).getNombre());
             final int idPlaylist = playlist.get(i).getIdPlaylist();
@@ -108,7 +105,7 @@ public class ModBuscarCancionesController implements Initializable {
 
     public void addToPlaylist(int idPlaylist) {
         int idCancion = tbCanciones.getSelectionModel().getSelectedItem().getIdCancion();
-        parent.agregarCancionPlaylist(idPlaylist, idCancion);
+        //parent.agregarCancionPlaylist(idPlaylist, idCancion);
     }
 
 }

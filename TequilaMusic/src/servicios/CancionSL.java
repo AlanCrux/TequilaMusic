@@ -471,7 +471,7 @@ public class CancionSL implements org.apache.thrift.TBase<CancionSL, CancionSL._
     
     public ImageView getEliminar(){
         ImageView imagen = new ImageView(); 
-        imagen.setImage(new Image("/recursos/iconos/pinata.png"));
+        imagen.setImage(new Image("/recursos/iconos/x.png"));
         
         imagen.setOnMouseEntered(e->{
             System.out.println("ENTERED");

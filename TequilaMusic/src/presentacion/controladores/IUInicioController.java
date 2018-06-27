@@ -26,10 +26,9 @@ import utilerias.Utilerias;
 /**
  * FXML Controller class
  *
- * @author alan
+ * @author Alan Yoset Garcia Cruz
  */
 public class IUInicioController implements Initializable {
-
     @FXML
     private AnchorPane contentPane;
     @FXML
@@ -42,17 +41,20 @@ public class IUInicioController implements Initializable {
     private AnchorPane contentError;
 
     private Client servidor;
-    private static final String HOST = "localhost";
+    private static final String HOST = "192.168.0.9";
     private static final int PUERTO = 9090;
-    private static final int TIEMPO_CAMBIO = 12;
-    private int TIEMPO_CRONOMETRO = 12;
+    private static final int TIEMPO_CAMBIO = 10;
+    private int TIEMPO_CRONOMETRO = 10;
     private int numFondoActual = 1;
     private Timeline cronometro;
 
+    // Rutas de los recursos externos --- 
     private static final String BASE_FONDO = "/recursos/fondos/TequilaPhoto";
     private static final String ICONO_NEGRO = "/recursos/iconos/TequilaMusicBlack.png";
     private static final String ICONO_BLANCO = "/recursos/iconos/TequilaMusicWhite.png";
 
+    private ResourceBundle rb;
+    
     /**
      * Initializes the controller class.
      *
@@ -61,17 +63,34 @@ public class IUInicioController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb; 
         try {
             servidor = Utilerias.conectar(HOST, PUERTO);
         } catch (TTransportException ex) {
-            Utilerias.mostrarErrorConexion(contentError);
+            System.out.println("ERROR DE CONEXIÓN");
         }
         cargarIniciarSesion();
         iniciarCronometro();
     }
 
+    @FXML
+    void onActionReintentar(ActionEvent event) {
+        Utilerias.ocultarErrorConexion(contentError, contentPane);
+        try {
+            servidor = Utilerias.conectar(HOST, PUERTO);
+        } catch (TTransportException ex) {
+            Utilerias.mostrarErrorConexion(contentError);
+        }
+    }
+
+    @FXML
+    void onActionSalir(ActionEvent event) {
+        Stage stage = (Stage) contentPane.getScene().getWindow();
+        stage.close();
+    }
+    
     public void cargarIniciarSesion() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modIniciarSesion.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modIniciarSesion.fxml"),rb);
         ModIniciarSesionController controller = new ModIniciarSesionController();
         controller.setParent(this);
         controller.setServidor(servidor);
@@ -86,7 +105,7 @@ public class IUInicioController implements Initializable {
     }
 
     public void cargarRegistro() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modCrearCuenta.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modCrearCuenta.fxml"),rb);
         ModCrearCuentaController controller = new ModCrearCuentaController();
         controller.setParent(this);
         controller.setServidor(servidor);
@@ -101,6 +120,17 @@ public class IUInicioController implements Initializable {
 
     }
 
+    public AnchorPane getContentPane() {
+        return contentPane;
+    }
+
+    public AnchorPane getContentError() {
+        return contentError;
+    }
+    
+    /**
+     * 
+     */
     public void iniciarCronometro() {
         cronometro = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
             @Override
@@ -116,7 +146,10 @@ public class IUInicioController implements Initializable {
         cronometro.play();
     }
 
-    public void cambiarFondo() {
+    /**
+     * 
+     */
+    private void cambiarFondo() {
         int numImagen = ThreadLocalRandom.current().nextInt(1, 8);
         while (numImagen == numFondoActual) {
             numImagen = ThreadLocalRandom.current().nextInt(1, 8);
@@ -165,29 +198,5 @@ public class IUInicioController implements Initializable {
         imgFondo.setImage(new Image(ruta));
         hpDatosFondo.setText(datosFondo);
         hpDatosFondo.setStyle(style);
-    }
-
-    @FXML
-    void onActionReintentar(ActionEvent event) {
-        Utilerias.ocultarErrorConexion(contentError, contentPane);
-        try {
-            servidor = Utilerias.conectar(HOST, PUERTO);
-        } catch (TTransportException ex) {
-            Utilerias.mostrarErrorConexion(contentError);
-        }
-    }
-
-    @FXML
-    void onActionSalir(ActionEvent event) {
-        Stage stage = (Stage) contentPane.getScene().getWindow();
-        stage.close();
-    }
-
-    public AnchorPane getContentPane() {
-        return contentPane;
-    }
-
-    public AnchorPane getContentError() {
-        return contentError;
     }
 }

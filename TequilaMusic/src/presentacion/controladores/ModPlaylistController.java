@@ -24,9 +24,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import org.apache.thrift.TException;
+import org.apache.thrift.transport.TTransportException;
 import servicios.CancionSL;
 import servicios.Playlist;
-import servicios.servicios;
+import servicios.servicios.Client;
 import utilerias.Utilerias;
 
 /**
@@ -58,30 +59,61 @@ public class ModPlaylistController implements Initializable {
     private TableColumn<CancionSL, String> tbcArtista;
     @FXML
     private TableColumn<CancionSL, String> tbcAlbum;
-    @FXML
-    private TableColumn<CancionSL, ImageView> tbcEliminar;
 
-    private servicios.Client servidor;
     private Playlist playlist;
+    private ResourceBundle rb;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.rb = rb;
         tbcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         tbcArtista.setCellValueFactory(new PropertyValueFactory<>("artista"));
         tbcAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
-        tbcEliminar.setCellValueFactory(new PropertyValueFactory<>("eliminar"));
         tbCanciones.setPlaceholder(new Label("No has agregado canciones a esta playlist"));
+        
+        cargarDatosPlaylist(obtenerCanciones(playlist.getIdPlaylist()));
     }
 
+    /**
+     * Carga los datos de la playlist en la interfaz gráfica.
+     * @param canciones 
+     */
     public void cargarDatosPlaylist(List<CancionSL> canciones) {
         imgPortada.setImage(Utilerias.byteToImage(playlist.getImagen()));
         tfNombre.setText(playlist.getNombre());
         taDescripcion.setText(playlist.getDescripcion());
-        
+        if (canciones.size() > 1) {
+            tfResumen.setText(canciones.size() + " canciones");
+        } else {
+            tfResumen.setText(canciones.size() + " canción");
+        }
         tbCanciones.setItems(FXCollections.observableList(canciones));
+    }
+    
+    /**
+     * Invoca un servicio para recuperar de la base de datos las canciones asignadas a un playlist. 
+     * @param idPlaylist
+     * @return 
+     */
+    public List<CancionSL> obtenerCanciones(int idPlaylist){
+        List<CancionSL> canciones = new ArrayList<>(); 
+        int port = Integer.parseInt(rb.getString("dataport"));
+            String host = rb.getString("datahost");
+        try {
+            Client servicios = Utilerias.conectar(host, port);
+            canciones = servicios.obtenerCancionesPlaylist(idPlaylist);
+            Utilerias.closeServer(servicios);
+        } catch (TTransportException ex) {
+            Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return canciones; 
     }
 
     @FXML
@@ -109,7 +141,7 @@ public class ModPlaylistController implements Initializable {
     @FXML
     private void onGuardar(ActionEvent event) {
         hpEditar.setVisible(true);
-        actualizarPlaylist();
+        actualizarPlaylist(playlist.getIdPlaylist(), playlist.getCorreo());
         btnGuardar.setVisible(false);
         btnCancelar.setVisible(false);
         tfNombre.setEditable(false);
@@ -117,19 +149,9 @@ public class ModPlaylistController implements Initializable {
         tfNombre.setStyle("-fx-background-color: transparent");
         taDescripcion.setStyle("-fx-background-color: transparent");
         imgPortada.setDisable(true);
+        hpEditar.setVisible(true);
     }
-
-    private void actualizarPlaylist() {
-        playlist.setNombre(tfNombre.getText());
-        playlist.setDescripcion(taDescripcion.getText());
-        playlist.setImagen(Utilerias.imageToByteArray(imgPortada.getImage()));
-        try {
-            servidor.actualizarPlaylist(playlist);
-        } catch (TException ex) {
-            Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+    
     @FXML
     private void onCancelar(ActionEvent event) {
         btnGuardar.setVisible(false);
@@ -141,20 +163,36 @@ public class ModPlaylistController implements Initializable {
         imgPortada.setDisable(true);
     }
 
-    
-
-    public void eliminarCancionPlaylist(int idCancion) {
+    private void actualizarPlaylist(int idPlaylist, String correo) {
+        Playlist actualizar = new Playlist();
+        actualizar.setIdPlaylist(idPlaylist);
+        actualizar.setNombre(tfNombre.getText());
+        actualizar.setDescripcion(taDescripcion.getText());
+        actualizar.setImagen(Utilerias.imageToByteArray(imgPortada.getImage()));
+        actualizar.setCorreo(correo);
         try {
-            servidor.elimnarCancionPlaylist(idCancion);
-            tbCanciones.getItems().clear();
-            //cargarDatosPlaylist();
+            int port = Integer.parseInt(rb.getString("dataport"));
+            String host = rb.getString("datahost");
+            Client servicios = Utilerias.conectar(host, port);
+            servicios.actualizarPlaylist(actualizar);
+            Utilerias.closeServer(servicios);
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void setServidor(servicios.Client servidor) {
-        this.servidor = servidor;
+    public void eliminarCancionPlaylist(int idCancion) {
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        try {
+            Client servicios = Utilerias.conectar(host, port);
+            servicios.elimnarCancionPlaylist(idCancion);
+            Utilerias.closeServer(servicios);
+            tbCanciones.getItems().clear();
+            //cargarDatosPlaylist();
+        } catch (TException ex) {
+            Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setPlaylist(Playlist playlist) {

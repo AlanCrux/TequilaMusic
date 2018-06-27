@@ -56,15 +56,15 @@ public class IUAgregarPlaylistController implements Initializable {
         String nombre = tfNombre.getText(); 
         String descripcion = taDescripcion.getText(); 
         Image imagen = imgPortada.getImage(); 
-        parent.agregarPlaylist(nombre, descripcion, imagen);
-        parent.ocultarError();
+//        parent.agregarPlaylist(nombre, descripcion, imagen);
+//        parent.ocultarError();
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
 
     @FXML
     private void onCancelar(ActionEvent event) {
-        parent.ocultarError();
+//        parent.ocultarError();
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
