@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="576.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView fx:id="tablaCanciones" layoutY="158.0" prefHeight="390.0" prefWidth="576.0" stylesheets="@../../recursos/estilos/tableView.css">
+         <columns>
+            <TableColumn fx:id="tcTitulo" prefWidth="183.0" text="Titulo" />
+            <TableColumn fx:id="tcAlbum" prefWidth="201.0" text="Álbum" />
+            <TableColumn fx:id="tcGenero" prefWidth="192.0" text="Genero" />
+         </columns>
+      </TableView>
+      <ImageView fx:id="imageAlbum" fitHeight="123.0" fitWidth="128.0" layoutX="14.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../recursos/iconos/iconPlay.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="lbTitulo" layoutX="164.0" layoutY="24.0" text="Titulo album">
+         <font>
+            <Font name="Avenir Black" size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbDiscografia" layoutX="164.0" layoutY="60.0" text="Discografica">
+         <font>
+            <Font name="Avenir Book" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbAnio" layoutX="164.0" layoutY="80.0" text="Año lanzamiento">
+         <font>
+            <Font name="Avenir Book" size="15.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="btnEditar" layoutX="476.0" layoutY="99.0" text="Editar álbum" />
+      <Label fx:id="lbAnio1" layoutX="164.0" layoutY="99.0" text="0 canciones">
+         <font>
+            <Font name="Avenir Book" size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

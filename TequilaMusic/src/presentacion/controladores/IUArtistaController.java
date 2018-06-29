@@ -56,6 +56,9 @@ public class IUArtistaController implements Initializable {
     Usuario usuario;
     private ResourceBundle rb;
 
+    // Controladores de las ventanas
+    ModCancionesController modCanciones;
+
     private static final String ICON_CANCIONES = "src/recursos/iconos/maracas.png";
     private static final String ICON_ALBUMES = "src/recursos/iconos/guitarra.png";
     private static final String ICON_AGREGAR = "src/recursos/iconos/anadir.png";
@@ -106,11 +109,10 @@ public class IUArtistaController implements Initializable {
         String seleccionado = listOpciones.getSelectionModel().getSelectedItem().getText();
         switch (seleccionado) {
             case "Canciones":
-                //cargarModCanciones();
-                break;
-            case "Artistas":
+                cargarModCanciones();
                 break;
             case "Álbumes":
+                cargarModAlbumes();
                 break;
             case "Agregar álbum":
                 break;
@@ -118,18 +120,46 @@ public class IUArtistaController implements Initializable {
         }
     }
 
-//    public void cargarModCanciones() {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modHistorial.fxml"), rb);
-//        ModHistorialController controller = new ModHistorialController();
-//        controller.setCorreo(usuario.getCorreo());
-//        controller.setParent(this);
-//        loader.setController(controller);
-//        try {
-//            Utilerias.fadeTransition(contentPrincipal, 300);
-//            contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
-//        } catch (IOException ex) {
-//            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
+    public void cargarModCanciones() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modCanciones.fxml"));
+        modCanciones = new ModCancionesController();
+        modCanciones.setParent(this);
+        modCanciones.setRb(rb);
+
+        loader.setController(modCanciones);
+        try {
+            Utilerias.fadeTransition(contentPrincipal, 300);
+            contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+            System.out.println("coreo: " + usuario.getCorreo());
+            modCanciones.mostrarResultados(usuario.getCorreo());
+        } catch (IOException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
+    public void cargarModAlbumes() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modAlbumes.fxml"), rb);
+        ModAlbumesController controller = new ModAlbumesController();
+        controller.setCorreo(usuario.getCorreo());
+        controller.setRb(rb);
+        controller.setParent(this);
+        loader.setController(controller);
+        try {
+            Utilerias.fadeTransition(contentPrincipal, 300);
+            contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public AnchorPane getContentPrincipal() {
+        return contentPrincipal;
+    }
+
+    public void setContentPrincipal(AnchorPane contentPrincipal) {
+        this.contentPrincipal = contentPrincipal;
+    }
+    
+    
+}

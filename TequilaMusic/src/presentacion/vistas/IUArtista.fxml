@@ -27,9 +27,9 @@
                <items>
                   <VBox alignment="CENTER_LEFT" prefHeight="548.0" prefWidth="201.0" style="-fx-background-color: #d4d4d5;" SplitPane.resizableWithParent="false">
                      <children>
-                        <Label fx:id="lblArtista" prefHeight="27.0" prefWidth="202.0" text="Los angeles azules">
+                        <Label fx:id="lblArtista" prefHeight="27.0" prefWidth="202.0" text="Artista">
                            <font>
-                              <Font name="System Bold" size="18.0" />
+                              <Font name="Avenir Book" size="18.0" />
                            </font>
                         </Label>
                         <ImageView fitHeight="6.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
