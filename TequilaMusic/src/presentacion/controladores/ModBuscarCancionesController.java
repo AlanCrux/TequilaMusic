@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,8 +17,13 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.apache.thrift.TException;
+import org.apache.thrift.transport.TTransportException;
 import servicios.CancionSL;
+import servicios.Contenido;
 import servicios.Playlist;
+import servicios.servicios;
+import utilerias.Utilerias;
 
 /**
  * FXML Controller class
@@ -36,7 +43,9 @@ public class ModBuscarCancionesController implements Initializable {
     @FXML
     private TableColumn<CancionSL, String> tbcGenero;
 
-    IUReproductorController parent;
+    private IUReproductorController parent;
+    
+    private ResourceBundle rb;
 
     /**
      * Initializes the controller class.
@@ -56,7 +65,8 @@ public class ModBuscarCancionesController implements Initializable {
         tbCanciones.setOnMouseClicked(event -> {
             CancionSL seleccionada = tbCanciones.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2) {
-                //parent.reproducir(seleccionada);
+                parent.cargarDatosCancion(seleccionada);                
+                parent.cargarDatosCancion(seleccionada);
             }
         });
         addContextMenu();
@@ -68,11 +78,21 @@ public class ModBuscarCancionesController implements Initializable {
         this.parent = parent;
     }
     
-    public void mostrarResultados(List<CancionSL> resultados){
+    public void mostrarResultados(String criterio) {
+        List<CancionSL> resultados = new ArrayList<>();
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        servicios.Client servicios;
+        try {
+            servicios = Utilerias.conectar(host, port);
+            resultados = servicios.obtenerCancionesFiltradas(criterio);
+            Utilerias.closeServer(servicios);
+        } catch (TException ex) {
+            Logger.getLogger(ModBuscarCancionesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        parent.setResultadosBusqueda(resultados);
         tbCanciones.setItems(FXCollections.observableList(resultados));
     }
-
-    
 
     public void addContextMenu() {
         ContextMenu context = new ContextMenu();
@@ -83,13 +103,13 @@ public class ModBuscarCancionesController implements Initializable {
         Menu menuPlaylist = new Menu("Añadir a playlist");
         MenuItem nueva = new MenuItem("Nueva playlist");
         nueva.setOnAction(event -> {
-            //parent.onNuevaLista(event);
+            parent.onNuevaLista(event);
         });
         menuPlaylist.getItems().add(nueva);
         SeparatorMenuItem separator = new SeparatorMenuItem();
         menuPlaylist.getItems().add(separator);
 
-        List<Playlist> playlist = /*parent.getPlaylist();*/ new ArrayList<>();
+        List<Playlist> playlist = parent.getListas();
         for (int i = 0; i < playlist.size(); i++) {
             MenuItem nuevo = new MenuItem(playlist.get(i).getNombre());
             final int idPlaylist = playlist.get(i).getIdPlaylist();
@@ -105,7 +125,25 @@ public class ModBuscarCancionesController implements Initializable {
 
     public void addToPlaylist(int idPlaylist) {
         int idCancion = tbCanciones.getSelectionModel().getSelectedItem().getIdCancion();
-        //parent.agregarCancionPlaylist(idPlaylist, idCancion);
+        Contenido contenido = new Contenido(idCancion, idPlaylist);
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        servicios.Client servicios;
+        try {
+            servicios = Utilerias.conectar(host, port);
+            servicios.insertarCancionPlaylist(contenido);
+            Utilerias.closeServer(servicios);
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+
+    public void setRb(ResourceBundle rb) {
+        this.rb = rb;
+    }
+    
+    
 
 }

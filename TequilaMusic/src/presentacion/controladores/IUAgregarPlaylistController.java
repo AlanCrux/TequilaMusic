@@ -22,6 +22,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import servicios.Playlist;
+import utilerias.Utilerias;
 
 /**
  * FXML Controller class
@@ -53,18 +55,20 @@ public class IUAgregarPlaylistController implements Initializable {
 
     @FXML
     private void onCrear(ActionEvent event) {
-        String nombre = tfNombre.getText(); 
-        String descripcion = taDescripcion.getText(); 
-        Image imagen = imgPortada.getImage(); 
-//        parent.agregarPlaylist(nombre, descripcion, imagen);
-//        parent.ocultarError();
+        Playlist playlist = new Playlist();
+        playlist.setNombre(tfNombre.getText());
+        playlist.setDescripcion(taDescripcion.getText()); 
+        playlist.setImagen(Utilerias.imageToByteArray(imgPortada.getImage()));
+        parent.agregarPlaylist(playlist);
+        parent.ocultarError();
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    private void onCancelar(ActionEvent event) {
-//        parent.ocultarError();
+    public void onCancelar(ActionEvent event) {
+        parent.setIsNuevaLista(false);
+        parent.ocultarError();
         Stage stage = (Stage) btnCancelar.getScene().getWindow();
         stage.close();
     }

@@ -3,32 +3,46 @@ package presentacion.controladores;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXProgressBar;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
+import servicios.CancionSL;
+import servicios.Historial;
 import servicios.Playlist;
 import servicios.Usuario;
 import servicios.servicios.Client;
@@ -98,7 +112,33 @@ public class IUReproductorController implements Initializable {
     private ResourceBundle rb;
 
     // Las listas de reproducción del usuario
-    List<Playlist> listas;
+    private List<Playlist> listas;
+
+    // Banderas que indican la ventana activa
+    private boolean isNuevaLista;
+    private boolean isBuscarCanciones;
+    private boolean isHistorial;
+    private boolean isModCanciones;
+
+    // Controladores de algunas ventanas
+    IUAgregarPlaylistController controllerNuevaLista;
+    ModBuscarCancionesController controllerBuscarCanciones;
+
+    // Colas de reproducción 
+    private List<CancionSL> resultadosBusqueda;
+    private List<CancionSL> colaFija;
+    private List<CancionSL> colaDinamica;
+
+    // Objetos para reproducción de audio
+    Media hit;
+    MediaPlayer mediaPlayer;
+    
+    // Variables para control del progreso
+    private static final int LIMITE_CANCION = 100;
+    private double currentTime = 0;
+    private Task progressTask;
+    private Thread reproductionThread; 
+    private boolean play; 
 
     /**
      * Initializes the controller class.
@@ -112,15 +152,28 @@ public class IUReproductorController implements Initializable {
         /*
          * 1. Cargar las opciones de la biblioteca
          * 2. Cargar las playlist del usuario 
+         * 3. Agregar menu contextual a la lista de listas de reproducción
          */
 
         agregarOpciones();
         listas = obtenerPlaylist(usuario.getCorreo());
         cargarPlaylist(listas);
+        addContextMenu(listPlaylist);
+    }
+
+    public void actualizarListas() {
+        int actual = listPlaylist.getSelectionModel().getSelectedIndex();
+        listPlaylist.getItems().clear();
+        listas = obtenerPlaylist(usuario.getCorreo());
+        cargarPlaylist(listas);
+        listPlaylist.getSelectionModel().select(actual);
     }
 
     @FXML
     private void onBuscar(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            cargarModBuscarCanciones(tfBuscar.getText());
+        }
     }
 
     @FXML
@@ -149,13 +202,134 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private void onBiblioteca(MouseEvent event) {
+        listPlaylist.getSelectionModel().clearSelection();
+        String seleccionado = listOpciones.getSelectionModel().getSelectedItem().getText();
+        switch (seleccionado) {
+            case "Canciones":
+                break;
+            case "Artistas":
+                break;
+            case "Álbumes":
+                break;
+            case "Géneros":
+                break;
+            case "Recientes":
+                cargarModRecientes();
+                break;
+
+        }
+    }
+
+    public void cargarModBuscarCanciones(String criterio) {
+        if (!isBuscarCanciones) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modBuscarCanciones.fxml"));
+            controllerBuscarCanciones = new ModBuscarCancionesController();
+            controllerBuscarCanciones.setParent(this);
+            controllerBuscarCanciones.setRb(rb);
+
+            loader.setController(controllerBuscarCanciones);
+            try {
+                Utilerias.fadeTransition(contentPrincipal, 300);
+                contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+                controllerBuscarCanciones.mostrarResultados(criterio);
+            } catch (IOException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isBuscarCanciones = true;
+            isHistorial = false;
+            isModCanciones = false;
+        } else {
+            controllerBuscarCanciones.mostrarResultados(criterio);
+        }
+
+    }
+
+    public void cargarModCanciones() {
+        if (!isModCanciones) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modBiblioteca.fxml"), rb);
+            ModBibliotecaController controller = new ModBibliotecaController();
+            controller.setParent(this);
+            loader.setController(controller);
+
+            try {
+                Utilerias.fadeTransition(contentPrincipal, 300);
+                contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+
+            } catch (IOException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isBuscarCanciones = false;
+            isHistorial = false;
+            isModCanciones = true;
+        }
+    }
+
+    public void cargarModArtistas() {
+
+    }
+
+    public void cargarModAlbumes() {
+
+    }
+
+    public void cargarModGeneros() {
+
+    }
+
+    public void cargarModRecientes() {
+        if (!isHistorial) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modHistorial.fxml"), rb);
+            ModHistorialController controller = new ModHistorialController();
+            controller.setCorreo(usuario.getCorreo());
+            controller.setParent(this);
+            loader.setController(controller);
+            try {
+                Utilerias.fadeTransition(contentPrincipal, 300);
+                contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isHistorial = true;
+            isBuscarCanciones = false;
+            isModCanciones = false;
+        }
+    }
+
+    public void cargarExplorar() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modExplorar.fxml"), rb);
+        //ModBibliotecaController controller = new ModBibliotecaController();
+        //controller.setParent(this);
+        //loader.setController(controller);
+
+        try {
+            Utilerias.fadeTransition(contentPrincipal);
+            contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void cargarRadio() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modRadio.fxml"), rb);
+        //ModBibliotecaController controller = new ModBibliotecaController();
+        //controller.setParent(this);
+        //loader.setController(controller);
+
+        try {
+            Utilerias.fadeTransition(contentPrincipal);
+            contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @FXML
     private void onPlayslist(MouseEvent event) {
         int index = listPlaylist.getSelectionModel().getSelectedIndex();
         Playlist seleccionada = listas.get(index);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modPlaylist.fxml"),rb);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modPlaylist.fxml"), rb);
         ModPlaylistController controller = new ModPlaylistController();
         controller.setPlaylist(seleccionada);
         loader.setController(controller);
@@ -168,13 +342,33 @@ public class IUReproductorController implements Initializable {
     }
 
     @FXML
-    private void onNuevaLista(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUAgregarPlaylist.fxml"),rb);
-        IUAgregarPlaylistController controller = new IUAgregarPlaylistController();
-        controller.setParent(this);
-        loader.setController(controller);
+    public void onNuevaLista(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUAgregarPlaylist.fxml"), rb);
+        controllerNuevaLista = new IUAgregarPlaylistController();
+        controllerNuevaLista.setParent(this);
+        loader.setController(controllerNuevaLista);
+        isNuevaLista = true;
         contentError.setVisible(true);
-        controller.mostrarVentana(loader, (Stage) btnBiblioteca.getScene().getWindow());
+        controllerNuevaLista.mostrarVentana(loader, (Stage) btnBiblioteca.getScene().getWindow());
+    }
+
+    public void agregarPlaylist(Playlist playlist) {
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        Client servicios;
+        playlist.setCorreo(usuario.getCorreo());
+        try {
+            servicios = Utilerias.conectar(host, port);
+            if (!servicios.insertarPlaylist(playlist)) {
+                System.out.println("MENSAJE ERROR AL CREAR");
+            }
+
+            Utilerias.closeServer(servicios);
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -187,7 +381,17 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private void onActionPlay(MouseEvent event) {
+        if (play) {
+            mediaPlayer.pause();
+            play = false; 
+        }else{
+            mediaPlayer.play();
+            play = true;
+        }
+        
     }
+    
+    
 
     @FXML
     private void onActionNext(MouseEvent event) {
@@ -199,6 +403,15 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private void onContentError(MouseEvent event) {
+        if (isNuevaLista) {
+            controllerNuevaLista.onCancelar(new ActionEvent());
+            isNuevaLista = false;
+        }
+    }
+
+    @FXML
+    public void onCola(MouseEvent event) {
+
     }
 
     /**
@@ -267,12 +480,173 @@ public class IUReproductorController implements Initializable {
         return listaPlaylist;
     }
 
+    /**
+     * Agrega un menú contextual a la lista de playlist de la IU.
+     *
+     * @param lista
+     */
+    public void addContextMenu(JFXListView<?> lista) {
+        ContextMenu context = new ContextMenu();
+        MenuItem menuAgregar = new MenuItem("Agregar playlist");
+        MenuItem menuEliminar = new MenuItem("Eliminar");
+
+        menuAgregar.setOnAction(e -> {
+            onNuevaLista(e);
+        });
+
+        menuEliminar.setOnAction(e -> {
+            int index = lista.getSelectionModel().getSelectedIndex();
+            eliminarPlaylist(index);
+        });
+        context.getItems().addAll(menuAgregar, menuEliminar);
+        lista.setContextMenu(context);
+    }
+
+    public void cargarDatosCancion(CancionSL cancion) {
+        lbNombreCancion.setText(cancion.getTitulo());
+        lbArtistas.setText(cancion.getArtista());
+        imgDisco.setImage(Utilerias.byteToImage(cancion.getImagenAlbum()));
+        agregarHistorial(cancion);
+        reproducir(cancion);
+    }
+    
+    public void reproducir(CancionSL cancion){
+        currentTime = 100; 
+        Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
+        String ruta = cancion.getRuta();
+        String home = System.getProperty("user.home");
+        home = home + "/Downloads/" + cancion.getIdCancion() + ".mp3";
+        Utilerias.bajarCancion(ruta, home, streaming);
+        hit = new Media(new File(home).toURI().toString()); 
+        enlazarBarra();
+        mediaPlayer = new MediaPlayer(hit);
+        mediaPlayer.play();
+        
+        btnPlay.setDisable(false);
+        btnAnterior.setDisable(false);
+        btnSiguiente.setDisable(false);
+        btnAleatorio.setDisable(false);
+        btnRepetir.setDisable(false);
+        play = true; 
+        
+    }
+
+    /**
+     * Invoca un método del servidor para eliminar una playlist.
+     *
+     * @param index el indice de la playlist que se quiere eliminar.
+     */
+    public void eliminarPlaylist(int index) {
+        int idPlaylist = listas.get(index).getIdPlaylist();
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        Client servicios;
+        try {
+            servicios = Utilerias.conectar(host, port);
+            servicios.elimnarPlaylist(idPlaylist);
+            Utilerias.closeServer(servicios);
+
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        listPlaylist.getItems().clear();
+        listas = obtenerPlaylist(usuario.getCorreo());
+        cargarPlaylist(listas);
+    }
+
+    /**
+     * Oculta el elemento de interfaz gráfica donde se muestran los errores.
+     */
+    public void ocultarError() {
+        contentError.setVisible(false);
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public List<Playlist> getListas() {
+        return listas;
+    }
+
+    public void setIsNuevaLista(boolean isNuevaLista) {
+        this.isNuevaLista = isNuevaLista;
+    }
+
+    public void agregarHistorial(CancionSL cancion) {
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        Client servicios;
+        Historial historial = new Historial();
+        historial.setIdCancion(cancion.getIdCancion());
+        historial.setCorreo(usuario.getCorreo());
+
+        Date date = new Date();
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String s = formatter.format(date);
+
+        historial.setFecha(s);
+        try {
+            servicios = Utilerias.conectar(host, port);
+            servicios.eliminarCancionHistorial(cancion.getIdCancion());
+            servicios.insertarCancionHistorial(historial);
+            Utilerias.closeServer(servicios);
+
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setResultadosBusqueda(List<CancionSL> resultadosBusqueda) {
+        this.resultadosBusqueda = resultadosBusqueda;
+    }
+    
+    /**
+     * Enlaza la ProgressBar de la IU a una tarea en especifico. 
+     */
+    public void enlazarBarra(){
+        progressTask = reproductionTask(); 
+        pbCancion.progressProperty().unbind();
+        pbCancion.progressProperty().bind(progressTask.progressProperty());
+        reproductionThread = new Thread(progressTask);
+        reproductionThread.start();
+    }
+
+    /**
+     * Genera un task para la reproducción de medios, actualizando la variable progreso cada medio segundo.
+     * @return el task generado. 
+     */
+    public Task reproductionTask() {
+        return new Task() {
+            @Override
+            protected Object call() {
+                Duration current;
+                Duration divide;
+                String progress;
+                do {
+                    try {
+                        Thread.sleep(400);
+                        current = mediaPlayer.getCurrentTime().multiply(100);
+                        divide = current.divide(hit.getDuration());
+                        progress = divide.toString().substring(0, 3);
+                        currentTime = Double.parseDouble(progress);
+                        updateProgress(currentTime, LIMITE_CANCION);
+                    } catch (InterruptedException | NumberFormatException ex) {
+                        
+                    }
+                } while (currentTime < LIMITE_CANCION);
+                
+                return null;
+            }
+        };
     }
 
 }

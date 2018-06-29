@@ -62,6 +62,7 @@ public class ModPlaylistController implements Initializable {
 
     private Playlist playlist;
     private ResourceBundle rb;
+    private IUReproductorController parent; 
 
     /**
      * Initializes the controller class.
@@ -176,6 +177,7 @@ public class ModPlaylistController implements Initializable {
             Client servicios = Utilerias.conectar(host, port);
             servicios.actualizarPlaylist(actualizar);
             Utilerias.closeServer(servicios);
+            parent.actualizarListas();
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -189,7 +191,8 @@ public class ModPlaylistController implements Initializable {
             servicios.elimnarCancionPlaylist(idCancion);
             Utilerias.closeServer(servicios);
             tbCanciones.getItems().clear();
-            //cargarDatosPlaylist();
+            
+            cargarDatosPlaylist(obtenerCanciones(playlist.getIdPlaylist()));
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -199,4 +202,9 @@ public class ModPlaylistController implements Initializable {
         this.playlist = playlist;
     }
 
+    public void setParent(IUReproductorController parent) {
+        this.parent = parent;
+    }
+
+    
 }

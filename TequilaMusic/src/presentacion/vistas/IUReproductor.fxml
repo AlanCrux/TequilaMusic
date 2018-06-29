@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import javafx.geometry.Insets?>
@@ -21,12 +22,12 @@
    <children>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #d7d7d7;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="14.0">
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="15.0">
                <image>
                   <Image url="@../../recursos/iconos/icon_volumen.png" />
                </image>
             </ImageView>
-            <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" stylesheets="@../../recursos/estilos/tequilaStyle.css" />
+            <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" stylesheets="@../../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="17.0" />
             <AnchorPane layoutX="563.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="8.0">
                <children>
                   <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="9.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="149.0" AnchorPane.topAnchor="4.0">
@@ -44,7 +45,7 @@
                   </TextField>
                </children>
             </AnchorPane>
-            <HBox alignment="BOTTOM_CENTER" layoutX="209.0" layoutY="-1.0" prefHeight="50.0" prefWidth="382.0" AnchorPane.leftAnchor="209.0" AnchorPane.rightAnchor="209.0">
+            <HBox alignment="BOTTOM_CENTER" layoutX="300.0" prefHeight="50.0" prefWidth="200.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0">
                <children>
                   <ImageView fitHeight="49.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -65,6 +66,11 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+            </ImageView>
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#onCola" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+               <image>
+                  <Image url="@../../recursos/iconos/playlist-2.png" />
+               </image>
             </ImageView>
          </children></AnchorPane>
       <HBox alignment="CENTER" layoutY="49.0" prefHeight="35.0" prefWidth="395.0" spacing="10.0" style="-fx-background-color: #ECF0F1;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
@@ -115,13 +121,13 @@
                               <Font name="Avenir Book" size="16.0" />
                            </font>
                         </Label>
-                        <JFXListView fx:id="listOpciones" onMouseClicked="#onBiblioteca" style="-fx-background-color: #d4d4d5;" />
+                        <JFXListView fx:id="listOpciones" onMouseClicked="#onBiblioteca" style="-fx-background-color: #d4d4d5;" verticalGap="200.0" />
                         <Label text="Playlist">
                            <font>
                               <Font name="Avenir Book" size="16.0" />
                            </font>
                         </Label>
-                        <JFXListView fx:id="listPlaylist" onMouseClicked="#onPlayslist" VBox.vgrow="ALWAYS" />
+                        <JFXListView fx:id="listPlaylist" onMouseClicked="#onPlayslist" VBox.vgrow="NEVER" />
                         <Separator prefWidth="200.0" style="-fx-background-color: #ECF0F1;" />
                         <JFXButton alignment="BOTTOM_LEFT" buttonType="RAISED" onAction="#onNuevaLista" prefHeight="35.0" prefWidth="202.0" text=" Nueva lista" textAlignment="CENTER">
                            <font>
@@ -139,8 +145,14 @@
                      <padding>
                         <Insets left="10.0" right="10.0" />
                      </padding>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </VBox>
-                  <AnchorPane fx:id="contentPrincipal" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;" />
+                  <AnchorPane fx:id="contentPrincipal" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;">
+                     <children>
+                        <JFXDrawer defaultDrawerSize="500.0" direction="TOP" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
                </items>
             </SplitPane>
             <AnchorPane layoutX="10.0" layoutY="364.0" prefHeight="80.0" prefWidth="600.0" style="-fx-background-color: #D5D8DC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">

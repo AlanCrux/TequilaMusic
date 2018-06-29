@@ -167,10 +167,12 @@ public class Utilerias {
             bufferEntrada.close();
             bufferSalida.close();
             salida.close();
+            socket.close();
             return true;
         } catch (IOException ex) {
             return false;
         }
+        
     }
 
     public static void mostrarErrorConexion(AnchorPane contentError) {
@@ -257,8 +259,8 @@ public class Utilerias {
         Image img = new Image(new ByteArrayInputStream(byteImage));
         return img;
     }
-    
-    public static void closeServer(servicios.Client servidor){
+
+    public static void closeServer(servicios.Client servidor) {
         TProtocol protocol = servidor.getInputProtocol();
         TTransport transport = protocol.getTransport();
         transport.close();

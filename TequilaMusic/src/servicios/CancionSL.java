@@ -469,25 +469,25 @@ public class CancionSL implements org.apache.thrift.TBase<CancionSL, CancionSL._
         }
     }
     
-    public ImageView getEliminar(){
-        ImageView imagen = new ImageView(); 
-        imagen.setImage(new Image("/recursos/iconos/x.png"));
-        
-        imagen.setOnMouseEntered(e->{
-            System.out.println("ENTERED");
-            imagen.setImage(new Image("/recursos/iconos/x.png"));
-        });
-        imagen.setOnMouseExited(e->{
-            System.out.println("EXITED");
-            imagen.setImage(new Image("/recursos/iconos/pinata.png"));
-        });
-        imagen.setOnMouseClicked(event->{
-            System.out.println("ELIMINAR");
-            //playlistController.eliminarCancionPlaylist(idCancion);
-        });
-        imagen.setCursor(Cursor.HAND);
-        return imagen;
-    }
+//    public ImageView getEliminar(){
+//        ImageView imagen = new ImageView(); 
+//        imagen.setImage(new Image("/recursos/iconos/x.png"));
+//        
+//        imagen.setOnMouseEntered(e->{
+//            System.out.println("ENTERED");
+//            imagen.setImage(new Image("/recursos/iconos/x.png"));
+//        });
+//        imagen.setOnMouseExited(e->{
+//            System.out.println("EXITED");
+//            imagen.setImage(new Image("/recursos/iconos/pinata.png"));
+//        });
+//        imagen.setOnMouseClicked(event->{
+//            System.out.println("ELIMINAR");
+//            //playlistController.eliminarCancionPlaylist(idCancion);
+//        });
+//        imagen.setCursor(Cursor.HAND);
+//        return imagen;
+//    }
 
     public java.lang.String getCorreoArtista() {
         return this.correoArtista;
