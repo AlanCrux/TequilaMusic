@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
@@ -86,7 +87,7 @@ public class ModCancionesAlbumController implements Initializable {
         lbDiscografia.setText(album.getCompaniaDiscografica());
         lbAnio.setText(album.getAnioLanzamiento());
             System.out.println("datos album"+ album.getTitulo());
-            System.out.println(canciones.size());
+            System.out.println("tamaño " + canciones.size());
         if (canciones.size() > 1) {
             tfResumen.setText(canciones.size() + " canciones");
         } else {
@@ -102,6 +103,7 @@ public class ModCancionesAlbumController implements Initializable {
         try {
             servicios.Client servicios = Utilerias.conectar(host, port);
             canciones = servicios.obtenerCancionesAlbumArtista(idAlbum);
+            System.out.println("Tamano en obtCa" +  canciones.size());
             Utilerias.closeServer(servicios);
         } catch (TTransportException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,6 +137,12 @@ public class ModCancionesAlbumController implements Initializable {
     public void setParent(NodeAlbumController parent) {
         this.parent = parent;
     }
-     
+    
+     @FXML
+    void editar(ActionEvent event) {
+        
+    }
+    
+    
 
 }

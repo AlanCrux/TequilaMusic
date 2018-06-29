@@ -58,5 +58,6 @@
             </SplitPane>
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="contentError" onMouseClicked="#onContentError" opacity="0.6" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: black;" visible="false" />
    </children>
 </AnchorPane>

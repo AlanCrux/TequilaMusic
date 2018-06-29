@@ -38,8 +38,8 @@
             <Font name="Avenir Book" size="15.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="btnEditar" layoutX="476.0" layoutY="99.0" text="Editar álbum" />
-      <Label fx:id="lbAnio1" layoutX="164.0" layoutY="99.0" text="0 canciones">
+      <Hyperlink fx:id="btnEditar" layoutX="476.0" layoutY="99.0" onAction="#editar" text="Editar álbum" />
+      <Label fx:id="tfResumen" layoutX="164.0" layoutY="99.0" text="0 canciones">
          <font>
             <Font name="Avenir Book" size="15.0" />
          </font>

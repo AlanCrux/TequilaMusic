@@ -108,7 +108,7 @@ public class ModArtistasController implements Initializable {
         servicios.Client servicios;
         try {
             servicios = Utilerias.conectar(host, port);
-            canciones = servicios.obtenerCancionesArtista(correo);
+            canciones = servicios.obtenerCancionesArtista(correo,correo);
             Utilerias.closeServer(servicios);
         } catch (TTransportException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
