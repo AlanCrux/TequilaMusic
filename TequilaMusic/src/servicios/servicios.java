@@ -50,7 +50,7 @@ public class servicios {
 
     public java.util.List<Usuario> obtenerArtistasUsuario(java.lang.String correo) throws org.apache.thrift.TException;
 
-    public java.util.List<CancionSL> obtenerCancionesArtista(java.lang.String correo) throws org.apache.thrift.TException;
+    public java.util.List<CancionSL> obtenerCancionesArtista(java.lang.String correoCliente, java.lang.String correoArtista) throws org.apache.thrift.TException;
 
     public java.util.List<Genero> obtenerGenerosUsuario(java.lang.String correo) throws org.apache.thrift.TException;
 
@@ -112,7 +112,7 @@ public class servicios {
 
     public void obtenerArtistasUsuario(java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<Usuario>> resultHandler) throws org.apache.thrift.TException;
 
-    public void obtenerCancionesArtista(java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException;
+    public void obtenerCancionesArtista(java.lang.String correoCliente, java.lang.String correoArtista, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException;
 
     public void obtenerGenerosUsuario(java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<Genero>> resultHandler) throws org.apache.thrift.TException;
 
@@ -591,16 +591,17 @@ public class servicios {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "obtenerArtistasUsuario failed: unknown result");
     }
 
-    public java.util.List<CancionSL> obtenerCancionesArtista(java.lang.String correo) throws org.apache.thrift.TException
+    public java.util.List<CancionSL> obtenerCancionesArtista(java.lang.String correoCliente, java.lang.String correoArtista) throws org.apache.thrift.TException
     {
-      send_obtenerCancionesArtista(correo);
+      send_obtenerCancionesArtista(correoCliente, correoArtista);
       return recv_obtenerCancionesArtista();
     }
 
-    public void send_obtenerCancionesArtista(java.lang.String correo) throws org.apache.thrift.TException
+    public void send_obtenerCancionesArtista(java.lang.String correoCliente, java.lang.String correoArtista) throws org.apache.thrift.TException
     {
       obtenerCancionesArtista_args args = new obtenerCancionesArtista_args();
-      args.setCorreo(correo);
+      args.setCorreoCliente(correoCliente);
+      args.setCorreoArtista(correoArtista);
       sendBase("obtenerCancionesArtista", args);
     }
 
@@ -1447,24 +1448,27 @@ public class servicios {
       }
     }
 
-    public void obtenerCancionesArtista(java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException {
+    public void obtenerCancionesArtista(java.lang.String correoCliente, java.lang.String correoArtista, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      obtenerCancionesArtista_call method_call = new obtenerCancionesArtista_call(correo, resultHandler, this, ___protocolFactory, ___transport);
+      obtenerCancionesArtista_call method_call = new obtenerCancionesArtista_call(correoCliente, correoArtista, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class obtenerCancionesArtista_call extends org.apache.thrift.async.TAsyncMethodCall<java.util.List<CancionSL>> {
-      private java.lang.String correo;
-      public obtenerCancionesArtista_call(java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private java.lang.String correoCliente;
+      private java.lang.String correoArtista;
+      public obtenerCancionesArtista_call(java.lang.String correoCliente, java.lang.String correoArtista, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.correo = correo;
+        this.correoCliente = correoCliente;
+        this.correoArtista = correoArtista;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("obtenerCancionesArtista", org.apache.thrift.protocol.TMessageType.CALL, 0));
         obtenerCancionesArtista_args args = new obtenerCancionesArtista_args();
-        args.setCorreo(correo);
+        args.setCorreoCliente(correoCliente);
+        args.setCorreoArtista(correoArtista);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -2317,7 +2321,7 @@ public class servicios {
 
       public obtenerCancionesArtista_result getResult(I iface, obtenerCancionesArtista_args args) throws org.apache.thrift.TException {
         obtenerCancionesArtista_result result = new obtenerCancionesArtista_result();
-        result.success = iface.obtenerCancionesArtista(args.correo);
+        result.success = iface.obtenerCancionesArtista(args.correoCliente, args.correoArtista);
         return result;
       }
     }
@@ -3821,7 +3825,7 @@ public class servicios {
       }
 
       public void start(I iface, obtenerCancionesArtista_args args, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException {
-        iface.obtenerCancionesArtista(args.correo,resultHandler);
+        iface.obtenerCancionesArtista(args.correoCliente, args.correoArtista,resultHandler);
       }
     }
 
@@ -18561,16 +18565,19 @@ public class servicios {
   public static class obtenerCancionesArtista_args implements org.apache.thrift.TBase<obtenerCancionesArtista_args, obtenerCancionesArtista_args._Fields>, java.io.Serializable, Cloneable, Comparable<obtenerCancionesArtista_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("obtenerCancionesArtista_args");
 
-    private static final org.apache.thrift.protocol.TField CORREO_FIELD_DESC = new org.apache.thrift.protocol.TField("correo", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField CORREO_CLIENTE_FIELD_DESC = new org.apache.thrift.protocol.TField("correoCliente", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField CORREO_ARTISTA_FIELD_DESC = new org.apache.thrift.protocol.TField("correoArtista", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new obtenerCancionesArtista_argsStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new obtenerCancionesArtista_argsTupleSchemeFactory();
 
-    public java.lang.String correo; // required
+    public java.lang.String correoCliente; // required
+    public java.lang.String correoArtista; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      CORREO((short)1, "correo");
+      CORREO_CLIENTE((short)1, "correoCliente"),
+      CORREO_ARTISTA((short)2, "correoArtista");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -18585,8 +18592,10 @@ public class servicios {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // CORREO
-            return CORREO;
+          case 1: // CORREO_CLIENTE
+            return CORREO_CLIENTE;
+          case 2: // CORREO_ARTISTA
+            return CORREO_ARTISTA;
           default:
             return null;
         }
@@ -18630,7 +18639,9 @@ public class servicios {
     public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.CORREO, new org.apache.thrift.meta_data.FieldMetaData("correo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.CORREO_CLIENTE, new org.apache.thrift.meta_data.FieldMetaData("correoCliente", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.CORREO_ARTISTA, new org.apache.thrift.meta_data.FieldMetaData("correoArtista", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(obtenerCancionesArtista_args.class, metaDataMap);
@@ -18640,18 +18651,23 @@ public class servicios {
     }
 
     public obtenerCancionesArtista_args(
-      java.lang.String correo)
+      java.lang.String correoCliente,
+      java.lang.String correoArtista)
     {
       this();
-      this.correo = correo;
+      this.correoCliente = correoCliente;
+      this.correoArtista = correoArtista;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public obtenerCancionesArtista_args(obtenerCancionesArtista_args other) {
-      if (other.isSetCorreo()) {
-        this.correo = other.correo;
+      if (other.isSetCorreoCliente()) {
+        this.correoCliente = other.correoCliente;
+      }
+      if (other.isSetCorreoArtista()) {
+        this.correoArtista = other.correoArtista;
       }
     }
 
@@ -18661,40 +18677,73 @@ public class servicios {
 
     @Override
     public void clear() {
-      this.correo = null;
+      this.correoCliente = null;
+      this.correoArtista = null;
     }
 
-    public java.lang.String getCorreo() {
-      return this.correo;
+    public java.lang.String getCorreoCliente() {
+      return this.correoCliente;
     }
 
-    public obtenerCancionesArtista_args setCorreo(java.lang.String correo) {
-      this.correo = correo;
+    public obtenerCancionesArtista_args setCorreoCliente(java.lang.String correoCliente) {
+      this.correoCliente = correoCliente;
       return this;
     }
 
-    public void unsetCorreo() {
-      this.correo = null;
+    public void unsetCorreoCliente() {
+      this.correoCliente = null;
     }
 
-    /** Returns true if field correo is set (has been assigned a value) and false otherwise */
-    public boolean isSetCorreo() {
-      return this.correo != null;
+    /** Returns true if field correoCliente is set (has been assigned a value) and false otherwise */
+    public boolean isSetCorreoCliente() {
+      return this.correoCliente != null;
     }
 
-    public void setCorreoIsSet(boolean value) {
+    public void setCorreoClienteIsSet(boolean value) {
       if (!value) {
-        this.correo = null;
+        this.correoCliente = null;
+      }
+    }
+
+    public java.lang.String getCorreoArtista() {
+      return this.correoArtista;
+    }
+
+    public obtenerCancionesArtista_args setCorreoArtista(java.lang.String correoArtista) {
+      this.correoArtista = correoArtista;
+      return this;
+    }
+
+    public void unsetCorreoArtista() {
+      this.correoArtista = null;
+    }
+
+    /** Returns true if field correoArtista is set (has been assigned a value) and false otherwise */
+    public boolean isSetCorreoArtista() {
+      return this.correoArtista != null;
+    }
+
+    public void setCorreoArtistaIsSet(boolean value) {
+      if (!value) {
+        this.correoArtista = null;
       }
     }
 
     public void setFieldValue(_Fields field, java.lang.Object value) {
       switch (field) {
-      case CORREO:
+      case CORREO_CLIENTE:
         if (value == null) {
-          unsetCorreo();
+          unsetCorreoCliente();
         } else {
-          setCorreo((java.lang.String)value);
+          setCorreoCliente((java.lang.String)value);
+        }
+        break;
+
+      case CORREO_ARTISTA:
+        if (value == null) {
+          unsetCorreoArtista();
+        } else {
+          setCorreoArtista((java.lang.String)value);
         }
         break;
 
@@ -18703,8 +18752,11 @@ public class servicios {
 
     public java.lang.Object getFieldValue(_Fields field) {
       switch (field) {
-      case CORREO:
-        return getCorreo();
+      case CORREO_CLIENTE:
+        return getCorreoCliente();
+
+      case CORREO_ARTISTA:
+        return getCorreoArtista();
 
       }
       throw new java.lang.IllegalStateException();
@@ -18717,8 +18769,10 @@ public class servicios {
       }
 
       switch (field) {
-      case CORREO:
-        return isSetCorreo();
+      case CORREO_CLIENTE:
+        return isSetCorreoCliente();
+      case CORREO_ARTISTA:
+        return isSetCorreoArtista();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -18738,12 +18792,21 @@ public class servicios {
       if (this == that)
         return true;
 
-      boolean this_present_correo = true && this.isSetCorreo();
-      boolean that_present_correo = true && that.isSetCorreo();
-      if (this_present_correo || that_present_correo) {
-        if (!(this_present_correo && that_present_correo))
+      boolean this_present_correoCliente = true && this.isSetCorreoCliente();
+      boolean that_present_correoCliente = true && that.isSetCorreoCliente();
+      if (this_present_correoCliente || that_present_correoCliente) {
+        if (!(this_present_correoCliente && that_present_correoCliente))
           return false;
-        if (!this.correo.equals(that.correo))
+        if (!this.correoCliente.equals(that.correoCliente))
+          return false;
+      }
+
+      boolean this_present_correoArtista = true && this.isSetCorreoArtista();
+      boolean that_present_correoArtista = true && that.isSetCorreoArtista();
+      if (this_present_correoArtista || that_present_correoArtista) {
+        if (!(this_present_correoArtista && that_present_correoArtista))
+          return false;
+        if (!this.correoArtista.equals(that.correoArtista))
           return false;
       }
 
@@ -18754,9 +18817,13 @@ public class servicios {
     public int hashCode() {
       int hashCode = 1;
 
-      hashCode = hashCode * 8191 + ((isSetCorreo()) ? 131071 : 524287);
-      if (isSetCorreo())
-        hashCode = hashCode * 8191 + correo.hashCode();
+      hashCode = hashCode * 8191 + ((isSetCorreoCliente()) ? 131071 : 524287);
+      if (isSetCorreoCliente())
+        hashCode = hashCode * 8191 + correoCliente.hashCode();
+
+      hashCode = hashCode * 8191 + ((isSetCorreoArtista()) ? 131071 : 524287);
+      if (isSetCorreoArtista())
+        hashCode = hashCode * 8191 + correoArtista.hashCode();
 
       return hashCode;
     }
@@ -18769,12 +18836,22 @@ public class servicios {
 
       int lastComparison = 0;
 
-      lastComparison = java.lang.Boolean.valueOf(isSetCorreo()).compareTo(other.isSetCorreo());
+      lastComparison = java.lang.Boolean.valueOf(isSetCorreoCliente()).compareTo(other.isSetCorreoCliente());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetCorreo()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.correo, other.correo);
+      if (isSetCorreoCliente()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.correoCliente, other.correoCliente);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetCorreoArtista()).compareTo(other.isSetCorreoArtista());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetCorreoArtista()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.correoArtista, other.correoArtista);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -18799,11 +18876,19 @@ public class servicios {
       java.lang.StringBuilder sb = new java.lang.StringBuilder("obtenerCancionesArtista_args(");
       boolean first = true;
 
-      sb.append("correo:");
-      if (this.correo == null) {
+      sb.append("correoCliente:");
+      if (this.correoCliente == null) {
         sb.append("null");
       } else {
-        sb.append(this.correo);
+        sb.append(this.correoCliente);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("correoArtista:");
+      if (this.correoArtista == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.correoArtista);
       }
       first = false;
       sb.append(")");
@@ -18849,10 +18934,18 @@ public class servicios {
             break;
           }
           switch (schemeField.id) {
-            case 1: // CORREO
+            case 1: // CORREO_CLIENTE
               if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.correo = iprot.readString();
-                struct.setCorreoIsSet(true);
+                struct.correoCliente = iprot.readString();
+                struct.setCorreoClienteIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // CORREO_ARTISTA
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.correoArtista = iprot.readString();
+                struct.setCorreoArtistaIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -18872,9 +18965,14 @@ public class servicios {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.correo != null) {
-          oprot.writeFieldBegin(CORREO_FIELD_DESC);
-          oprot.writeString(struct.correo);
+        if (struct.correoCliente != null) {
+          oprot.writeFieldBegin(CORREO_CLIENTE_FIELD_DESC);
+          oprot.writeString(struct.correoCliente);
+          oprot.writeFieldEnd();
+        }
+        if (struct.correoArtista != null) {
+          oprot.writeFieldBegin(CORREO_ARTISTA_FIELD_DESC);
+          oprot.writeString(struct.correoArtista);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -18895,22 +18993,32 @@ public class servicios {
       public void write(org.apache.thrift.protocol.TProtocol prot, obtenerCancionesArtista_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol oprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
         java.util.BitSet optionals = new java.util.BitSet();
-        if (struct.isSetCorreo()) {
+        if (struct.isSetCorreoCliente()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetCorreo()) {
-          oprot.writeString(struct.correo);
+        if (struct.isSetCorreoArtista()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetCorreoCliente()) {
+          oprot.writeString(struct.correoCliente);
+        }
+        if (struct.isSetCorreoArtista()) {
+          oprot.writeString(struct.correoArtista);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, obtenerCancionesArtista_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
-          struct.correo = iprot.readString();
-          struct.setCorreoIsSet(true);
+          struct.correoCliente = iprot.readString();
+          struct.setCorreoClienteIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.correoArtista = iprot.readString();
+          struct.setCorreoArtistaIsSet(true);
         }
       }
     }

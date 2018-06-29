@@ -1,6 +1,5 @@
 package presentacion.controladores;
 
-import com.jfoenix.controls.JFXListView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,7 +15,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
+import servicios.CancionSL;
 import servicios.Usuario;
+import servicios.servicios;
 import servicios.servicios.Client;
 import utilerias.Utilerias;
 
@@ -30,7 +31,7 @@ public class ModArtistasController implements Initializable {
     @FXML
     private VBox listArtistas;
     @FXML
-    private JFXListView<AnchorPane> listCanciones;
+    private VBox listCanciones;
 
     ResourceBundle rb;
     private String correo; 
@@ -96,7 +97,29 @@ public class ModArtistasController implements Initializable {
      * @param artista 
      */
     public void cargarCanciones(Usuario artista) {
-
+        System.out.println("ESTA REFERENCIA FUNCIONA");
+        System.out.println(artista.getNombre());
+    }
+    
+    public List<CancionSL> obtenerCanciones() {
+        List<CancionSL> canciones = new ArrayList<>();
+        int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+        servicios.Client servicios;
+        try {
+            servicios = Utilerias.conectar(host, port);
+            canciones = servicios.obtenerCancionesArtista(correo);
+            Utilerias.closeServer(servicios);
+        } catch (TTransportException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(ModHistorialController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return canciones;
+    }
+    
+    public void cargarCanciones(){
+        
     }
 
     public void setCorreo(String correo) {

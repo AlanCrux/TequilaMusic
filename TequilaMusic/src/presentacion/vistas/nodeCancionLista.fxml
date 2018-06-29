@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="55.0" prefWidth="500.0" style="-fx-border-color: transparent; -fx-background-color: #D1F2EB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="55.0" prefWidth="500.0" style="-fx-border-color: transparent; -fx-background-color: #D1F2EB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacion.vistas.NodeCancionListaController">
    <children>
       <ImageView fx:id="imgPortada" fitHeight="40.0" fitWidth="40.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>

@@ -109,5 +109,7 @@ public class ModColaController implements Initializable {
         for (int i = 0; i < colafija.size(); i++) {
             System.out.println(colafija.get(i).getTitulo());
         }
+        
+        System.out.println(" ---------------------------- ");
     }
 }
