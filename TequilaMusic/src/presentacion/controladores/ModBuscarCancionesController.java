@@ -44,7 +44,7 @@ public class ModBuscarCancionesController implements Initializable {
     private TableColumn<CancionSL, String> tbcGenero;
 
     private IUReproductorController parent;
-    
+
     private ResourceBundle rb;
 
     /**
@@ -65,19 +65,17 @@ public class ModBuscarCancionesController implements Initializable {
         tbCanciones.setOnMouseClicked(event -> {
             CancionSL seleccionada = tbCanciones.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2) {
-                parent.cargarDatosCancion(seleccionada);                
+                parent.cargarDatosCancion(seleccionada);
                 parent.cargarDatosCancion(seleccionada);
             }
         });
         addContextMenu();
     }
-    
-    
 
     public void setParent(IUReproductorController parent) {
         this.parent = parent;
     }
-    
+
     public void mostrarResultados(String criterio) {
         List<CancionSL> resultados = new ArrayList<>();
         int port = Integer.parseInt(rb.getString("dataport"));
@@ -118,22 +116,19 @@ public class ModBuscarCancionesController implements Initializable {
             });
             menuPlaylist.getItems().add(nuevo);
         }
-        
-        menuBiblioteca.setOnAction(e->{
+
+        menuBiblioteca.setOnAction(e -> {
             parent.agregarBiblioteca(tbCanciones.getSelectionModel().getSelectedItem().getIdCancion());
         });
-        
-        menuInicio.setOnAction(e->{
+
+        menuInicio.setOnAction(e -> {
             parent.agregarInicio(tbCanciones.getSelectionModel().getSelectedItem());
         });
-        
-        menuCola.setOnAction(e->{
+
+        menuCola.setOnAction(e -> {
             parent.agregarFinal(tbCanciones.getSelectionModel().getSelectedItem());
         });
-        
-        
-        
-        
+
         context.getItems().addAll(menuBiblioteca, menuCola, menuInicio, menuRadio, menuPlaylist);
 
         tbCanciones.setContextMenu(context);
@@ -159,7 +154,5 @@ public class ModBuscarCancionesController implements Initializable {
     public void setRb(ResourceBundle rb) {
         this.rb = rb;
     }
-    
-    
 
 }

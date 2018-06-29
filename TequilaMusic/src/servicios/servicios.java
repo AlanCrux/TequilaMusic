@@ -54,7 +54,7 @@ public class servicios {
 
     public java.util.List<Genero> obtenerGenerosUsuario(java.lang.String correo) throws org.apache.thrift.TException;
 
-    public java.util.List<CancionSL> obtenerCancionesGenero(int idGenero) throws org.apache.thrift.TException;
+    public java.util.List<CancionSL> obtenerCancionesGenero(int idGenero, java.lang.String correo) throws org.apache.thrift.TException;
 
     public java.util.List<CancionSL> crearRadio(int idGenero) throws org.apache.thrift.TException;
 
@@ -116,7 +116,7 @@ public class servicios {
 
     public void obtenerGenerosUsuario(java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<Genero>> resultHandler) throws org.apache.thrift.TException;
 
-    public void obtenerCancionesGenero(int idGenero, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException;
+    public void obtenerCancionesGenero(int idGenero, java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException;
 
     public void crearRadio(int idGenero, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException;
 
@@ -638,16 +638,17 @@ public class servicios {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "obtenerGenerosUsuario failed: unknown result");
     }
 
-    public java.util.List<CancionSL> obtenerCancionesGenero(int idGenero) throws org.apache.thrift.TException
+    public java.util.List<CancionSL> obtenerCancionesGenero(int idGenero, java.lang.String correo) throws org.apache.thrift.TException
     {
-      send_obtenerCancionesGenero(idGenero);
+      send_obtenerCancionesGenero(idGenero, correo);
       return recv_obtenerCancionesGenero();
     }
 
-    public void send_obtenerCancionesGenero(int idGenero) throws org.apache.thrift.TException
+    public void send_obtenerCancionesGenero(int idGenero, java.lang.String correo) throws org.apache.thrift.TException
     {
       obtenerCancionesGenero_args args = new obtenerCancionesGenero_args();
       args.setIdGenero(idGenero);
+      args.setCorreo(correo);
       sendBase("obtenerCancionesGenero", args);
     }
 
@@ -1515,24 +1516,27 @@ public class servicios {
       }
     }
 
-    public void obtenerCancionesGenero(int idGenero, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException {
+    public void obtenerCancionesGenero(int idGenero, java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      obtenerCancionesGenero_call method_call = new obtenerCancionesGenero_call(idGenero, resultHandler, this, ___protocolFactory, ___transport);
+      obtenerCancionesGenero_call method_call = new obtenerCancionesGenero_call(idGenero, correo, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class obtenerCancionesGenero_call extends org.apache.thrift.async.TAsyncMethodCall<java.util.List<CancionSL>> {
       private int idGenero;
-      public obtenerCancionesGenero_call(int idGenero, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private java.lang.String correo;
+      public obtenerCancionesGenero_call(int idGenero, java.lang.String correo, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.idGenero = idGenero;
+        this.correo = correo;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("obtenerCancionesGenero", org.apache.thrift.protocol.TMessageType.CALL, 0));
         obtenerCancionesGenero_args args = new obtenerCancionesGenero_args();
         args.setIdGenero(idGenero);
+        args.setCorreo(correo);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -2371,7 +2375,7 @@ public class servicios {
 
       public obtenerCancionesGenero_result getResult(I iface, obtenerCancionesGenero_args args) throws org.apache.thrift.TException {
         obtenerCancionesGenero_result result = new obtenerCancionesGenero_result();
-        result.success = iface.obtenerCancionesGenero(args.idGenero);
+        result.success = iface.obtenerCancionesGenero(args.idGenero, args.correo);
         return result;
       }
     }
@@ -3947,7 +3951,7 @@ public class servicios {
       }
 
       public void start(I iface, obtenerCancionesGenero_args args, org.apache.thrift.async.AsyncMethodCallback<java.util.List<CancionSL>> resultHandler) throws org.apache.thrift.TException {
-        iface.obtenerCancionesGenero(args.idGenero,resultHandler);
+        iface.obtenerCancionesGenero(args.idGenero, args.correo,resultHandler);
       }
     }
 
@@ -20226,15 +20230,18 @@ public class servicios {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("obtenerCancionesGenero_args");
 
     private static final org.apache.thrift.protocol.TField ID_GENERO_FIELD_DESC = new org.apache.thrift.protocol.TField("idGenero", org.apache.thrift.protocol.TType.I32, (short)1);
+    private static final org.apache.thrift.protocol.TField CORREO_FIELD_DESC = new org.apache.thrift.protocol.TField("correo", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new obtenerCancionesGenero_argsStandardSchemeFactory();
     private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new obtenerCancionesGenero_argsTupleSchemeFactory();
 
     public int idGenero; // required
+    public java.lang.String correo; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      ID_GENERO((short)1, "idGenero");
+      ID_GENERO((short)1, "idGenero"),
+      CORREO((short)2, "correo");
 
       private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -20251,6 +20258,8 @@ public class servicios {
         switch(fieldId) {
           case 1: // ID_GENERO
             return ID_GENERO;
+          case 2: // CORREO
+            return CORREO;
           default:
             return null;
         }
@@ -20298,6 +20307,8 @@ public class servicios {
       java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new java.util.EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.ID_GENERO, new org.apache.thrift.meta_data.FieldMetaData("idGenero", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.CORREO, new org.apache.thrift.meta_data.FieldMetaData("correo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(obtenerCancionesGenero_args.class, metaDataMap);
     }
@@ -20306,11 +20317,13 @@ public class servicios {
     }
 
     public obtenerCancionesGenero_args(
-      int idGenero)
+      int idGenero,
+      java.lang.String correo)
     {
       this();
       this.idGenero = idGenero;
       setIdGeneroIsSet(true);
+      this.correo = correo;
     }
 
     /**
@@ -20319,6 +20332,9 @@ public class servicios {
     public obtenerCancionesGenero_args(obtenerCancionesGenero_args other) {
       __isset_bitfield = other.__isset_bitfield;
       this.idGenero = other.idGenero;
+      if (other.isSetCorreo()) {
+        this.correo = other.correo;
+      }
     }
 
     public obtenerCancionesGenero_args deepCopy() {
@@ -20329,6 +20345,7 @@ public class servicios {
     public void clear() {
       setIdGeneroIsSet(false);
       this.idGenero = 0;
+      this.correo = null;
     }
 
     public int getIdGenero() {
@@ -20354,6 +20371,30 @@ public class servicios {
       __isset_bitfield = org.apache.thrift.EncodingUtils.setBit(__isset_bitfield, __IDGENERO_ISSET_ID, value);
     }
 
+    public java.lang.String getCorreo() {
+      return this.correo;
+    }
+
+    public obtenerCancionesGenero_args setCorreo(java.lang.String correo) {
+      this.correo = correo;
+      return this;
+    }
+
+    public void unsetCorreo() {
+      this.correo = null;
+    }
+
+    /** Returns true if field correo is set (has been assigned a value) and false otherwise */
+    public boolean isSetCorreo() {
+      return this.correo != null;
+    }
+
+    public void setCorreoIsSet(boolean value) {
+      if (!value) {
+        this.correo = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, java.lang.Object value) {
       switch (field) {
       case ID_GENERO:
@@ -20364,6 +20405,14 @@ public class servicios {
         }
         break;
 
+      case CORREO:
+        if (value == null) {
+          unsetCorreo();
+        } else {
+          setCorreo((java.lang.String)value);
+        }
+        break;
+
       }
     }
 
@@ -20371,6 +20420,9 @@ public class servicios {
       switch (field) {
       case ID_GENERO:
         return getIdGenero();
+
+      case CORREO:
+        return getCorreo();
 
       }
       throw new java.lang.IllegalStateException();
@@ -20385,6 +20437,8 @@ public class servicios {
       switch (field) {
       case ID_GENERO:
         return isSetIdGenero();
+      case CORREO:
+        return isSetCorreo();
       }
       throw new java.lang.IllegalStateException();
     }
@@ -20413,6 +20467,15 @@ public class servicios {
           return false;
       }
 
+      boolean this_present_correo = true && this.isSetCorreo();
+      boolean that_present_correo = true && that.isSetCorreo();
+      if (this_present_correo || that_present_correo) {
+        if (!(this_present_correo && that_present_correo))
+          return false;
+        if (!this.correo.equals(that.correo))
+          return false;
+      }
+
       return true;
     }
 
@@ -20421,6 +20484,10 @@ public class servicios {
       int hashCode = 1;
 
       hashCode = hashCode * 8191 + idGenero;
+
+      hashCode = hashCode * 8191 + ((isSetCorreo()) ? 131071 : 524287);
+      if (isSetCorreo())
+        hashCode = hashCode * 8191 + correo.hashCode();
 
       return hashCode;
     }
@@ -20439,6 +20506,16 @@ public class servicios {
       }
       if (isSetIdGenero()) {
         lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.idGenero, other.idGenero);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = java.lang.Boolean.valueOf(isSetCorreo()).compareTo(other.isSetCorreo());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetCorreo()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.correo, other.correo);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -20465,6 +20542,14 @@ public class servicios {
 
       sb.append("idGenero:");
       sb.append(this.idGenero);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("correo:");
+      if (this.correo == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.correo);
+      }
       first = false;
       sb.append(")");
       return sb.toString();
@@ -20519,6 +20604,14 @@ public class servicios {
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
+            case 2: // CORREO
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.correo = iprot.readString();
+                struct.setCorreoIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -20537,6 +20630,11 @@ public class servicios {
         oprot.writeFieldBegin(ID_GENERO_FIELD_DESC);
         oprot.writeI32(struct.idGenero);
         oprot.writeFieldEnd();
+        if (struct.correo != null) {
+          oprot.writeFieldBegin(CORREO_FIELD_DESC);
+          oprot.writeString(struct.correo);
+          oprot.writeFieldEnd();
+        }
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
@@ -20558,19 +20656,29 @@ public class servicios {
         if (struct.isSetIdGenero()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetCorreo()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
         if (struct.isSetIdGenero()) {
           oprot.writeI32(struct.idGenero);
+        }
+        if (struct.isSetCorreo()) {
+          oprot.writeString(struct.correo);
         }
       }
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, obtenerCancionesGenero_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
-        java.util.BitSet incoming = iprot.readBitSet(1);
+        java.util.BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           struct.idGenero = iprot.readI32();
           struct.setIdGeneroIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.correo = iprot.readString();
+          struct.setCorreoIsSet(true);
         }
       }
     }

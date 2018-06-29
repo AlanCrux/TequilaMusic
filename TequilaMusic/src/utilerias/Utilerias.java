@@ -1,5 +1,8 @@
 package utilerias;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -18,13 +21,18 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import javax.imageio.ImageIO;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -32,6 +40,7 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+import org.controlsfx.control.Notifications;
 import presentacion.controladores.IUInicioController;
 import servicios.servicios;
 
@@ -172,7 +181,7 @@ public class Utilerias {
         } catch (IOException ex) {
             return false;
         }
-        
+
     }
 
     public static void mostrarErrorConexion(AnchorPane contentError) {
@@ -264,5 +273,36 @@ public class Utilerias {
         TProtocol protocol = servidor.getInputProtocol();
         TTransport transport = protocol.getTransport();
         transport.close();
+    }
+
+    public static void showNotification(String title, String text, Pos pos) {
+        Notifications notification;
+        notification = Notifications.create().title(title).text(text).hideAfter(Duration.seconds(2)).position(pos);
+        notification.show();
+    }
+
+    public static void displayInformation(String title, String message) {
+        Stage primaryStage = new Stage();
+        StackPane stackPane = new StackPane();
+        stackPane.setStyle("-fx-background-color: #E8F8F5;");
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text(title));
+        content.setBody(new Text(message));
+
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+
+        JFXButton button = new JFXButton("Aceptar");
+        button.setOnAction((ActionEvent event) -> {
+            dialog.close();
+            primaryStage.close();
+        });
+        content.setActions(button);
+
+        Scene scene = new Scene(stackPane);
+
+        primaryStage.setScene(scene);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
+        dialog.show();
+        primaryStage.show();
     }
 }

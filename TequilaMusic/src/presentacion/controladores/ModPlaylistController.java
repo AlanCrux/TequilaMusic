@@ -62,10 +62,11 @@ public class ModPlaylistController implements Initializable {
 
     private Playlist playlist;
     private ResourceBundle rb;
-    private IUReproductorController parent; 
+    private IUReproductorController parent;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
@@ -76,18 +77,20 @@ public class ModPlaylistController implements Initializable {
         tbcArtista.setCellValueFactory(new PropertyValueFactory<>("artista"));
         tbcAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
         tbCanciones.setPlaceholder(new Label("No has agregado canciones a esta playlist"));
-        
+
         cargarDatosPlaylist(obtenerCanciones(playlist.getIdPlaylist()));
     }
 
     /**
      * Carga los datos de la playlist en la interfaz gráfica.
-     * @param canciones 
+     *
+     * @param canciones
      */
     public void cargarDatosPlaylist(List<CancionSL> canciones) {
         imgPortada.setImage(Utilerias.byteToImage(playlist.getImagen()));
         tfNombre.setText(playlist.getNombre());
         taDescripcion.setText(playlist.getDescripcion());
+        canciones = obtenerCanciones(playlist.getIdPlaylist());
         if (canciones.size() > 1) {
             tfResumen.setText(canciones.size() + " canciones");
         } else {
@@ -95,16 +98,18 @@ public class ModPlaylistController implements Initializable {
         }
         tbCanciones.setItems(FXCollections.observableList(canciones));
     }
-    
+
     /**
-     * Invoca un servicio para recuperar de la base de datos las canciones asignadas a un playlist. 
+     * Invoca un servicio para recuperar de la base de datos las canciones
+     * asignadas a un playlist.
+     *
      * @param idPlaylist
-     * @return 
+     * @return
      */
-    public List<CancionSL> obtenerCanciones(int idPlaylist){
-        List<CancionSL> canciones = new ArrayList<>(); 
+    public List<CancionSL> obtenerCanciones(int idPlaylist) {
+        List<CancionSL> canciones = new ArrayList<>();
         int port = Integer.parseInt(rb.getString("dataport"));
-            String host = rb.getString("datahost");
+        String host = rb.getString("datahost");
         try {
             Client servicios = Utilerias.conectar(host, port);
             canciones = servicios.obtenerCancionesPlaylist(idPlaylist);
@@ -114,7 +119,7 @@ public class ModPlaylistController implements Initializable {
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return canciones; 
+        return canciones;
     }
 
     @FXML
@@ -150,7 +155,7 @@ public class ModPlaylistController implements Initializable {
         imgPortada.setDisable(true);
         hpEditar.setVisible(true);
     }
-    
+
     @FXML
     private void onCancelar(ActionEvent event) {
         btnGuardar.setVisible(false);
@@ -187,7 +192,7 @@ public class ModPlaylistController implements Initializable {
             servicios.eliminarCancionPlaylist(idCancion);
             Utilerias.closeServer(servicios);
             tbCanciones.getItems().clear();
-            
+
             cargarDatosPlaylist(obtenerCanciones(playlist.getIdPlaylist()));
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
@@ -202,5 +207,4 @@ public class ModPlaylistController implements Initializable {
         this.parent = parent;
     }
 
-    
 }

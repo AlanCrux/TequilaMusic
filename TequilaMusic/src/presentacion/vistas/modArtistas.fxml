@@ -14,7 +14,7 @@
          </font>
       </Label>
       <VBox fx:id="listArtistas" layoutX="14.0" layoutY="49.0" prefHeight="340.0" prefWidth="281.0" spacing="5.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="50.0" />
-      <VBox fx:id="listCanciones" layoutX="299.0" layoutY="7.0" prefHeight="388.0" prefWidth="301.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <VBox fx:id="listCanciones" layoutX="294.0" layoutY="7.0" prefHeight="400.0" prefWidth="306.0" style="-fx-background-color: #F4F6F6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="294.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
    </children>
    <cursor>
       <Cursor fx:constant="HAND" />

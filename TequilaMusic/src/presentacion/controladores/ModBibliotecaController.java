@@ -9,7 +9,9 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -61,6 +63,8 @@ public class ModBibliotecaController implements Initializable {
         tbcPuntuacion.setCellValueFactory(new PropertyValueFactory<>("puntuacionGrafica"));
         tbCanciones.setPlaceholder(new Label("No has agregado canciones a tu biblioteca"));
         tbCanciones.setItems(FXCollections.observableList(obtenerCanciones()));
+        
+        addContextMenu();
     }
 
     public void setParent(IUReproductorController parent) {
@@ -84,13 +88,25 @@ public class ModBibliotecaController implements Initializable {
         } catch (TException ex) {
             Logger.getLogger(ModBibliotecaController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        int size = listaCanciones.size(); 
-        
+
+        int size = listaCanciones.size();
+
         for (int i = 0; i < size; i++) {
             listaCanciones.get(i).setCorreoUsuario(correo);
         }
         return listaCanciones;
+    }
+
+    public void addContextMenu() {
+        ContextMenu context = new ContextMenu();
+        MenuItem descargar = new MenuItem("Descargar");
+
+        descargar.setOnAction(e -> {
+            parent.descargarCancion(tbCanciones.getSelectionModel().getSelectedItem());
+        });
+        context.getItems().addAll(descargar);
+
+        tbCanciones.setContextMenu(context);
     }
 
 }
