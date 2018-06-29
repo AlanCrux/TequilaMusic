@@ -5,9 +5,10 @@
     -fx-padding: 0;
     -fx-table-rippler-color : rgba(255, 0, 0, 0.9);
     -fx-font: 14px "Avenir book";
+    -fx-alignment: CENTER_LEFT;
+    -fx-text-alignment: left;
     -fx-background-color:  #ECF0F1;
 }
-
 
 .table-view:focused .table-row-cell:selected {
     -fx-background-color: -fx-table-color  ;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="55.0" prefWidth="500.0" style="-fx-border-color: transparent; -fx-background-color: #D1F2EB;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171">
+   <children>
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../Downloads/268x0w-2.jpg" />
+         </image>
+      </ImageView>
+      <Separator layoutX="2.0" layoutY="2.0" prefHeight="0.0" prefWidth="498.0" style="-fx-background-color: green;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+      <Separator layoutX="12.0" layoutY="12.0" prefHeight="0.0" prefWidth="498.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <Label layoutX="67.0" layoutY="7.0" text="Just give me a reason">
+         <font>
+            <Font name="Avenir Heavy" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="67.0" layoutY="25.0" text="The truth about love">
+         <font>
+            <Font name="Avenir Book" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

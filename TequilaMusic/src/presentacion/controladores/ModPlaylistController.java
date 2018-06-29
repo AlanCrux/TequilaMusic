@@ -1,6 +1,7 @@
 package presentacion.controladores;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextArea;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class ModPlaylistController implements Initializable {
     @FXML
     private TextField tfResumen;
     @FXML
-    private TextArea taDescripcion;
+    private JFXTextArea taDescripcion;
     @FXML
     private Hyperlink hpEditar;
     @FXML
@@ -147,8 +148,6 @@ public class ModPlaylistController implements Initializable {
         btnCancelar.setVisible(false);
         tfNombre.setEditable(false);
         taDescripcion.setEditable(false);
-        tfNombre.setStyle("-fx-background-color: transparent");
-        taDescripcion.setStyle("-fx-background-color: transparent");
         imgPortada.setDisable(true);
         hpEditar.setVisible(true);
     }
@@ -159,8 +158,6 @@ public class ModPlaylistController implements Initializable {
         btnCancelar.setVisible(false);
         tfNombre.setEditable(false);
         taDescripcion.setEditable(false);
-        tfNombre.setStyle("-fx-background-color: transparent");
-        taDescripcion.setStyle("-fx-background-color: transparent");
         imgPortada.setDisable(true);
     }
 
@@ -188,7 +185,7 @@ public class ModPlaylistController implements Initializable {
         String host = rb.getString("datahost");
         try {
             Client servicios = Utilerias.conectar(host, port);
-            servicios.elimnarCancionPlaylist(idCancion);
+            servicios.eliminarCancionPlaylist(idCancion);
             Utilerias.closeServer(servicios);
             tbCanciones.getItems().clear();
             

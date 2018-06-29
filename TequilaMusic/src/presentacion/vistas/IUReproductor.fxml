@@ -18,17 +18,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="AnchorPane" prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #d7d7d7;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="45.0" AnchorPane.topAnchor="15.0">
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="55.0" AnchorPane.topAnchor="15.0">
                <image>
                   <Image url="@../../recursos/iconos/icon_volumen.png" />
                </image>
             </ImageView>
-            <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" stylesheets="@../../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="17.0" />
-            <AnchorPane layoutX="563.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="57.0" AnchorPane.topAnchor="8.0">
+            <Slider fx:id="sliderVolumen" layoutX="45.0" layoutY="15.0" prefWidth="150.0" stylesheets="@../../recursos/estilos/tequilaStyle.css" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="17.0" />
+            <AnchorPane layoutX="563.0" layoutY="8.0" prefHeight="30.0" prefWidth="180.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-border-radius: 30;" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="8.0">
                <children>
                   <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="9.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="149.0" AnchorPane.topAnchor="4.0">
                      <image>
@@ -54,12 +54,12 @@
                   </ImageView>
                </children>
             </HBox>
-            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="752.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="10.0">
+            <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="752.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="10.0">
                <image>
                   <Image url="@../../recursos/iconos/avatar1.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imgPerfil" fitHeight="22.0" fitWidth="22.0" layoutX="767.0" layoutY="19.0" onMouseClicked="#onAjustes" onMouseEntered="#mostrarFlechaPerfil" onMouseExited="#ocultarFlechaPerfil" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="11.0">
+            <ImageView fx:id="imgPerfil" fitHeight="22.0" fitWidth="22.0" layoutX="767.0" layoutY="19.0" onMouseClicked="#onAjustes" onMouseEntered="#mostrarFlechaPerfil" onMouseExited="#ocultarFlechaPerfil" opacity="0.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0">
                <image>
                   <Image url="@../../recursos/iconos/icons8-chevron-abajo-en-círculo-filled-50.png" />
                </image>
@@ -67,7 +67,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#onCola" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="14.0" layoutY="13.0" onMouseClicked="#onCola" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="15.0">
                <image>
                   <Image url="@../../recursos/iconos/playlist-2.png" />
                </image>
@@ -151,7 +151,7 @@
                   </VBox>
                   <AnchorPane fx:id="contentPrincipal" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #D7DBDD;">
                      <children>
-                        <JFXDrawer defaultDrawerSize="500.0" direction="TOP" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <JFXDrawer defaultDrawerSize="500.0" layoutX="441.0" prefHeight="484.0" prefWidth="231.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="441.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children></AnchorPane>
                </items>
             </SplitPane>

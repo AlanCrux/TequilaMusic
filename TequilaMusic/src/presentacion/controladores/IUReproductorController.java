@@ -332,6 +332,7 @@ public class IUReproductorController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modPlaylist.fxml"), rb);
         ModPlaylistController controller = new ModPlaylistController();
         controller.setPlaylist(seleccionada);
+        controller.setParent(this);
         loader.setController(controller);
 
         try {
@@ -511,6 +512,10 @@ public class IUReproductorController implements Initializable {
     }
     
     public void reproducir(CancionSL cancion){
+        if (play) {
+          reproductionThread.interrupt();
+          mediaPlayer.stop();
+        }
         currentTime = 100; 
         Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
         String ruta = cancion.getRuta();
@@ -594,8 +599,10 @@ public class IUReproductorController implements Initializable {
         historial.setFecha(s);
         try {
             servicios = Utilerias.conectar(host, port);
-            servicios.eliminarCancionHistorial(cancion.getIdCancion());
-            servicios.insertarCancionHistorial(historial);
+            if (servicios.eliminarCancionHistorial(cancion.getIdCancion())) {
+                servicios.insertarCancionHistorial(historial);
+            }
+            
             Utilerias.closeServer(servicios);
 
         } catch (TTransportException ex) {
