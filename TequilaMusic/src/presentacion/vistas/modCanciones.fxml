@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="548.0" prefWidth="576.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView fx:id="tablaCanciones" prefHeight="548.0" prefWidth="576.0" stylesheets="@../../recursos/estilos/tableView.css">
+        <columns>
+          <TableColumn fx:id="tcTitulo" prefWidth="183.0" text="Titulo" />
+          <TableColumn fx:id="tcAlbum" prefWidth="201.0" text="Álbum" />
+            <TableColumn fx:id="tcGenero" prefWidth="192.0" text="Genero" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

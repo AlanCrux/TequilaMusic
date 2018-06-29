@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/alan/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/IUReproductorController.java</file>
-            <file>file:/Users/alan/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/ModBibliotecaController.java</file>
-            <file>file:/Users/alan/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/ModBuscarCancionesController.java</file>
-            <file>file:/Users/alan/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/IUAgregarPlaylistController.java</file>
+            <file>file:/C:/Users/Esmeralda/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/IUReproductorController.java</file>
+            <file>file:/C:/Users/Esmeralda/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/vistas/modCanciones.fxml</file>
+            <file>file:/C:/Users/Esmeralda/Documents/GitHub/TequilaMusic/TequilaMusic/src/tequilamusic/TequilaMusic.java</file>
+            <file>file:/C:/Users/Esmeralda/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/vistas/modBuscarCanciones.fxml</file>
+            <file>file:/C:/Users/Esmeralda/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/IUInicioController.java</file>
+            <file>file:/C:/Users/Esmeralda/Documents/GitHub/TequilaMusic/TequilaMusic/src/presentacion/controladores/IUArtistaController.java</file>
         </group>
     </open-files>
 </project-private>
