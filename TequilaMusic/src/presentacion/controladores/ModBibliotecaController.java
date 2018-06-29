@@ -1,9 +1,12 @@
 package presentacion.controladores;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -11,6 +14,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import servicios.CancionSL;
 import servicios.servicios;
@@ -38,6 +42,7 @@ public class ModBibliotecaController implements Initializable {
 
     private ResourceBundle rb;
     private IUReproductorController parent;
+    private String correo;
 
     /**
      * Initializes the controller class.
@@ -53,21 +58,39 @@ public class ModBibliotecaController implements Initializable {
         tbcAlbum.setCellValueFactory(new PropertyValueFactory<>("album"));
         tbcGenero.setCellValueFactory(new PropertyValueFactory<>("genero"));
         tbcPuntuacion.setCellValueFactory(new PropertyValueFactory<>("album"));
-        tbCanciones.setPlaceholder(new Label("No has agregado canciones a esta playlist"));
+        tbcPuntuacion.setCellValueFactory(new PropertyValueFactory<>("puntuacionGrafica"));
+        tbCanciones.setPlaceholder(new Label("No has agregado canciones a tu biblioteca"));
+        tbCanciones.setItems(FXCollections.observableList(obtenerCanciones()));
     }
 
     public void setParent(IUReproductorController parent) {
         this.parent = parent;
     }
 
-    public void obtenerCanciones() {
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public List<CancionSL> obtenerCanciones() {
         int port = Integer.parseInt(rb.getString("dataport"));
         String host = rb.getString("datahost");
+        List<CancionSL> listaCanciones = new ArrayList<>();
         try {
             servicios.Client servicios = Utilerias.conectar(host, port);
+            listaCanciones = servicios.obtenerCancionesBiblioteca(correo);
+            Utilerias.closeServer(servicios);
         } catch (TTransportException ex) {
             Logger.getLogger(ModBibliotecaController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TException ex) {
+            Logger.getLogger(ModBibliotecaController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        int size = listaCanciones.size(); 
+        
+        for (int i = 0; i < size; i++) {
+            listaCanciones.get(i).setCorreoUsuario(correo);
+        }
+        return listaCanciones;
     }
 
 }

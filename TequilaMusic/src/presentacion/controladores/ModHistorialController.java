@@ -48,7 +48,6 @@ public class ModHistorialController implements Initializable {
         List<CancionSL> canciones = obtenerCanciones(); 
         NodeCancionController controller; 
         int size = canciones.size();
-        System.out.println(size);
         for (int i = 0; i < size; i++) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/nodeCancion.fxml"));
             controller = new NodeCancionController(); 

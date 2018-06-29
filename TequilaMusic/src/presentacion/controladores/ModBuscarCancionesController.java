@@ -118,6 +118,22 @@ public class ModBuscarCancionesController implements Initializable {
             });
             menuPlaylist.getItems().add(nuevo);
         }
+        
+        menuBiblioteca.setOnAction(e->{
+            parent.agregarBiblioteca(tbCanciones.getSelectionModel().getSelectedItem().getIdCancion());
+        });
+        
+        menuInicio.setOnAction(e->{
+            parent.agregarInicio(tbCanciones.getSelectionModel().getSelectedItem());
+        });
+        
+        menuCola.setOnAction(e->{
+            parent.agregarFinal(tbCanciones.getSelectionModel().getSelectedItem());
+        });
+        
+        
+        
+        
         context.getItems().addAll(menuBiblioteca, menuCola, menuInicio, menuRadio, menuPlaylist);
 
         tbCanciones.setContextMenu(context);

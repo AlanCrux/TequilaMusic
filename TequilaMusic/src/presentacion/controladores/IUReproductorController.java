@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
+import servicios.Biblioteca;
 import servicios.CancionSL;
 import servicios.Historial;
 import servicios.Playlist;
@@ -119,10 +121,12 @@ public class IUReproductorController implements Initializable {
     private boolean isBuscarCanciones;
     private boolean isHistorial;
     private boolean isModCanciones;
+    private boolean isModArtistas;
 
     // Controladores de algunas ventanas
     IUAgregarPlaylistController controllerNuevaLista;
     ModBuscarCancionesController controllerBuscarCanciones;
+    ModColaController controllerCola;
 
     // Colas de reproducción 
     private List<CancionSL> resultadosBusqueda;
@@ -132,13 +136,13 @@ public class IUReproductorController implements Initializable {
     // Objetos para reproducción de audio
     Media hit;
     MediaPlayer mediaPlayer;
-    
+
     // Variables para control del progreso
     private static final int LIMITE_CANCION = 100;
     private double currentTime = 0;
     private Task progressTask;
-    private Thread reproductionThread; 
-    private boolean play; 
+    private Thread reproductionThread;
+    private boolean play;
 
     /**
      * Initializes the controller class.
@@ -159,6 +163,7 @@ public class IUReproductorController implements Initializable {
         listas = obtenerPlaylist(usuario.getCorreo());
         cargarPlaylist(listas);
         addContextMenu(listPlaylist);
+        controllerCola = new ModColaController();
     }
 
     public void actualizarListas() {
@@ -206,8 +211,10 @@ public class IUReproductorController implements Initializable {
         String seleccionado = listOpciones.getSelectionModel().getSelectedItem().getText();
         switch (seleccionado) {
             case "Canciones":
+                cargarModCanciones();
                 break;
             case "Artistas":
+                cargarModArtistas();
                 break;
             case "Álbumes":
                 break;
@@ -238,6 +245,7 @@ public class IUReproductorController implements Initializable {
             isBuscarCanciones = true;
             isHistorial = false;
             isModCanciones = false;
+            isModArtistas = false;
         } else {
             controllerBuscarCanciones.mostrarResultados(criterio);
         }
@@ -249,23 +257,41 @@ public class IUReproductorController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modBiblioteca.fxml"), rb);
             ModBibliotecaController controller = new ModBibliotecaController();
             controller.setParent(this);
+            controller.setCorreo(usuario.getCorreo());
             loader.setController(controller);
 
             try {
-                Utilerias.fadeTransition(contentPrincipal, 300);
+                Utilerias.fadeTransition(contentPrincipal, 750);
                 contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
-
             } catch (IOException ex) {
                 Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
             }
             isBuscarCanciones = false;
             isHistorial = false;
             isModCanciones = true;
+            isModArtistas = false;
         }
     }
 
     public void cargarModArtistas() {
+        if (!isModArtistas) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modArtistas.fxml"), rb);
+            ModArtistasController controller = new ModArtistasController();
+            controller.setParent(this);
+            controller.setCorreo(usuario.getCorreo());
+            loader.setController(controller);
 
+            try {
+                Utilerias.fadeTransition(contentPrincipal, 750);
+                contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isBuscarCanciones = false;
+            isHistorial = false;
+            isModCanciones = false;
+            isModArtistas = true;
+        }
     }
 
     public void cargarModAlbumes() {
@@ -292,6 +318,7 @@ public class IUReproductorController implements Initializable {
             isHistorial = true;
             isBuscarCanciones = false;
             isModCanciones = false;
+            isModArtistas = false;
         }
     }
 
@@ -384,15 +411,13 @@ public class IUReproductorController implements Initializable {
     private void onActionPlay(MouseEvent event) {
         if (play) {
             mediaPlayer.pause();
-            play = false; 
-        }else{
+            play = false;
+        } else {
             mediaPlayer.play();
             play = true;
         }
-        
+
     }
-    
-    
 
     @FXML
     private void onActionNext(MouseEvent event) {
@@ -504,36 +529,39 @@ public class IUReproductorController implements Initializable {
     }
 
     public void cargarDatosCancion(CancionSL cancion) {
-        lbNombreCancion.setText(cancion.getTitulo());
-        lbArtistas.setText(cancion.getArtista());
-        imgDisco.setImage(Utilerias.byteToImage(cancion.getImagenAlbum()));
+        Platform.runLater(() -> {
+            lbNombreCancion.setText(cancion.getTitulo());
+            lbArtistas.setText(cancion.getArtista());
+            imgDisco.setImage(Utilerias.byteToImage(cancion.getImagenAlbum()));
+        });
+
         agregarHistorial(cancion);
         reproducir(cancion);
     }
-    
-    public void reproducir(CancionSL cancion){
+
+    public void reproducir(CancionSL cancion) {
         if (play) {
-          reproductionThread.interrupt();
-          mediaPlayer.stop();
+            reproductionThread.interrupt();
+            mediaPlayer.stop();
         }
-        currentTime = 100; 
+        currentTime = 100;
         Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
         String ruta = cancion.getRuta();
         String home = System.getProperty("user.home");
         home = home + "/Downloads/" + cancion.getIdCancion() + ".mp3";
         Utilerias.bajarCancion(ruta, home, streaming);
-        hit = new Media(new File(home).toURI().toString()); 
+        hit = new Media(new File(home).toURI().toString());
         enlazarBarra();
         mediaPlayer = new MediaPlayer(hit);
         mediaPlayer.play();
-        
+
         btnPlay.setDisable(false);
         btnAnterior.setDisable(false);
         btnSiguiente.setDisable(false);
         btnAleatorio.setDisable(false);
         btnRepetir.setDisable(false);
-        play = true; 
-        
+        play = true;
+
     }
 
     /**
@@ -602,7 +630,7 @@ public class IUReproductorController implements Initializable {
             if (servicios.eliminarCancionHistorial(cancion.getIdCancion())) {
                 servicios.insertarCancionHistorial(historial);
             }
-            
+
             Utilerias.closeServer(servicios);
 
         } catch (TTransportException ex) {
@@ -615,21 +643,26 @@ public class IUReproductorController implements Initializable {
     public void setResultadosBusqueda(List<CancionSL> resultadosBusqueda) {
         this.resultadosBusqueda = resultadosBusqueda;
     }
-    
+
     /**
-     * Enlaza la ProgressBar de la IU a una tarea en especifico. 
+     * Enlaza la ProgressBar de la IU a una tarea en especifico.
      */
-    public void enlazarBarra(){
-        progressTask = reproductionTask(); 
+    public void enlazarBarra() {
+        progressTask = reproductionTask();
         pbCancion.progressProperty().unbind();
-        pbCancion.progressProperty().bind(progressTask.progressProperty());
+        Platform.runLater(()->{
+            pbCancion.progressProperty().bind(progressTask.progressProperty());
+        });
+        
         reproductionThread = new Thread(progressTask);
         reproductionThread.start();
     }
 
     /**
-     * Genera un task para la reproducción de medios, actualizando la variable progreso cada medio segundo.
-     * @return el task generado. 
+     * Genera un task para la reproducción de medios, actualizando la variable
+     * progreso cada medio segundo.
+     *
+     * @return el task generado.
      */
     public Task reproductionTask() {
         return new Task() {
@@ -647,13 +680,39 @@ public class IUReproductorController implements Initializable {
                         currentTime = Double.parseDouble(progress);
                         updateProgress(currentTime, LIMITE_CANCION);
                     } catch (InterruptedException | NumberFormatException ex) {
-                        
+
                     }
                 } while (currentTime < LIMITE_CANCION);
-                
+                CancionSL siguiente = controllerCola.obtenerSiguiente();
+                cargarDatosCancion(siguiente);
                 return null;
             }
         };
+    }
+
+    public void agregarFinal(CancionSL cancion) {
+        controllerCola.agregarFinal(cancion);
+    }
+
+    public void agregarInicio(CancionSL cancion) {
+        controllerCola.agregarInicio(cancion);
+    }
+
+    public void agregarBiblioteca(int idCancion) {
+       int port = Integer.parseInt(rb.getString("dataport"));
+        String host = rb.getString("datahost");
+
+        Biblioteca biblioteca = new Biblioteca(); 
+        biblioteca.setCorreo(usuario.getCorreo());
+        biblioteca.setIdCancion(idCancion); 
+        try {
+            Client servicios = Utilerias.conectar(host, port);
+            if (!servicios.insertarCancionBiblioteca(biblioteca)) {
+                System.out.println("YA EXISTE EN TU BIBLIOTECA");
+            }
+        } catch (TException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

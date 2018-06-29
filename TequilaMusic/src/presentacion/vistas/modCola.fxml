@@ -24,6 +24,6 @@
          </textFill>
       </Label>
       <Separator layoutX="25.0" layoutY="52.0" prefWidth="200.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
-      <JFXListView layoutX="26.0" layoutY="55.0" prefHeight="355.0" prefWidth="547.0" stylesheets="@../../recursos/estilos/colaStyle.css" />
+      <JFXListView fx:id="listCanciones" layoutX="26.0" layoutY="55.0" prefHeight="355.0" prefWidth="547.0" stylesheets="@../../recursos/estilos/colaStyle.css" />
    </children>
 </AnchorPane>
