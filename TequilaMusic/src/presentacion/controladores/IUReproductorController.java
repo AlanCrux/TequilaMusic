@@ -575,7 +575,7 @@ public class IUReproductorController implements Initializable {
             mediaPlayer.stop();
         }
         currentTime = 0;
-        Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
+        
         // La ruta de la canción en la BD
         String ruta = cancion.getRuta();
         // La ruta temporal en el cliente
@@ -591,6 +591,7 @@ public class IUReproductorController implements Initializable {
             fichero = new File(home);
             if (!fichero.exists()) {
                 System.out.println("SE DESCARGO EN TEMPORAL");
+                Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
                 Utilerias.bajarCancion(ruta, home, streaming);
             }
         } else {
