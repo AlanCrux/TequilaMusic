@@ -25,6 +25,17 @@ public class Cancion implements org.apache.thrift.TBase<Cancion, Cancion._Fields
   public java.lang.String ruta; // required
   public int idAlbum; // required
   public int idGenero; // required
+  public String rutaOriginal;
+
+    public String getRutaOriginal() {
+        return rutaOriginal;
+    }
+
+    public void setRutaOriginal(String rutaOriginal) {
+        this.rutaOriginal = rutaOriginal;
+    }
+  
+  
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {

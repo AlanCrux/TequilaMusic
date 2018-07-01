@@ -8,6 +8,9 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -305,4 +308,35 @@ public class Utilerias {
         dialog.show();
         primaryStage.show();
     }
+    
+    public void subirCancion(String directorioCancion, String rutaAGuardar){
+        int in;
+        try {
+            final File archivoEnviar = new File(directorioCancion);
+            Socket cliente = new Socket("localhost", 1234);
+            BufferedInputStream bufferEntrada = new BufferedInputStream(new FileInputStream(archivoEnviar));
+            BufferedOutputStream bufferSalida = new BufferedOutputStream(cliente.getOutputStream());
+            PrintWriter out = new PrintWriter(cliente.getOutputStream(),true);
+
+            //Enviamos el nombre del fichero
+            out.println(rutaAGuardar);
+            System.out.println(rutaAGuardar);
+            
+            //Enviamos el fichero
+            byte[] byteArray = new byte[8192];
+            while (( in = bufferEntrada.read(byteArray)) != -1) {
+                System.out.println("Enviando cancion...");
+                bufferSalida.write(byteArray, 0, in);
+            }
+
+            bufferEntrada.close();
+            bufferSalida.close();
+            System.out.println("Se envio la cancion");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }
+

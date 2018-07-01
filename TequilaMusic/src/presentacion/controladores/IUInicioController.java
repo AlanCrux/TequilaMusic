@@ -41,7 +41,7 @@ public class IUInicioController implements Initializable {
     private AnchorPane contentError;
 
     private Client servidor;
-    private static final String HOST = "192.168.0.9";
+    private static final String HOST = "192.168.43.214";
     private static final int PUERTO = 9090;
     private static final int TIEMPO_CAMBIO = 10;
     private int TIEMPO_CRONOMETRO = 10;

@@ -145,6 +145,7 @@ public class IUArtistaController implements Initializable {
         controller.setCorreo(usuario.getCorreo());
         controller.setRb(rb);
         controller.setParent(this);
+       controller.setUsuario(usuario);
         loader.setController(controller);
         
         try {
@@ -191,6 +192,7 @@ public class IUArtistaController implements Initializable {
         modNuevoAlbum.setParent(this);
         loader.setController(modNuevoAlbum);
         contentError.setVisible(true);
+        modNuevoAlbum.setUsuario(usuario);
         modNuevoAlbum.mostrarVentana(loader, (Stage) lblArtista.getScene().getWindow());
     }
 
