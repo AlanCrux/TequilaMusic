@@ -66,7 +66,6 @@ public class ModBuscarCancionesController implements Initializable {
             CancionSL seleccionada = tbCanciones.getSelectionModel().getSelectedItem();
             if (event.getClickCount() == 2) {
                 parent.cargarDatosCancion(seleccionada);
-                parent.cargarDatosCancion(seleccionada);
             }
         });
         addContextMenu();

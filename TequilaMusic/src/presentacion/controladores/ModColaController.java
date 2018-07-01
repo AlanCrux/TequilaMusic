@@ -106,10 +106,11 @@ public class ModColaController implements Initializable {
     }
     
     public void imprimirCola(){
+        System.out.println("COLA DE REPRODUCCIÓN --------");
         for (int i = 0; i < colafija.size(); i++) {
             System.out.println(colafija.get(i).getTitulo());
         }
         
-        System.out.println(" ---------------------------- ");
+        System.out.println(" ---------------------------- > ");
     }
 }

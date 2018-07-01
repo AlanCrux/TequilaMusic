@@ -63,7 +63,12 @@ public class ModBibliotecaController implements Initializable {
         tbcPuntuacion.setCellValueFactory(new PropertyValueFactory<>("puntuacionGrafica"));
         tbCanciones.setPlaceholder(new Label("No has agregado canciones a tu biblioteca"));
         tbCanciones.setItems(FXCollections.observableList(obtenerCanciones()));
-        
+        tbCanciones.setOnMouseClicked(event -> {
+            CancionSL seleccionada = tbCanciones.getSelectionModel().getSelectedItem();
+            if (event.getClickCount() == 2) {
+                parent.cargarDatosCancion(seleccionada);
+            }
+        });
         addContextMenu();
     }
 

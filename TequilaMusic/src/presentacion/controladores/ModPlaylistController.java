@@ -79,6 +79,18 @@ public class ModPlaylistController implements Initializable {
         tbCanciones.setPlaceholder(new Label("No has agregado canciones a esta playlist"));
 
         cargarDatosPlaylist(obtenerCanciones(playlist.getIdPlaylist()));
+
+        tbCanciones.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                try {
+                    CancionSL seleccionada = tbCanciones.getSelectionModel().getSelectedItem();
+                    parent.cargarDatosCancion(seleccionada);
+                } catch (Exception ex) {
+
+                }
+            }
+
+        });
     }
 
     /**

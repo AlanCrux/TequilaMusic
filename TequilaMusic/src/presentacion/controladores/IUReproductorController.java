@@ -36,6 +36,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
@@ -112,6 +113,9 @@ public class IUReproductorController implements Initializable {
     private static final String ICON_HISTORIAL = "src/recursos/iconos/corn.png";
     private static final String ICON_PLAYLIST = "src/recursos/iconos/icon_playlist.png";
 
+    private static final String ICON_PLAY = "recursos/iconos/icon_play.png";
+    private static final String ICON_PAUSA = "recursos/iconos/icon_pausa.png";
+
     private ResourceBundle rb;
 
     // Las listas de reproducción del usuario
@@ -124,6 +128,7 @@ public class IUReproductorController implements Initializable {
     private boolean isModCanciones;
     private boolean isModArtistas;
     private boolean isModGeneros;
+    private boolean isModAlbumes; 
 
     // Controladores de algunas ventanas
     IUAgregarPlaylistController controllerNuevaLista;
@@ -147,6 +152,7 @@ public class IUReproductorController implements Initializable {
     private Task progressTask;
     private Thread reproductionThread;
     private boolean play;
+    private CancionSL actual; 
 
     /**
      * Initializes the controller class.
@@ -221,6 +227,7 @@ public class IUReproductorController implements Initializable {
                 cargarModArtistas();
                 break;
             case "Álbumes":
+                cargarModAlbumes();
                 break;
             case "Géneros":
                 cargarModGeneros();
@@ -252,6 +259,7 @@ public class IUReproductorController implements Initializable {
             isModCanciones = false;
             isModArtistas = false;
             isModGeneros = false;
+            isModAlbumes = false; 
         } else {
             controllerBuscarCanciones.mostrarResultados(criterio);
         }
@@ -277,6 +285,7 @@ public class IUReproductorController implements Initializable {
             isModCanciones = true;
             isModArtistas = false;
             isModGeneros = false;
+            isModAlbumes = false;
         }
     }
 
@@ -299,11 +308,30 @@ public class IUReproductorController implements Initializable {
             isModCanciones = false;
             isModArtistas = true;
             isModGeneros = false;
+            isModAlbumes = false; 
         }
     }
 
     public void cargarModAlbumes() {
-
+        if (!isHistorial) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modAlbumBiblioteca.fxml"), rb);
+            ModAlbumBibliotecaController controller = new ModAlbumBibliotecaController();
+            controller.setCorreo(usuario.getCorreo());
+            controller.setParent(this);
+            loader.setController(controller);
+            try {
+                Utilerias.fadeTransition(contentPrincipal, 500);
+                contentPrincipal.getChildren().setAll((FlowPane) loader.load());
+            } catch (IOException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            isHistorial = false;
+            isBuscarCanciones = false;
+            isModCanciones = false;
+            isModArtistas = false;
+            isModGeneros = false; 
+            isModAlbumes = true;
+        }
     }
 
     public void cargarModGeneros() {
@@ -325,6 +353,7 @@ public class IUReproductorController implements Initializable {
             isModCanciones = false;
             isModArtistas = false;
             isModGeneros = true;
+            isModAlbumes = false; 
         }
     }
 
@@ -345,6 +374,8 @@ public class IUReproductorController implements Initializable {
             isBuscarCanciones = false;
             isModCanciones = false;
             isModArtistas = false;
+            isModAlbumes = false; 
+            isModGeneros = false; 
         }
     }
 
@@ -434,14 +465,17 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private void onActionBack(MouseEvent event) {
+        cargarDatosCancion(actual);
     }
 
     @FXML
     private void onActionPlay(MouseEvent event) {
         if (play) {
             mediaPlayer.pause();
+            btnPlay.setImage(new Image(ICON_PAUSA));
             play = false;
         } else {
+            btnPlay.setImage(new Image(ICON_PLAY));
             mediaPlayer.play();
             play = true;
         }
@@ -450,6 +484,10 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private void onActionNext(MouseEvent event) {
+        if (controllerCola.cancionesPendiente() > 0) {
+            CancionSL siguiente = controllerCola.obtenerSiguiente();
+            cargarDatosCancion(siguiente);
+        }
     }
 
     @FXML
@@ -466,7 +504,7 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     public void onCola(MouseEvent event) {
-
+        
     }
 
     /**
@@ -564,18 +602,22 @@ public class IUReproductorController implements Initializable {
             imgDisco.setImage(Utilerias.byteToImage(cancion.getImagenAlbum()));
             Utilerias.showNotification(cancion.getTitulo(), cancion.getArtista(), Pos.TOP_RIGHT);
         });
+        actual = cancion;
 
         agregarHistorial(cancion);
         reproducir(cancion);
     }
 
     public void reproducir(CancionSL cancion) {
+        btnPlay.setDisable(false);
+        btnSiguiente.setDisable(false);
+        btnAnterior.setDisable(false);
         if (play) {
             reproductionThread.interrupt();
             mediaPlayer.stop();
         }
         currentTime = 0;
-        
+
         // La ruta de la canción en la BD
         String ruta = cancion.getRuta();
         // La ruta temporal en el cliente
@@ -585,19 +627,19 @@ public class IUReproductorController implements Initializable {
         // Verificamos si la canción ya fue descargada por el usuario
         String rutaDescarga = DIR_DESC + cancion.getIdCancion() + ".mp3";
         File fichero = new File(rutaDescarga);
-        
+
         if (!fichero.exists()) {
             // Verificamos si ya existe la canción en temporal
             fichero = new File(home);
             if (!fichero.exists()) {
                 System.out.println("SE DESCARGO EN TEMPORAL");
-                Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
+                Socket streaming = Utilerias.conectarStreaming("192.168.43.214", 1234);
                 Utilerias.bajarCancion(ruta, home, streaming);
             }
         } else {
             System.out.println("YA FUE DESCARGADA, CAMBIANDO A DESC");
             // Si ya esta descargada entonces cambiamos la ruta
-            home = rutaDescarga; 
+            home = rutaDescarga;
         }
 
         hit = new Media(new File(home).toURI().toString());
@@ -608,8 +650,6 @@ public class IUReproductorController implements Initializable {
         btnPlay.setDisable(false);
         btnAnterior.setDisable(false);
         btnSiguiente.setDisable(false);
-        btnAleatorio.setDisable(false);
-        btnRepetir.setDisable(false);
         play = true;
 
     }
@@ -787,6 +827,21 @@ public class IUReproductorController implements Initializable {
             Thread hilo = new Thread(bajar);
             Utilerias.showNotification("Descargando", cancion.getTitulo(), Pos.TOP_RIGHT);
             hilo.start();
+
+            int port = Integer.parseInt(rb.getString("dataport"));
+            String host = rb.getString("datahost");
+            Biblioteca biblioteca = new Biblioteca();
+            biblioteca.setIdCancion(cancion.getIdCancion());
+            biblioteca.setCorreo(usuario.getCorreo());
+            biblioteca.setDescargada("true");
+            try {
+                Client servicios = Utilerias.conectar(host, port);
+                servicios.actualizarBiblioteca(biblioteca);
+            } catch (TTransportException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TException ex) {
+                Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

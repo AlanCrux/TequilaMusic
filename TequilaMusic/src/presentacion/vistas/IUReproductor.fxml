@@ -155,29 +155,19 @@
                <children>
                   <HBox alignment="CENTER" layoutX="200.0" layoutY="8.0" prefHeight="40.0" prefWidth="798.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <ImageView fx:id="btnAleatorio" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionRandom" opacity="0.2" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../recursos/iconos/icon_random.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="btnAnterior" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionBack" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="btnAnterior" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionBack" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../recursos/iconos/icon_back.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="btnPlay" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onActionPlay" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="btnPlay" disable="true" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#onActionPlay" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../recursos/iconos/icon_play.png" />
                            </image>
                         </ImageView>
-                        <ImageView fx:id="btnSiguiente" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionNext" opacity="0.2" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="btnSiguiente" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionNext" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../recursos/iconos/icon_adelantar.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView fx:id="btnRepetir" disable="true" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#onActionRepeat" opacity="0.2" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../recursos/iconos/icon_repeat.png" />
                            </image>
                         </ImageView>
                      </children>
