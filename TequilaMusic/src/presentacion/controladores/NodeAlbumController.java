@@ -21,6 +21,7 @@ import javafx.scene.layout.Pane;
 import servicios.AlbumSL;
 import servicios.CancionSL;
 import servicios.Playlist;
+import servicios.Usuario;
 import utilerias.Utilerias;
 
 /**
@@ -41,6 +42,7 @@ public class NodeAlbumController implements Initializable {
 
     AlbumSL album = new AlbumSL();
     IUArtistaController parent;
+    Usuario usuario;
     
     private ResourceBundle rb;
 
@@ -61,6 +63,7 @@ public class NodeAlbumController implements Initializable {
         controller.setAlbum(album);
         controller.setParent(this);
         controller.setRb(rb);
+        controller.setUsuario(usuario);
         loader.setController(controller);
 
         try {
@@ -92,6 +95,14 @@ public class NodeAlbumController implements Initializable {
 
     public void setRb(ResourceBundle rb) {
         this.rb = rb;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
     

@@ -21,6 +21,7 @@ import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import servicios.AlbumSL;
 import servicios.CancionSL;
+import servicios.Usuario;
 import servicios.servicios;
 import utilerias.Utilerias;
 
@@ -35,7 +36,7 @@ public class ModAlbumesController implements Initializable {
     private FlowPane flowPane;
     ResourceBundle rb;
     String correo;
-
+    Usuario usuario;
     IUArtistaController parent;
 
     /**
@@ -61,6 +62,7 @@ public class ModAlbumesController implements Initializable {
             controller.setAlbum(albumes.get(i));
             controller.setParent(parent);
             controller.setRb(rb);
+            controller.setUsuario(usuario);
             loader.setController(controller);
             try {
                 AnchorPane nodo = (AnchorPane) loader.load();
@@ -107,5 +109,15 @@ public class ModAlbumesController implements Initializable {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
 
 }

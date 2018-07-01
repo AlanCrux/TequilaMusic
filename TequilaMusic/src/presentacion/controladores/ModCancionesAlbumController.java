@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -21,10 +22,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import servicios.AlbumSL;
 import servicios.CancionSL;
+import servicios.Usuario;
 import servicios.servicios;
 import utilerias.Utilerias;
 
@@ -37,10 +40,10 @@ public class ModCancionesAlbumController implements Initializable {
 
     @FXML
     private TableView<CancionSL> tablaCanciones;
-    
+
     @FXML
     private Label tfResumen;
-    
+
     @FXML
     private TableColumn<CancionSL, String> tcTitulo;
 
@@ -64,10 +67,13 @@ public class ModCancionesAlbumController implements Initializable {
 
     @FXML
     private Hyperlink btnEditar;
-    
+
     private AlbumSL album;
     private ResourceBundle rb;
-    private NodeAlbumController parent; 
+    private NodeAlbumController parent;
+    Usuario usuario;
+    
+    IUAgregarCancionAlbumController modAgregarCancion;
 
     /**
      * Initializes the controller class.
@@ -81,13 +87,14 @@ public class ModCancionesAlbumController implements Initializable {
         tablaCanciones.setPlaceholder(new Label("No has agregado canciones a este álbum"));
         cargarDatosAlbum(obtenerCanciones(album.getIdAlbum()));
     }
-        public void cargarDatosAlbum(List<CancionSL> canciones) {
+
+    public void cargarDatosAlbum(List<CancionSL> canciones) {
         imageAlbum.setImage(Utilerias.byteToImage(album.getImagenAlbum()));
         lbTitulo.setText(album.getTitulo());
         lbDiscografia.setText(album.getCompaniaDiscografica());
         lbAnio.setText(album.getAnioLanzamiento());
-            System.out.println("datos album"+ album.getTitulo());
-            System.out.println("tamaño " + canciones.size());
+        System.out.println("datos album" + album.getTitulo());
+        System.out.println("tamaño " + canciones.size());
         if (canciones.size() > 1) {
             tfResumen.setText(canciones.size() + " canciones");
         } else {
@@ -95,24 +102,24 @@ public class ModCancionesAlbumController implements Initializable {
         }
         tablaCanciones.setItems(FXCollections.observableList(canciones));
     }
-        
-     public List<CancionSL> obtenerCanciones(int idAlbum){
-        List<CancionSL> canciones = new ArrayList<>(); 
+
+    public List<CancionSL> obtenerCanciones(int idAlbum) {
+        List<CancionSL> canciones = new ArrayList<>();
         int port = Integer.parseInt(rb.getString("dataport"));
-            String host = rb.getString("datahost");
+        String host = rb.getString("datahost");
         try {
             servicios.Client servicios = Utilerias.conectar(host, port);
             canciones = servicios.obtenerCancionesAlbumArtista(idAlbum);
-            System.out.println("Tamano en obtCa" +  canciones.size());
+            System.out.println("Tamano en obtCa" + canciones.size());
             Utilerias.closeServer(servicios);
         } catch (TTransportException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TException ex) {
             Logger.getLogger(ModPlaylistController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return canciones; 
-    
-     }
+        return canciones;
+
+    }
 
     public AlbumSL getAlbum() {
         return album;
@@ -137,12 +144,27 @@ public class ModCancionesAlbumController implements Initializable {
     public void setParent(NodeAlbumController parent) {
         this.parent = parent;
     }
-    
-     @FXML
+
+    @FXML
     void editar(ActionEvent event) {
-        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUAgregarCancionAlbum.fxml"), rb);
+        modAgregarCancion = new IUAgregarCancionAlbumController();
+        modAgregarCancion.setParent(this);
+        loader.setController(modAgregarCancion);
+        modAgregarCancion.setUsuario(usuario);
+        modAgregarCancion.setAlbum(album);
+        modAgregarCancion.mostrarVentana(loader, (Stage) lbAnio.getScene().getWindow());
+
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
     
-    
+   
 
 }
