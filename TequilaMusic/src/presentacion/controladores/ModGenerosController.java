@@ -24,7 +24,6 @@ import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import servicios.CancionSL;
 import servicios.Genero;
-import servicios.Usuario;
 import servicios.servicios;
 import utilerias.Utilerias;
 

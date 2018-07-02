@@ -43,7 +43,6 @@ import utilerias.Utilerias;
  */
 public class IUAgregarCancionAlbumController implements Initializable {
 
-   
     @FXML
     private TextField tfNombreCancion;
 
@@ -75,8 +74,8 @@ public class IUAgregarCancionAlbumController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      this.rb = rb;
-      llenarCombo();
+        this.rb = rb;
+        llenarCombo();
     }
 
     @FXML
@@ -101,45 +100,49 @@ public class IUAgregarCancionAlbumController implements Initializable {
     @FXML
     private void onGuardar(ActionEvent event) {
         Cancion cancion = new Cancion();
-        String pathBD = separarTexto(usuario.getNombre())+"/"+separarTexto(albumSL.getTitulo()+"/"+separarTexto(tfNombreCancion.getText()));
+        String pathBD = separarTexto(usuario.getNombre()) + "/" + separarTexto(albumSL.getTitulo() + "/" + separarTexto(tfNombreCancion.getText()));
         cancion.setTitulo(tfNombreCancion.getText());
         cancion.setIdGenero(comboGenero.getSelectionModel().getSelectedItem().getIdGenero());
         cancion.setIdAlbum(albumSL.getIdAlbum());
         cancion.setRuta(pathBD);
-        utilerias.subirCancion(pathArchivoOriginal, pathBD);
-        
+        int pastranaPort = Integer.parseInt(rb.getString("transport"));
+        String pastranaHost = rb.getString("transhost");
+        utilerias.subirCancion(pathArchivoOriginal, pathBD,pastranaHost,pastranaPort);
+
         int port = Integer.parseInt(rb.getString("dataport"));
         String host = rb.getString("datahost");
         servicios.Client servicios;
         try {
             servicios = Utilerias.conectar(host, port);
-            if(servicios.insertarCancion(cancion)){
+            if (servicios.insertarCancion(cancion)) {
                 limpiarCampos();
+                Stage stage = (Stage) btnGuardar.getScene().getWindow();
+                stage.close();
             }
             Utilerias.closeServer(servicios);
         } catch (TException ex) {
             Logger.getLogger(ModBuscarCancionesController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-    
-    public void limpiarCampos(){
+
+    public void limpiarCampos() {
         tfNombreArchivo.clear();
         tfNombreCancion.clear();
         comboGenero.getSelectionModel().clearSelection();
     }
-    
-    public String separarTexto(String caracter){
-        
+
+    public String separarTexto(String caracter) {
+
         String completo = "";
         completo = caracter.replace(" ", "_");
         System.out.println("ruta creada: " + completo);
         return completo;
     }
-    
-    void llenarCombo(){
+
+    void llenarCombo() {
         List<Genero> generos = new ArrayList();
-         int port = Integer.parseInt(rb.getString("dataport"));
+        int port = Integer.parseInt(rb.getString("dataport"));
         String host = rb.getString("datahost");
         servicios.Client servicios;
         try {
@@ -151,7 +154,6 @@ public class IUAgregarCancionAlbumController implements Initializable {
         }
         comboGenero.setItems(FXCollections.observableList(generos));
     }
-    
 
     public ModCancionesAlbumController getParent() {
         return parent;
@@ -201,6 +203,5 @@ public class IUAgregarCancionAlbumController implements Initializable {
     public void setAlbum(AlbumSL albumSL) {
         this.albumSL = albumSL;
     }
-
 
 }

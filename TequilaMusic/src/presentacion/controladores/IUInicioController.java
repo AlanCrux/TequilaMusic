@@ -17,9 +17,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.apache.thrift.transport.TTransportException;
 import servicios.servicios.Client;
 import utilerias.Utilerias;
 
@@ -41,8 +39,8 @@ public class IUInicioController implements Initializable {
     private AnchorPane contentError;
 
     private Client servidor;
-    private static final String HOST = "192.168.43.214";
-    private static final int PUERTO = 9090;
+    private String host;
+    private int puerto;
     private static final int TIEMPO_CAMBIO = 10;
     private int TIEMPO_CRONOMETRO = 10;
     private int numFondoActual = 1;
@@ -64,36 +62,18 @@ public class IUInicioController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.rb = rb; 
-        try {
-            servidor = Utilerias.conectar(HOST, PUERTO);
-        } catch (TTransportException ex) {
-            System.out.println("ERROR DE CONEXIÓN");
-        }
+        
+        host = rb.getString("datahost");
+        puerto = Integer.parseInt(rb.getString("dataport"));
+        
         cargarIniciarSesion();
         iniciarCronometro();
-    }
-
-    @FXML
-    void onActionReintentar(ActionEvent event) {
-        Utilerias.ocultarErrorConexion(contentError, contentPane);
-        try {
-            servidor = Utilerias.conectar(HOST, PUERTO);
-        } catch (TTransportException ex) {
-            Utilerias.mostrarErrorConexion(contentError);
-        }
-    }
-
-    @FXML
-    void onActionSalir(ActionEvent event) {
-        Stage stage = (Stage) contentPane.getScene().getWindow();
-        stage.close();
     }
     
     public void cargarIniciarSesion() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modIniciarSesion.fxml"),rb);
         ModIniciarSesionController controller = new ModIniciarSesionController();
         controller.setParent(this);
-        controller.setServidor(servidor);
         loader.setController(controller);
 
         try {
@@ -108,7 +88,6 @@ public class IUInicioController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modCrearCuenta.fxml"),rb);
         ModCrearCuentaController controller = new ModCrearCuentaController();
         controller.setParent(this);
-        controller.setServidor(servidor);
         loader.setController(controller);
 
         try {
@@ -129,7 +108,7 @@ public class IUInicioController implements Initializable {
     }
     
     /**
-     * 
+     * Inicia el cronometro utilizado para cambiar el fondo de la IU. 
      */
     public void iniciarCronometro() {
         cronometro = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
@@ -147,7 +126,7 @@ public class IUInicioController implements Initializable {
     }
 
     /**
-     * 
+     * Cambia el fondo de la IU. 
      */
     private void cambiarFondo() {
         int numImagen = ThreadLocalRandom.current().nextInt(1, 8);

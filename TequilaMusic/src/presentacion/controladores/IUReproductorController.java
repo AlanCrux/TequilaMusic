@@ -1,6 +1,7 @@
 package presentacion.controladores;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXProgressBar;
 import java.io.File;
@@ -103,6 +104,8 @@ public class IUReproductorController implements Initializable {
     private ImageView imgFondo;
     @FXML
     private AnchorPane contentError;
+    @FXML
+    private JFXDrawer drawerCola;
 
     private Usuario usuario;
 
@@ -128,7 +131,7 @@ public class IUReproductorController implements Initializable {
     private boolean isModCanciones;
     private boolean isModArtistas;
     private boolean isModGeneros;
-    private boolean isModAlbumes; 
+    private boolean isModAlbumes;
 
     // Controladores de algunas ventanas
     IUAgregarPlaylistController controllerNuevaLista;
@@ -152,7 +155,7 @@ public class IUReproductorController implements Initializable {
     private Task progressTask;
     private Thread reproductionThread;
     private boolean play;
-    private CancionSL actual; 
+    private CancionSL actual;
 
     /**
      * Initializes the controller class.
@@ -174,14 +177,29 @@ public class IUReproductorController implements Initializable {
         cargarPlaylist(listas);
         addContextMenu(listPlaylist);
         controllerCola = new ModColaController();
+
+        drawerCola.setOnDrawerClosed(event -> {
+            drawerCola.toBack();
+        });
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/modCola.fxml"), rb);
+            loader.setController(controllerCola);
+            AnchorPane pane = loader.load();
+            pane.setStyle("-fx-background-color: transparent");
+            drawerCola.setSidePane(pane);
+            drawerCola.setStyle("-fx-background-color: transparent");
+        } catch (IOException ex) {
+            Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void actualizarListas() {
-        int actual = listPlaylist.getSelectionModel().getSelectedIndex();
+        int numActual = listPlaylist.getSelectionModel().getSelectedIndex();
         listPlaylist.getItems().clear();
         listas = obtenerPlaylist(usuario.getCorreo());
         cargarPlaylist(listas);
-        listPlaylist.getSelectionModel().select(actual);
+        listPlaylist.getSelectionModel().select(numActual);
     }
 
     @FXML
@@ -259,7 +277,7 @@ public class IUReproductorController implements Initializable {
             isModCanciones = false;
             isModArtistas = false;
             isModGeneros = false;
-            isModAlbumes = false; 
+            isModAlbumes = false;
         } else {
             controllerBuscarCanciones.mostrarResultados(criterio);
         }
@@ -308,7 +326,7 @@ public class IUReproductorController implements Initializable {
             isModCanciones = false;
             isModArtistas = true;
             isModGeneros = false;
-            isModAlbumes = false; 
+            isModAlbumes = false;
         }
     }
 
@@ -329,7 +347,7 @@ public class IUReproductorController implements Initializable {
             isBuscarCanciones = false;
             isModCanciones = false;
             isModArtistas = false;
-            isModGeneros = false; 
+            isModGeneros = false;
             isModAlbumes = true;
         }
     }
@@ -353,7 +371,7 @@ public class IUReproductorController implements Initializable {
             isModCanciones = false;
             isModArtistas = false;
             isModGeneros = true;
-            isModAlbumes = false; 
+            isModAlbumes = false;
         }
     }
 
@@ -374,8 +392,8 @@ public class IUReproductorController implements Initializable {
             isBuscarCanciones = false;
             isModCanciones = false;
             isModArtistas = false;
-            isModAlbumes = false; 
-            isModGeneros = false; 
+            isModAlbumes = false;
+            isModGeneros = false;
         }
     }
 
@@ -472,10 +490,10 @@ public class IUReproductorController implements Initializable {
     private void onActionPlay(MouseEvent event) {
         if (play) {
             mediaPlayer.pause();
-            btnPlay.setImage(new Image(ICON_PAUSA));
+            btnPlay.setImage(new Image(ICON_PLAY));
             play = false;
         } else {
-            btnPlay.setImage(new Image(ICON_PLAY));
+            btnPlay.setImage(new Image(ICON_PAUSA));
             mediaPlayer.play();
             play = true;
         }
@@ -484,6 +502,7 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     private void onActionNext(MouseEvent event) {
+        System.out.println("ENTRA");
         if (controllerCola.cancionesPendiente() > 0) {
             CancionSL siguiente = controllerCola.obtenerSiguiente();
             cargarDatosCancion(siguiente);
@@ -504,7 +523,13 @@ public class IUReproductorController implements Initializable {
 
     @FXML
     public void onCola(MouseEvent event) {
-        
+        if (drawerCola.isOpened()) {
+            drawerCola.close();
+        } else {
+
+            drawerCola.toFront();
+            drawerCola.open();
+        }
     }
 
     /**
@@ -606,6 +631,7 @@ public class IUReproductorController implements Initializable {
 
         agregarHistorial(cancion);
         reproducir(cancion);
+        btnPlay.setImage(new Image(ICON_PAUSA));
     }
 
     public void reproducir(CancionSL cancion) {
@@ -668,7 +694,6 @@ public class IUReproductorController implements Initializable {
             servicios = Utilerias.conectar(host, port);
             servicios.elimnarPlaylist(idPlaylist);
             Utilerias.closeServer(servicios);
-
         } catch (TTransportException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (TException ex) {
@@ -798,7 +823,7 @@ public class IUReproductorController implements Initializable {
         try {
             Client servicios = Utilerias.conectar(host, port);
             if (!servicios.insertarCancionBiblioteca(biblioteca)) {
-                System.out.println("YA EXISTE EN TU BIBLIOTECA");
+                Utilerias.displayInformation("Error!", "Ya has agregado esta canción");
             }
         } catch (TException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);
@@ -809,7 +834,9 @@ public class IUReproductorController implements Initializable {
         if (cancion.getDescargada().equals("true")) {
             Utilerias.displayInformation("Upps", "Ya has descargado esta canción");
         } else {
-            Socket streaming = Utilerias.conectarStreaming("localhost", 1234);
+            int stramingPort = Integer.parseInt(rb.getString("streamingport"));
+            String streamingHost = rb.getString("streaminghost");
+            Socket streaming = Utilerias.conectarStreaming(streamingHost, stramingPort);
             // La ruta de la canción en la BD
             final String ruta = cancion.getRuta();
             // La ruta temporal en el cliente

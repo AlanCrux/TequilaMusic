@@ -14,8 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -25,7 +23,6 @@ import javafx.stage.Stage;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import servicios.Album;
-import servicios.Playlist;
 import servicios.Usuario;
 import servicios.servicios;
 import servicios.servicios.Client;
@@ -65,6 +62,8 @@ public class IUArtistaController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -131,7 +130,6 @@ public class IUArtistaController implements Initializable {
         try {
             Utilerias.fadeTransition(contentPrincipal, 300);
             contentPrincipal.getChildren().setAll((AnchorPane) loader.load());
-            System.out.println("coreo: " + usuario.getCorreo());
             modCanciones.mostrarResultados(usuario.getCorreo());
         } catch (IOException ex) {
             Logger.getLogger(IUReproductorController.class.getName()).log(Level.SEVERE, null, ex);

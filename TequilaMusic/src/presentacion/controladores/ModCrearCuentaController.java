@@ -10,16 +10,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.apache.thrift.TException;
+import org.apache.thrift.transport.TTransportException;
 import servicios.Usuario;
-import servicios.servicios;
 import servicios.servicios.Client;
 import utilerias.Utilerias;
 
@@ -33,10 +31,6 @@ public class ModCrearCuentaController implements Initializable {
     @FXML
     private TextField tfUsuario;
     @FXML
-    private JFXRadioButton rdbtnMusico;
-    @FXML
-    private ToggleGroup tipo;
-    @FXML
     private JFXRadioButton rdbtnCliente;
     @FXML
     private TextField tfNombre;
@@ -46,28 +40,37 @@ public class ModCrearCuentaController implements Initializable {
     private PasswordField tfClaveConfirmar;
     @FXML
     private JFXButton btnCrearCuenta;
-    @FXML
-    private Hyperlink hpIniciarSesion;
 
     private IUInicioController parent;
-    private Client servidor;
     private ResourceBundle rb;
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.rb = rb; 
+        this.rb = rb;
     }
 
+    /**
+     * Invoca un método del nodo padre para cambiar el módulo a iniciar sesión.
+     *
+     * @param event
+     */
     @FXML
     private void cargarIniciarSesion(ActionEvent event) {
         parent.cargarIniciarSesion();
     }
 
+    /**
+     * Describe el funcionamiento del sistema al hacer clic en el botón
+     * registrar.
+     *
+     * @param event
+     */
     @FXML
     public void onActionRegistrarse(MouseEvent event) {
         if (event.getButton().equals(MouseButton.PRIMARY)) {
@@ -77,33 +80,40 @@ public class ModCrearCuentaController implements Initializable {
         }
     }
 
+    /**
+     * Invoca un método del servidor para crear una cuenta con los datos
+     * insertados en la IU.
+     */
     public void crearCuenta() {
         if (validarCampos()) {
             Usuario usuario = obtenerDatosUsuario();
+            String host = rb.getString("datahost");
+            int puerto = Integer.parseInt(rb.getString("dataport"));
             try {
+                Client servidor = Utilerias.conectar(host, puerto);
                 if (servidor.insertarUsuario(usuario)) {
                     if (usuario.getTipo().equals("consumidor")) {
-                        abrirReproductor(usuario, servidor);
-                    } else{
-                        abrirMenuArtista(usuario, servidor);
+                        abrirReproductor(usuario);
+                    } else {
+                        abrirMenuArtista(usuario);
                     }
                 } else {
-                    System.out.println("YA EXISTE OTRO");
+                    Utilerias.displayInformation("Error!", "Ya existe otro usuario con ese correo");
                 }
+                Utilerias.closeServer(servidor);
+            } catch (TTransportException ex) {
+                Logger.getLogger(ModCrearCuentaController.class.getName()).log(Level.SEVERE, null, ex);
             } catch (TException ex) {
                 Logger.getLogger(ModCrearCuentaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
-    public void setParent(IUInicioController parent) {
-        this.parent = parent;
-    }
-
-    public void setServidor(servicios.Client servidor) {
-        this.servidor = servidor;
-    }
-
+    /**
+     * Valida si los cuadros de texto de la IU contienen información.
+     *
+     * @return
+     */
     public boolean validarCampos() {
         if (tfUsuario.getText().trim().isEmpty()) {
             Utilerias.doingTransition(tfUsuario);
@@ -133,6 +143,10 @@ public class ModCrearCuentaController implements Initializable {
         return true;
     }
 
+    /**
+     * Pone en un color especial los colores de borde de los cuadros de texto de
+     * la IU.
+     */
     @FXML
     public void quitarColor() {
         tfNombre.setStyle("-fx-border-color: #FFFFFF");
@@ -141,6 +155,12 @@ public class ModCrearCuentaController implements Initializable {
         tfUsuario.setStyle("-fx-border-color: #FFFFFF");
     }
 
+    /**
+     * Crea un objeto de tipo Usuario a partir de los datos insertados en los
+     * cuadros de texto de la IU.
+     *
+     * @return Objeto de tipo usuario con los datos cargados.
+     */
     public Usuario obtenerDatosUsuario() {
         Usuario usuario = new Usuario();
         usuario.setClave(tfClave.getText());
@@ -154,25 +174,38 @@ public class ModCrearCuentaController implements Initializable {
         return usuario;
     }
 
-    public void abrirReproductor(Usuario usuario, Client servidor) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"),rb);
+    /**
+     * Abre la IU dedicada al cliente consumidor.
+     *
+     * @param usuario cliente que ingresa al sistema.
+     */
+    public void abrirReproductor(Usuario usuario) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUReproductor.fxml"), rb);
         IUReproductorController controller = new IUReproductorController();
         loader.setController(controller);
         controller.setUsuario(usuario);
-        
+
         Utilerias.mostrarVentana(loader);
         Stage stage = (Stage) btnCrearCuenta.getScene().getWindow();
         stage.close();
     }
 
-    public void abrirMenuArtista(Usuario usuario, Client servidor) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUArtista.fxml"),rb);
+    /**
+     * Abre la IU dedicada al artista.
+     *
+     * @param usuario artista que ingresa al sistema.
+     */
+    public void abrirMenuArtista(Usuario usuario) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/IUArtista.fxml"), rb);
         IUArtistaController controller = new IUArtistaController();
         loader.setController(controller);
         controller.setUsuario(usuario);
-        controller.setServidor(servidor);
-        Utilerias.mostrarVentana(loader);
+        Utilerias.mostrarVentanaMax(loader);
         Stage stage = (Stage) btnCrearCuenta.getScene().getWindow();
         stage.close();
+    }
+
+    public void setParent(IUInicioController parent) {
+        this.parent = parent;
     }
 }

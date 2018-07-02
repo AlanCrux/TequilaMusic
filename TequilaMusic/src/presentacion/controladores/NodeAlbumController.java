@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package presentacion.controladores;
 
 import java.io.IOException;
@@ -19,8 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import servicios.AlbumSL;
-import servicios.CancionSL;
-import servicios.Playlist;
 import servicios.Usuario;
 import utilerias.Utilerias;
 

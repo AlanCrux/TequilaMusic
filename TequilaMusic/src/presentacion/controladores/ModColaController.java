@@ -1,6 +1,5 @@
 package presentacion.controladores;
 
-import com.jfoenix.controls.JFXListView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,7 +10,9 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import servicios.CancionSL;
 
 /**
@@ -22,7 +23,7 @@ import servicios.CancionSL;
 public class ModColaController implements Initializable {
 
     @FXML
-    private JFXListView<AnchorPane> listCanciones = new JFXListView<>();
+    private VBox listCanciones;
     
     private List<CancionSL> colafija = new ArrayList<>(); 
     private List<CancionSL> colaDinamica = new ArrayList<>(); 
@@ -34,25 +35,14 @@ public class ModColaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        int size = colafija.size(); 
-        NodeEncolaController controller; 
-        for (int i = 0; i < size; i++) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/nodeEncola.fxml"));
-            controller = new NodeEncolaController(); 
-            controller.setCancion(colafija.get(i));
-            loader.setController(controller);
-            try {
-                AnchorPane nodo = (AnchorPane) loader.load();
-                listCanciones.getItems().add(nodo); 
-            } catch (IOException ex) {
-                Logger.getLogger(ModColaController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }    
     
+    /**
+     * Recarga la IU de la cola. 
+     */
     public void recargarItems(){
-        listCanciones.getItems().clear();
-        int size = colafija.size(); 
+        listCanciones.getChildren().clear();
+        int size = colafija.size();
         NodeEncolaController controller; 
         for (int i = 0; i < size; i++) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/presentacion/vistas/nodeEncola.fxml"));
@@ -61,23 +51,36 @@ public class ModColaController implements Initializable {
             loader.setController(controller);
             try {
                 AnchorPane nodo = (AnchorPane) loader.load();
-                listCanciones.getItems().add(nodo); 
+                listCanciones.getChildren().add(nodo); 
+                Separator sep = new Separator();
+                listCanciones.getChildren().add(sep);
             } catch (IOException ex) {
                 Logger.getLogger(ModColaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        imprimirCola();
     }
 
+    /**
+     * Remplaza el contenido de la cola dinamica por el de la lista recibida. 
+     * @param colaDinamica nueva lista dinamica. 
+     */
     public void setColaDinamica(List<CancionSL> colaDinamica) {
         this.colaDinamica = colaDinamica;
     }
     
+    /**
+     * Agrega una canción al final de la cola. 
+     * @param cancion 
+     */
     public void agregarFinal(CancionSL cancion){
         this.colafija.add(cancion);
         recargarItems();
     }
     
+    /**
+     * Agrega una canción al inicio de la cola. 
+     * @param cancion 
+     */
     public void agregarInicio(CancionSL cancion){
         List<CancionSL> nueva = new ArrayList<>(); 
         nueva.add(cancion);
@@ -86,10 +89,18 @@ public class ModColaController implements Initializable {
         recargarItems();
     }
     
+    /**
+     * Devuleve la suma del número de canciones pendientes en las colas. 
+     * @return 
+     */
     public int cancionesPendiente(){
         return colafija.size() + colaDinamica.size(); 
     }
     
+    /**
+     * Devuelve la siguiente canción en la cola. 
+     * @return CancionSL, siguiente en la cola. 
+     */
     public CancionSL obtenerSiguiente(){
         CancionSL cancion;
         if (colafija.size() > 0) {
@@ -103,14 +114,5 @@ public class ModColaController implements Initializable {
             recargarItems();
             return cancion; 
         }
-    }
-    
-    public void imprimirCola(){
-        System.out.println("COLA DE REPRODUCCIÓN --------");
-        for (int i = 0; i < colafija.size(); i++) {
-            System.out.println(colafija.get(i).getTitulo());
-        }
-        
-        System.out.println(" ---------------------------- > ");
     }
 }

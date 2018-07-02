@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -34,5 +36,24 @@
             <Font name="Avenir Book" size="16.0" />
          </font>
       </Hyperlink>
+      <AnchorPane fx:id="contentError" layoutX="10.0" layoutY="10.0" prefHeight="600.0" prefWidth="800.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="600.0" fitWidth="800.0" opacity="0.9" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../recursos/fondos/TequilaError6.jpg" />
+               </image>
+            </ImageView>
+            <JFXButton layoutX="416.0" layoutY="482.0" onAction="#onActionReintentar" opacity="0.8" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #17A589;" text="Reintentar" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Book" size="16.0" />
+               </font>
+            </JFXButton>
+            <JFXButton layoutX="284.0" layoutY="482.0" onAction="#onActionSalir" opacity="0.82" prefHeight="35.0" prefWidth="110.0" style="-fx-background-color: #7F8C8D;" text="Salir" textFill="WHITE">
+               <font>
+                  <Font name="Avenir Book" size="16.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

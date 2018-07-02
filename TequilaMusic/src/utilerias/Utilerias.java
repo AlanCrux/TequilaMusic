@@ -309,11 +309,11 @@ public class Utilerias {
         primaryStage.show();
     }
     
-    public void subirCancion(String directorioCancion, String rutaAGuardar){
+    public void subirCancion(String directorioCancion, String rutaAGuardar, String host, int puerto){
         int in;
         try {
             final File archivoEnviar = new File(directorioCancion);
-            Socket cliente = new Socket("localhost", 1234);
+            Socket cliente = new Socket(host, puerto);
             BufferedInputStream bufferEntrada = new BufferedInputStream(new FileInputStream(archivoEnviar));
             BufferedOutputStream bufferSalida = new BufferedOutputStream(cliente.getOutputStream());
             PrintWriter out = new PrintWriter(cliente.getOutputStream(),true);
@@ -333,8 +333,7 @@ public class Utilerias {
             bufferSalida.close();
             System.out.println("Se envio la cancion");
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         }
 
     }

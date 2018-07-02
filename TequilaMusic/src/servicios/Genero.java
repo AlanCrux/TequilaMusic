@@ -319,22 +319,7 @@ public class Genero implements org.apache.thrift.TBase<Genero, Genero._Fields>, 
 
   @Override
   public java.lang.String toString() {
-    java.lang.StringBuilder sb = new java.lang.StringBuilder("Genero(");
-    boolean first = true;
-
-    sb.append("idGenero:");
-    sb.append(this.idGenero);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("nombreGenero:");
-    if (this.nombreGenero == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.nombreGenero);
-    }
-    first = false;
-    sb.append(")");
-    return sb.toString();
+    return nombreGenero;
   }
 
   public void validate() throws org.apache.thrift.TException {

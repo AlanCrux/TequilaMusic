@@ -1,10 +1,11 @@
 package presentacion.controladores;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import servicios.CancionSL;
 import utilerias.Utilerias;
@@ -19,14 +20,16 @@ public class NodeEncolaController implements Initializable {
     @FXML
     private ImageView imgPortada;
     @FXML
-    private Label lbTitulo;
+    private TextField lbTitulo;
     @FXML
-    private Label lbAlbum;
+    private TextField lbAlbum;
     
     private CancionSL cancion; 
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
